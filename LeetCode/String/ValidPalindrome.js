@@ -3,6 +3,8 @@
 /*
  * 
  * @jingjiejiang May 19, 2019
+ * 
+ * another way is to use Array.unshift
  */ 
 var isPalindrome = function (s) {
 
