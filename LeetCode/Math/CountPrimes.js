@@ -7,7 +7,6 @@
 var countPrimes = function (n) {
 
     let count = 0, isCount = [];
-
     for (let i = 2; i < n; i++) {
         if (isCount[i] === undefined) {
             count++;
