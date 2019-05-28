@@ -19,7 +19,7 @@ var MyLinkedList = function () {
  */
 MyLinkedList.prototype.get = function (index) {
 
-    if (index <= 0 || index > this.length) return;
+    if (index <= 0 || index > this.length) return -1;
 
     let shift = this.head;
     while (index > 0) {
@@ -42,7 +42,6 @@ MyLinkedList.prototype.addAtHead = function (val) {
     let isFirst = (this.head.val === null) ? true : false;
 
     this.head.next = newNode;
-    this.head = newNode;
     this.length++;
 
     if (isFirst) {
@@ -107,14 +106,16 @@ MyLinkedList.prototype.deleteAtIndex = function (index) {
 
     if (index <= 0 || index > this.length) return;
 
+    let isTailChange = index === this.length ? true : false;
+
     let shift = this.head;
-    shift.next = this.head.next;
     while (index > 1) {
         shift = shift.next;
         index--;
     }
 
     shift.next = shift.next.next;
+    if (isTailChange) tail = shift;
     this.length--;
 };
 
