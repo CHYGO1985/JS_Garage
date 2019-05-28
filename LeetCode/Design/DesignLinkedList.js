@@ -2,13 +2,8 @@
  * Initialize your data structure here.
  */
 var MyLinkedList = function () {
-    this.head = {
-        val: null,
-        next: null
-    };
-    this.tail = {
-        val: null
-    };
+    this.head = null;
+    this.tail = null;
     this.length = 0;
 };
 
@@ -19,7 +14,7 @@ var MyLinkedList = function () {
  */
 MyLinkedList.prototype.get = function (index) {
 
-    if (index <= 0 || index > this.length) return -1;
+    if (index < 0 || index > this.length - 1) return -1;
 
     let shift = this.head;
     while (index > 0) {
@@ -38,15 +33,15 @@ MyLinkedList.prototype.get = function (index) {
 MyLinkedList.prototype.addAtHead = function (val) {
 
     let newNode = { val: val };
-    newNode.next = null;
-    let isFirst = (this.head.val === null) ? true : false;
+    newNode.next = this.head;
+    let isFirst = (this.head === null) ? true : false;
 
-    this.head.next = newNode;
+    this.head = newNode;
     this.length++;
 
     if (isFirst) {
-        tail = newNode;
-        tail.next = null;
+        this.tail = newNode;
+        this.tail.next = null;
     }
 };
 
@@ -63,8 +58,9 @@ MyLinkedList.prototype.addAtTail = function (val) {
     }
 
     let newNode = { val: val };
-    this.tail.next = newNode;
     newNode.next = null;
+    this.tail.next = newNode;
+
     this.length++;
     this.tail = newNode;
 };
@@ -77,11 +73,17 @@ MyLinkedList.prototype.addAtTail = function (val) {
  */
 MyLinkedList.prototype.addAtIndex = function (index, val) {
 
-    if (index <= 0 && index > this.length) return;
+    if (index < 0 || index > this.length) return;
 
-    if (index === 1) this.addAtHead(val);
+    if (index === 0) {
+        this.addAtHead(val);
+        return;
+    }
 
-    if (index === this.length) this.addAtTail(val);
+    if (index === this.length) {
+        this.addAtTail(val);
+        return;
+    }
 
     let newNode = { val: val };
     let shift = this.head;
@@ -95,6 +97,7 @@ MyLinkedList.prototype.addAtIndex = function (index, val) {
     newNode.next = curNext;
 
     this.length++;
+
 };
 
 /**
@@ -104,7 +107,14 @@ MyLinkedList.prototype.addAtIndex = function (index, val) {
  */
 MyLinkedList.prototype.deleteAtIndex = function (index) {
 
-    if (index <= 0 || index > this.length) return;
+    if (index < 0 || index >= this.length) return;
+
+    if (index === 0) {
+        let headNext = this.head.next;
+        this.head.next = null;
+        this.head = headNext;
+        return;
+    }
 
     let isTailChange = index === this.length ? true : false;
 
