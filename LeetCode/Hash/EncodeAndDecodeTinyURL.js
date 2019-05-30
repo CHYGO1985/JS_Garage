@@ -4,7 +4,7 @@
  * @param {string} longUrl
  * @return {string}
  * 
- * @jingjiejiang May 29, 2019
+ * @jingjiejiang May 30, 2019
  */
 
 const maxChars = 6;
@@ -16,17 +16,17 @@ let keyToUrl = new Map();
 
 var encode = function(longUrl) {
     
-    if (urlToKey.has(longUrl)) return urlToKey.get();
+    if (urlToKey.has(longUrl)) return urlToKey.get(longUrl);
 
     let key = "";
     do {
         key = prefix + [...Array(maxChars)]
-            .map(_ => Math.floor(Math.random() * seed.length))
-            .map(i => seed[i])
-            .join("");
+                .map(_ => Math.floor(Math.random() * seed.length))
+                .map(i => seed[i])
+                .join("");
     }
-    while (keyToUrl.has(key));
-
+    while (keyToUrl.has(key)); 
+    
     urlToKey.set(longUrl, key);
     keyToUrl.set(key, longUrl);
 
@@ -40,8 +40,7 @@ var encode = function(longUrl) {
  * @return {string}
  */
 var decode = function(shortUrl) {
-
-    return  (keyToUrl.has(shortUrl) === false) ? "" : keyToUrl.get(shortUrl);
+    return keyToUrl.has(shortUrl) ? keyToUrl.get(shortUrl) : "";
 };
 
 /**
