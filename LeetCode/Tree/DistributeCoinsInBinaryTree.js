@@ -2,7 +2,7 @@
  * @param {TreeNode} root
  * @return {number}
  * 
- * @jingjiejiang May 31, 2019
+ * @jingjiejiang Jun 1, 2019
  */
 var distributeCoins = function(root) {
     
