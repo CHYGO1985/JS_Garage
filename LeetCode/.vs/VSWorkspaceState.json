@@ -2,9 +2,10 @@
   "ExpandedNodes": [
     "",
     "\\Array",
+    "\\Design",
     "\\Math",
     "\\String"
   ],
-  "SelectedNode": "\\Math\\ReverseInteger.js",
+  "SelectedNode": "\\Design\\DesignLinkedList.js",
   "PreviewInSolutionExplorer": false
 }
