@@ -31,9 +31,20 @@ var kClosest = function (points, K) {
         let pivot = points[0];
         let shiftHead = 0, shiftEnd = points.length - 1;
 
-        while (shiftHead <= shiftEnd) {
+        while (shiftHead <= shiftEnd) {##ERR##
             while (isLeftSmallThenRight(shiftHead, pivot)) shiftHead++;
             while (isLeftSmallThenRight(pivot, shiftEnd)) shiftEnd--;
+
+            if (shiftHead <= shiftEnd) {
+                swapPoints(points, shiftHead ++, shiftEnd --);
+            }
         }
+
+        if (shiftHead < end) sort(points, shiftHead, end);
+        if (shiftEnd > start) sort(points, start, shiftEnd);
+
+        return points;
     };
+
+    return sort(points, 0, points.length - 1).slice(0, K);
 };
