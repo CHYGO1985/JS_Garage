@@ -6,11 +6,10 @@
  * @jingjiejiang Jun 4, 2019
  */
 var kClosest = function (points, K) {
-
-    if (points === null || points.length <= k) return points;
+    if (points === null || points.length <= K) return points;
 
     const getDistance = (point) => {
-        return Math.pow(point[0] - 0, 2) + Math.pow(point[1] - 0, 2);
+        return Math.pow(point[0], 2) + Math.pow(point[1], 2);
     };
 
     const swapPoints = (points, index1, index2) => {
@@ -28,20 +27,22 @@ var kClosest = function (points, K) {
 
     const sort = (points, start, end) => {
 
-        let pivot = points[0];
-        let shiftHead = 0, shiftEnd = points.length - 1;
+        let pivot = points[start];
+        let shiftHead = start, shiftEnd = end;
 
-        while (shiftHead <= shiftEnd) {##ERR##
-            while (isLeftSmallThenRight(shiftHead, pivot)) shiftHead++;
-            while (isLeftSmallThenRight(pivot, shiftEnd)) shiftEnd--;
+        while (shiftHead < shiftEnd) {
+            while (isLeftSmallThenRight(points[shiftHead], pivot)) shiftHead++;
+            while (isLeftSmallThenRight(pivot, points[shiftEnd])) shiftEnd--;
 
             if (shiftHead <= shiftEnd) {
-                swapPoints(points, shiftHead ++, shiftEnd --);
+                swapPoints(points, shiftHead, shiftEnd);
+                shiftHead++;
+                shiftEnd--;
             }
         }
 
-        if (shiftHead < end) sort(points, shiftHead, end);
         if (shiftEnd > start) sort(points, start, shiftEnd);
+        if (shiftHead < end) sort(points, shiftHead, end);
 
         return points;
     };
