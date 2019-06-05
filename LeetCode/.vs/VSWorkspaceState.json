@@ -4,8 +4,9 @@
     "\\Array",
     "\\Design",
     "\\Math",
+    "\\Sort",
     "\\String"
   ],
-  "SelectedNode": "\\Design\\DesignLinkedList.js",
+  "SelectedNode": "\\Array\\KClosestPointsToOrigin.js",
   "PreviewInSolutionExplorer": false
 }
