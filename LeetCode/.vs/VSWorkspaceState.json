@@ -5,8 +5,9 @@
     "\\Design",
     "\\Math",
     "\\Sort",
+    "\\Stack",
     "\\String"
   ],
-  "SelectedNode": "\\Array\\KClosestPointsToOrigin.js",
+  "SelectedNode": "\\Stack\\DailyTemperatures.js",
   "PreviewInSolutionExplorer": false
 }
