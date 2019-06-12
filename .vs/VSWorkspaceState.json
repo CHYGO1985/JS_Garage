@@ -2,8 +2,10 @@
   "ExpandedNodes": [
     "",
     "\\LeetCode",
-    "\\LeetCode\\Sort"
+    "\\LeetCode\\Sort",
+    "\\LeetCode\\String",
+    "\\LeetCode\\Tree"
   ],
-  "SelectedNode": "\\LeetCode\\Sort\\SortAnArray.js",
+  "SelectedNode": "\\LeetCode\\Tree\\BinaryTreeInorderTraversal.js",
   "PreviewInSolutionExplorer": false
 }

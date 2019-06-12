@@ -6,8 +6,9 @@
     "\\Math",
     "\\Sort",
     "\\Stack",
-    "\\String"
+    "\\String",
+    "\\Tree"
   ],
-  "SelectedNode": "\\Design\\DesignHitCounter.js",
+  "SelectedNode": "\\Tree\\MaxDifBetweenNodeAndAncestor.js",
   "PreviewInSolutionExplorer": false
 }
