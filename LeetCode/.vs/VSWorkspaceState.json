@@ -1,7 +1,7 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Array",
+    "\\BackTracking",
     "\\Design",
     "\\Math",
     "\\Sort",
@@ -9,6 +9,6 @@
     "\\String",
     "\\Tree"
   ],
-  "SelectedNode": "\\Tree\\MaxDifBetweenNodeAndAncestor.js",
+  "SelectedNode": "\\BackTracking\\Subsets.js",
   "PreviewInSolutionExplorer": false
 }
