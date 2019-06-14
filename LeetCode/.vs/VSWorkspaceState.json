@@ -1,7 +1,7 @@
 {
   "ExpandedNodes": [
     "",
-    "\\BackTracking",
+    "\\Array",
     "\\Design",
     "\\Math",
     "\\Sort",
@@ -9,6 +9,6 @@
     "\\String",
     "\\Tree"
   ],
-  "SelectedNode": "\\BackTracking\\CombinationSumII.js",
+  "SelectedNode": "\\Array\\ProductOfArrayExceptSelf.js",
   "PreviewInSolutionExplorer": false
 }
