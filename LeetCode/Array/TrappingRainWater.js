@@ -2,7 +2,7 @@
  * @param {number[]} height
  * @return {number}
  * 
- * @jingjiejiang June 14, 2019
+ * @jingjiejiang June 15, 2019
  */
 var trap = function (height) {
 
