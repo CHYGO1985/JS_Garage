@@ -2,6 +2,7 @@
   "ExpandedNodes": [
     "",
     "\\Array",
+    "\\BackTracking",
     "\\Design",
     "\\Math",
     "\\Sort",
@@ -9,6 +10,6 @@
     "\\String",
     "\\Tree"
   ],
-  "SelectedNode": "\\Array\\TrappingRainWater.js",
+  "SelectedNode": "\\BackTracking\\GenerateParentheses.js",
   "PreviewInSolutionExplorer": false
 }

@@ -9,25 +9,21 @@
  */
 var topKFrequent = function(nums, k) {
     
-    let map = new Map();
-    let res = [];
-    res.length = 4;
-    let min = 0;
+    const map = {};
+    const result = [];
+    const bucket = Array(nums.length + 1).fill().map(() => []);
 
-    const fillRes = (num) => {
-        for (let idx = 0; idx < res.length; idx ++) {
-            if (num > res[idx]) res[idx] = num;
-            min = Math.min(res[idx], min);    
-        }
+    for (let num of nums) map[num] = ~~map[num] + 1;
+
+    const keys = Object.keys(map);
+    for (let key of keys) {
+        bucket[map[parseInt(key)]].push(parseInt(key));
     }
 
-    nums.forEach((ele) => {
+    for (let count = nums.length; count >= 0 && k > 0; k--) {
+        while (bucket[count].length === 0) count--;
+        result.push(bucket[count].shift());
+    }
 
-        const val = map.has(ele)? map.get(ele) + 1 : 1;
-        map.put(ele, val); 
-
-        if (val > min) fillRes(ele, val);
-    });
-
-    return res;
+    return result;
 };
