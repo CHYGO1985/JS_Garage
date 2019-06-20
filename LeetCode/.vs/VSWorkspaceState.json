@@ -4,12 +4,13 @@
     "\\Array",
     "\\BackTracking",
     "\\Design",
+    "\\Hash",
     "\\Math",
     "\\Sort",
     "\\Stack",
     "\\String",
     "\\Tree"
   ],
-  "SelectedNode": "\\BackTracking\\GenerateParentheses.js",
+  "SelectedNode": "\\Hash\\TopKFrequentElements.js",
   "PreviewInSolutionExplorer": false
 }
