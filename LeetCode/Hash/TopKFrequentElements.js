@@ -6,6 +6,8 @@
  * @jingjiejiang Jun 18, 2019
  * 
  * https://leetcode.com/problems/top-k-frequent-elements/discuss/149978/JavaScript-Clean-Bucket-Sort-Solution
+ * https://leetcode.com/problems/minimum-area-rectangle/discuss/198983/JavaScript-Solution
+ *
  */
 var topKFrequent = function(nums, k) {
     
