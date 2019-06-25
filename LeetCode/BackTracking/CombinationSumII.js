@@ -8,27 +8,27 @@
 var combinationSum2 = function (candidates, target) {
 
     let res = [];
-    let tmpRes = [];
-    candidates.sort((a, b) => a - b);
+    let curComb = [];
 
-    const getCombination = (candidates, target, start) => {
+    const getComb = (digitsIdx, charArrIdx) => {
 
-        if (target < 0) return;
-        if (target === 0) {
-            res.push(tmpRes.slice());
+        if (curComb.length === digits.length) {
+            res.push(curComb.slice().join(""));
             return;
         }
 
-        for (let idx = start; idx < candidates.length; idx++) {
-            if (target < 0) break;
-            if (idx > start && candidates[idx] == candidates[idx - 1]) continue;
-            tmpRes.push(candidates[idx]);
-            getCombination(candidates, target - candidates[idx], idx + 1);
-            tmpRes.pop();
+        for (let idx = digitsIdx; idx < digits.length; idx++) {
+            let charArr = numCharMap[digits.charAt(idx) - '0'];
+            console.log(charArr);
+            for (; charArrIdx < charArr.length; charArrIdx++) {
+                curComb.push(charArr.charAt(charArrIdx));
+                getComb(idx + 1, charArrIdx);
+                curComb.pop();
+            }
         }
-    };
+    }
 
-    getCombination(candidates, target, 0);
+    getComb(0, 0);
 
     return res;
 };
