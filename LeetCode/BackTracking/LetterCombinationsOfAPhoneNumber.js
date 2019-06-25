@@ -19,6 +19,8 @@ var letterCombinations = function (digits) {
 
     let res = [];
     let curComb = [];
+    
+    if (digits === undefined || digits.length === 0) return res;
      
     const getComb = (digitsIdx, charArrIdx) => {
 
@@ -28,10 +30,10 @@ var letterCombinations = function (digits) {
         }
 
         for (; digitsIdx < digits.length; digitsIdx++) {
-            let charArr = numCharMap[digits.charCodeAt(digitsIdx)];
+            let charArr = numCharMap[digits.charAt(digitsIdx) - '0'];
             for (; charArrIdx < charArr.length; charArrIdx++) {
-                curComb.push(charArr.charAt(digitsIdx));
-                getComb(digitsIdx, charArrIdx + 1);
+                curComb.push(charArr.charAt(charArrIdx));
+                getComb(digitsIdx + 1, 0);
                 curComb.pop();
             }
         }
