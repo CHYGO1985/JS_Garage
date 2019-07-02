@@ -5,12 +5,12 @@
     "\\BackTracking",
     "\\Design",
     "\\Hash",
+    "\\LinkedList",
     "\\Math",
     "\\Sort",
     "\\Stack",
-    "\\String",
-    "\\Tree"
+    "\\String"
   ],
-  "SelectedNode": "\\Hash\\MinimumAreaRectangle.js",
+  "SelectedNode": "\\LinkedList\\OddEvenLinkedList.js",
   "PreviewInSolutionExplorer": false
 }
