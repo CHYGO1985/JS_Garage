@@ -1,16 +1,15 @@
-/**
- * Definition for a binary tree node.
- * function TreeNode(val) {
- *     this.val = val;
- *     this.left = this.right = null;
- * }
- */
+//Definition for a binary tree node.
+function TreeNode(val) {
+    this.val = val;
+    this.left = this.right = null;
+}
+
 /**
  * @param {TreeNode} root
  * @param {number} k
  * @return {number}
  * 
- * @jingjiejiang Jun 20, 0219
+ * @jingjiejiang Jun 20, 2019
  */
 var kthSmallest = function (root, k) {
 
