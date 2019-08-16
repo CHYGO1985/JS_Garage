@@ -10,24 +10,23 @@
  * @param {number[]} inorder
  * @return {TreeNode}
  * 
- * @jingjiejiang Aug 15, 2019
+ * @jingjiejiang Aug 16, 2019
+ * ref: https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/discuss/34553/Simple-JavaScript-solution
  */
 var buildTree = function(preorder, inorder) {
-    
-  let rootIdx = 0, startIdx = 0, root = null;
   
-  const builder = (root, rootIdx, startIdx) => {
-    if (!preorder) return root;
+  const builder = (preStart, preLen, inStart, inLen) => {
+    if (preStart > preLen || inStart > inLen) return null;
 
-    root = new TreeNode(preorder[rootIdx]);
-    
-    let shift = inorder.indexOf(preorder[rootIdx]);
-    let delimiter = startIdx + shift + 1;
-    builder(root.left, rootIdx + 1, startIdx);
-    builder(root.right, delimiter, startIdx);
+    let rootPosInorder = inorder.indexOf(preorder[preStart]);
+    let leftNodesCnt = rootPosInorder - inStart;
+    let root = new TreeNode(preorder[preStart]);
+
+    root.left = builder(preStart + 1, preStart + leftNodesCnt, inStart, rootPosInorder - 1);
+    root.right = builder(preStart + leftNodesCnt + 1, preLen, rootPosInorder + 1, inLen);
+
+    return root;
   }
 
-  builder(root, rootIdx, startIdx);
-  
-  return root;
+  return builder(0, preorder.length - 1, 0, inorder.length - 1);  
 };
