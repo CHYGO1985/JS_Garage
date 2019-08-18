@@ -16,15 +16,16 @@ var buildTree = function(preorder, inorder) {
     
   let rootIdx = 0, startIdx = 0, root = null;
   
-  const builder = (root, rootIdx, startIdx) => {
+  const builder = (rootIdx, startIdx, len) => {
     if (!preorder) return root;
+    if (rootIdx >= preorder.length) return ;
 
     root = new TreeNode(preorder[rootIdx]);
     
     let shift = inorder.indexOf(preorder[rootIdx]);
-    let delimiter = startIdx + shift + 1;
-    builder(root.left, rootIdx + 1, startIdx);
-    builder(root.right, delimiter, startIdx);
+    let delimiter = shift - startIdx + 1;
+    builder(rootIdx + 1, startIdx, shift - 1);
+    builder(startIdx + delimiter, shift + 1, len - shift - 1);
   }
 
   builder(root, rootIdx, startIdx);
