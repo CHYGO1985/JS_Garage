@@ -13,62 +13,31 @@
  * @jingjiejiang Aug 18, 2019
  */
 var deleteNode = function(root, key) {
-    
-    const deleter = node => {
-        
-        if (!node.left && !node.right) {
-            node = node.left;
-            return ;
-        } else if (node.right && node.left) {
 
-            let shift = node.right;
+    if (!root) {
+        return null;
+    }
+
+    if (root.val === key) {
+        if (!root.right) return root.left;
+        else if (!root.left) return root.right;
+        else {
+            let shift = root.right;
             while (shift.left) {
                 shift = shift.left;
             }
-            shift.left = node.left;
+            shift.left = root.left;
             
-            node.val = node.right.val;
-            node.left = node.right.left;
-            node.right = node.right.right;
-            
-            return ;
+            root.val = root.right.val;
+            root.left = root.right.left;
+            root.right = root.right.right;
         }
 
-        if (node.left) {
-            node.val = node.left.val;
-            // must put right first, otherwise node.left will become null
-            node.right = node.left.right;
-            node.left = node.left.left;
-        }
-        else {
-            node.val = node.right.val;
-            node.left = node.right.left;
-            node.right = node.right.right;
-        }
-        
-        return ;
-    };
-
-    const traverser = node => {
-
-        if (!node) return ;
-
-        if (node.val === key) {
-            deleter(node);
-            // node = null;
-        }
-
-        if (node.val > key) {
-            traverser(node.left);
-        } else {
-            traverser(node.right);
-        }      
-    };
-
-    if (!root) return root;
-
-    const shift = root;
-    traverser(shift);
+        return root;
+    }
     
+    if (root.val > key) root.left = deleteNode(root.left, key);
+    else root.right = deleteNode(root.right, key);
+
     return root;
 };
