@@ -16,10 +16,9 @@ var deleteNode = function(root, key) {
     
     const deleter = node => {
         
-        if (!node) return null;
-
         if (!node.left && !node.right) {
-            return null;
+            node = node.left;
+            return ;
         } else if (node.right && node.left) {
 
             let shift = node.right;
@@ -27,15 +26,27 @@ var deleteNode = function(root, key) {
                 shift = shift.left;
             }
             shift.left = node.left;
-            node.left = null;
             
-            return node.right;
+            node.val = node.right.val;
+            node.left = node.right.left;
+            node.right = node.right.right;
+            
+            return ;
         }
 
-        if (root.left) 
-            return node.left;
-        else 
-            return node.right;
+        if (node.left) {
+            node.val = node.left.val;
+            // must put right first, otherwise node.left will become null
+            node.right = node.left.right;
+            node.left = node.left.left;
+        }
+        else {
+            node.val = node.right.val;
+            node.left = node.right.left;
+            node.right = node.right.right;
+        }
+        
+        return ;
     };
 
     const traverser = node => {
@@ -43,10 +54,11 @@ var deleteNode = function(root, key) {
         if (!node) return ;
 
         if (node.val === key) {
-            node = deleter(node);
+            deleter(node);
+            // node = null;
         }
 
-        if (node.val < key) {
+        if (node.val > key) {
             traverser(node.left);
         } else {
             traverser(node.right);
@@ -54,7 +66,6 @@ var deleteNode = function(root, key) {
     };
 
     if (!root) return root;
-    if (root.val === key) return deleter(root);
 
     const shift = root;
     traverser(shift);
