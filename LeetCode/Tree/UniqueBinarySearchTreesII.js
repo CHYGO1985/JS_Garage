@@ -12,9 +12,11 @@
  * @jingjiejiang Aug 21, 2019
  */
 // devide and conquer
+// + memorize ==> DP
 var generateTrees = function(n) {
 
     if (n < 1) return [];
+    const mapping = [...Array(n + 1)].map(ele => Array(n + 1));
 
     const buildTree = (low, high) => {
         const res = [];
@@ -22,6 +24,8 @@ var generateTrees = function(n) {
             res.push(null);
             return res;
         }
+
+        if (dp[low][high]) return dp[low][high]
 
         for (let cnt = low; cnt <= high; cnt ++) {
             const leftSubTree = buildTree(low, cnt - 1);
@@ -36,6 +40,8 @@ var generateTrees = function(n) {
                 }
             }
         }
+
+        dp[low][high] = res;
 
         return res;
     }
