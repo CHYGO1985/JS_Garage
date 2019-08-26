@@ -15,18 +15,6 @@
  */
 var buildTree = function(preorder, inorder) {
   
-<<<<<<< HEAD
-  const builder = (rootIdx, startIdx, len) => {
-    if (!preorder) return root;
-    if (rootIdx >= preorder.length) return ;
-
-    root = new TreeNode(preorder[rootIdx]);
-    
-    let shift = inorder.indexOf(preorder[rootIdx]);
-    let delimiter = shift - startIdx + 1;
-    builder(rootIdx + 1, startIdx, shift - 1);
-    builder(startIdx + delimiter, shift + 1, len - shift - 1);
-=======
   const builder = (preStart, preLen, inStart, inLen) => {
     if (preStart > preLen || inStart > inLen) return null;
 
@@ -38,7 +26,6 @@ var buildTree = function(preorder, inorder) {
     root.right = builder(preStart + leftNodesCnt + 1, preLen, rootPosInorder + 1, inLen);
 
     return root;
->>>>>>> 959dac5bd57fa1438c235feabe5c1f339c0b3c56
   }
 
   return builder(0, preorder.length - 1, 0, inorder.length - 1);  

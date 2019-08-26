@@ -23,6 +23,8 @@ var flatten = function(root) {
 
         node.right = prev;
         node.left = null;
-        
+        prev = node;
     };
+
+    flat(root);
 };
