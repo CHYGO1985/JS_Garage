@@ -14,6 +14,8 @@ class Node {
 */
 /**
  * @jingjiejiang Aug 26, 2019
+ * ref: https://www.cnblogs.com/grandyang/p/9945453.html
+ * two methods
  */
 class Codec {
 
