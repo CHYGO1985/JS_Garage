@@ -16,7 +16,9 @@ var generateMatrix = function(n) {
         maxLimit = maxLimit - minLimit;
 
         // for limit = 0, like n = 1
-        if (maxLimit === 0) res[rowIdx][colIdx] = eleNum;
+        if (maxLimit - minLimit === 0) {
+            res[rowIdx][colIdx] = eleNum;
+        }
 
         // Row: from top left to top right
         for (; colIdx < maxLimit; colIdx ++) {
@@ -38,8 +40,8 @@ var generateMatrix = function(n) {
             res[rowIdx][colIdx] = eleNum ++;
         }
 
-        minLimit + 1;
-        maxLimit - 1;
+        minLimit ++;
+        maxLimit --;
         startPnt ++;
     }
 
