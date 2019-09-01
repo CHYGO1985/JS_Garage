@@ -3,8 +3,8 @@
  */
 var RandomizedSet = function() {
     
-    const nums = [];
-    const numLocMap = {};
+    this.nums = [];
+    this.numLocMap = {};
 };
 
 /**
@@ -13,7 +13,8 @@ var RandomizedSet = function() {
  * @return {boolean}
  */
 RandomizedSet.prototype.insert = function(val) {
-    
+    const { nums, numLocMap } = this;  
+
     if (numLocMap[val]) return false;
 
     nums.push(val);
@@ -28,6 +29,8 @@ RandomizedSet.prototype.insert = function(val) {
  * @return {boolean}
  */
 RandomizedSet.prototype.remove = function(val) {
+
+    const { nums, numLocMap } = this;
     
     // if map has val, find it in array, swap it with last num, change last num pos in map
     if (!numLocMap[val]) return false;
@@ -53,6 +56,7 @@ RandomizedSet.prototype.remove = function(val) {
  * @return {number}
  */
 RandomizedSet.prototype.getRandom = function() {
+    const { nums } = this;
     
     return nums[Math.floor(Math.random() * Math.floor(nums.length))];
 };
