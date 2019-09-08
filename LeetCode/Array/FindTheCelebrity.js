@@ -22,5 +22,20 @@ var solution = function(knows) {
    */
   return function(n) {
       
+    let candidate = 0;
+
+    for (let ithPepole = 0; ithPepole < n; ithPepole ++) {
+      if (knows(candidate, ithPepole)) candidate = ithPepole;
+    }
+
+    for (let idx = 0; idx < candidate; idx ++) {
+      if (knows(candidate, idx) || !knows(idx, candidate)) return -1;
+    };
+
+    for (let idx = candidate + 1; idx < n; idx ++) {
+      if (!knows(idx, candidate)) return -1;
+    }
+
+    return candidate;
   };
 };
