@@ -3,13 +3,6 @@
  * @param {number} target
  * @return {boolean}
  * 
-<<<<<<< HEAD
- * @jingjiejiang Sep 9, 2019
- */
-var searchMatrix = function(matrix, target) {
-    
-  
-=======
  * @jingjiejiang Sep 10, 2019
  */
 var searchMatrix = function(matrix, target) {
@@ -40,5 +33,4 @@ var searchMatrix = function(matrix, target) {
     }
     
     return false;
->>>>>>> 81aabba1f09aaa993efd601ace2476ae678a2933
 };
