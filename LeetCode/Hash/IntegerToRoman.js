@@ -9,7 +9,7 @@ const mappings = [
 ];
 
 var intToRoman = function (num) {
-    
+
     let res = [];
 
     mappings.forEach((mapping) => {
