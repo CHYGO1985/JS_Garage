@@ -10,11 +10,17 @@ var groupAnagrams = function(strs) {
 
     for (let str of strs) {
         const strKeyArr = Array(26).fill(0);
-        for (let idx = 0; idx < str.length; idx ++) {
+        // for (let idx = 0; idx < str.length; idx ++) {
+        //     let strKeyArrIdx = str.charCodeAt(idx) - 'a'.charCodeAt(0);
+        //     if (strKeyArr[strKeyArrIdx] == null) strKeyArr[strKeyArrIdx] = 0;
+        //     strKeyArr[strKeyArrIdx] += 1;
+        // }
+
+        [...str].forEach(chr => {
             let strKeyArrIdx = str.charCodeAt(idx) - 'a'.charCodeAt(0);
             if (strKeyArr[strKeyArrIdx] == null) strKeyArr[strKeyArrIdx] = 0;
             strKeyArr[strKeyArrIdx] += 1;
-        }
+        })
         
         const key = strKeyArr.join("");
         if (strWordMap[key] == null) strWordMap[key] = [];
