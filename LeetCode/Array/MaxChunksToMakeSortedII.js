@@ -4,25 +4,35 @@
  * 
  * @jingjiejiang Sep 17, 2019
  */
-var maxChunksToSorted = function(arr) {
-    
-    if (arr == null || arr.length === 0) return 1;
+var decodeString = function(s) {
+  if (s == null || s.length === 0) return s;
 
-    const numStack = [];
-    
-    for (let idx = 0; idx < arr.length; idx ++) {
-        if (idx === 0 || arr[idx] >= numStack[numStack.length - 1]) {
-            numStack.push(arr[idx]);
-            continue;
-        }
+  let num = 0, numStack = [], strStack = [], tmpStr = '';
+
+  for (let idx = 0; idx < s.length; idx ++) {
+
+    let curChr = s.charAt(idx);
+    if (curChr >= '0' && curChr <= '9') {
+      num = num * 10 + (s.charCodeAt(idx) - 48);
+    } else if (curChr === '[') {
+      numStack.push(num);
+      num = 0;
+      strStack.push(tmpStr);
+        console.log(strStack)
+      tmpStr = '';
+    } else if (curChr === ']') {
+      // the first round data still in tmpStr, so start from 1
+      let times = numStack.pop();
+      let repeat = tmpStr;
+      for (let cnt = 1; cnt < times; cnt ++) {
+        tmpStr += repeat;
+      }
         
-        let curMax = numStack[numStack.length - 1];
-        numStack.pop(curMax);
-        while (numStack.length >= 0 && arr[idx] < numStack[numStack.length - 1]) {
-            numStack.pop();
-        }
-        numStack.push(curMax);
+      tmpStr = (strStack.length > 0? strStack.pop() : '') + tmpStr;
+    } else { // [a-z]
+      tmpStr += curChr;
     }
+  }
 
-    return numStack.length;
+  return strStack.length > 0? strStack.pop() : tmpStr;
 };
