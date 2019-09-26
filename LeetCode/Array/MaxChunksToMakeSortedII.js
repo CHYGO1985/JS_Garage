@@ -17,8 +17,8 @@ var decodeString = function(s) {
     } else if (curChr === '[') {
       numStack.push(num);
       num = 0;
+      // do not use if (strStack.length > 0) strStack.push(tmpStr), it will mess up the order of chars and [] pairs
       strStack.push(tmpStr);
-        console.log(strStack)
       tmpStr = '';
     } else if (curChr === ']') {
       // the first round data still in tmpStr, so start from 1
