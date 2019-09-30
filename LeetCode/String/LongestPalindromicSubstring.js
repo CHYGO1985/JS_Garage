@@ -63,18 +63,20 @@ var longestPalindrome = function(s) {
   if (s == null || s.length === 0) return "";
 
   const matcher = [...Array(s.length)].fill(0).map(_ => new Array(s.length).fill(0));
-  let left = 0, maxLen = 0;
+  let left = 0, maxLen = 1;
 
   for (let rightIdx = 0; rightIdx < s.length; rightIdx ++) {
     matcher[rightIdx][rightIdx] = 1;
-    for (let leftIdx = 0; leftIdx < rightIdx; leftIdx ++ )
+    for (let leftIdx = 0; leftIdx < rightIdx; leftIdx ++ ) {
      matcher[leftIdx][rightIdx] = (s.charAt(leftIdx) === s.charAt(rightIdx) && 
       (rightIdx - leftIdx < 2 || matcher[leftIdx + 1][rightIdx - 1]));
+        
       if (matcher[leftIdx][rightIdx] && rightIdx - leftIdx + 1 > maxLen) {
         maxLen = rightIdx - leftIdx + 1;
         left = leftIdx;
       }
+    }
   }
   
-  return s.substring(left, maxLen);
+  return s.substring(left, left + maxLen);
 };
