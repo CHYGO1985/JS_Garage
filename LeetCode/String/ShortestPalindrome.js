@@ -7,12 +7,15 @@
 // two pointers
 var shortestPalindrome = function(s) {
     
-    let head = 0, n = s.length();
-    for (let rear = n - 1; rear >= 0; --rear) {
-        if (s.charAt(head) == s.charAt(rear)) ++ head;
+    let head = 0;
+
+    for (let rear = s.length - 1; rear >= 0; rear --) {
+      if (s.charAt(head) === s.charAt(rear)) head ++;
     }
-    if (head === n) return s;
-    let rem = s.substring(head);
-    let rem_rev = new StringBuilder(rem).reverse().toString();
-    return rem_rev + shortestPalindrome(s.substring(0, head)) + rem;
+
+    if (head === s.length) return s;
+
+    let restFromHead = s.substring(head);
+    let rest_rev = restFromHead.split("").reverse().join("");
+    return rest_rev + shortestPalindrome(s.substring(0, head)) + restFromHead; 
 };
