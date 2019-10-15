@@ -22,4 +22,23 @@ var canPartitionKSubsets = function(nums, k) {
     rearIdx --;
     k --;
   }
+
+  const getPartition = (subSets, index, target) => {
+    if (index < 0) return true;
+
+    let selected = nums[index];
+    for (let idx = 0; idx < subSets.length; idx ++) {
+      if (subSets[idx] + selected <= target) {
+        subSets[idx] += selected;
+        if (getPartition(subSets, index - 1, target)) {
+          return true;
+        }
+        subSets[idx] -= selected;
+      }
+    }
+
+    return false;
+  }
+    
+  return getPartition([...Array(k).fill(0)], rearIdx, subSum);
 };
