@@ -7,7 +7,7 @@
 // two pointers
 var shortestPalindrome = function(s) {
     
-    let head = 0, n = s.length();
+    let head = 0, n = s.length;
     for (let rear = n - 1; rear >= 0; --rear) {
         if (s.charAt(head) == s.charAt(rear)) ++ head;
     }

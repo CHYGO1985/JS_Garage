@@ -8,7 +8,7 @@ var reverseWords = function(s) {
     
     if (s == null || s.length === 0) return s;
 
-    let words = s.split(" ");
+    let words = s.trim().split(" ");
     let head = 0, rear = words.length - 1;
     
     const swap = (leftIdx, rightIdx) => {
@@ -24,5 +24,5 @@ var reverseWords = function(s) {
         swap(head ++, rear --);
     }
 
-    return 
+    return words.join(" ").replace(/\s\s+/g, " ");
 };
