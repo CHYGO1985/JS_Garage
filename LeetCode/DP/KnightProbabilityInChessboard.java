@@ -1,10 +1,9 @@
 import java.util.Arrays;
-import java.util.Map;
 
 /**
  * @jingjiejiang Oct 22, 2019
  */
-class Solution {
+class KnightProbabilityInChessboard {
     public double knightProbability(int N, int K, int r, int c) {
 
         int[][] dirs = {{1, 2}, {1, -2}, {2, 1}, {2, -1}, {-1, 2}, {-1, -2}, {-2, 1}, {-2, -1}};
