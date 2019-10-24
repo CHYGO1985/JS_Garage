@@ -26,6 +26,8 @@ class Solution {
         List<TreeNode> list = new LinkedList<>();
         if (n == 0) return list;
 
+        // use a hashmap : "low#high" -- List<TreeNode> for record previous status
+
         return genTreesHelper(1, n);
     }
 
