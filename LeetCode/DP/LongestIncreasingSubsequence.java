@@ -3,7 +3,7 @@ import java.util.Arrays;
 /**
  * @jingjiejiang Oct 23, 2019
  */
-class Solution {
+class WordBreak {
     public int lengthOfLIS(int[] nums) {
         
         if (nums == null || nums.length == 0) return 0;
