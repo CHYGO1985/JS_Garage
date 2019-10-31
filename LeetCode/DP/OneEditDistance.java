@@ -10,9 +10,7 @@ class OneEditDistance {
         
         for (int row = 0; row < rowLen; row ++) dists[row][0] = row;
         for (int col = 0; col < colLen; col ++) dists[0][col] = col;
-        
-        int res = 0;
-        
+                
         for (int row = 1; row < rowLen; row ++) {
             for (int col = 1; col < colLen; col ++) {
                 if (s.charAt(row - 1) == t.charAt(col - 1)) {
