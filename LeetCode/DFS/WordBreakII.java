@@ -19,13 +19,18 @@ class Solution {
   };
 
   private List<String> getWordBreak(String s, Set<String> wordSet) {
+    // if the memo has a record, return it
     if (wordBreakCache.contains(s)) return wordBreakCache.get(s);
     List<String> res = new LinkedList<>();
+    // if set has s, then add it to res
     if (wordSet.contains(s)) res.add(s);
 
     for (int idx = 0; idx < s.length(); idx ++) {
       String left = s.substring(0, idx), right = s.substring(idx);
       if (wordSet.contains(left) && containSuffix(right, wordSet)) {
+        // if the the right cannot be splitted, then it will return null
+        // as the res.add will not be executed
+        // so the res for the parent loop will be none
         for (String word : getWordBreak(right, wordSet))
           res.add(left + " " + right);
       }
