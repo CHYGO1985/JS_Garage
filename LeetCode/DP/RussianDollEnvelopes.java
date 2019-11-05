@@ -36,19 +36,21 @@ class RussianDollEnvelopes {
       
     if (envelopes == null || envelopes.length == 0 || envelopes[0].length == 0) return 0;
 
-    int[] cnts = new int[envelopes.length];
-    cnts[0] = envelopes[0][1];
-    int cntsIdx = 1;
     Arrays.sort(envelopes, (int[] a, int[] b) -> 
       a[0] == b[0] ? b[1] - a[1] : a[0] - b[0]
     );
+    
+    int[] cnts = new int[envelopes.length];
+    cnts[0] = envelopes[0][1];
+    int cntsIdx = 1;
 
     for (int idx = 1; idx < envelopes.length; idx ++) {
-      int left = 0, right = cntsIdx - 1, compareNum = envelopes[idx][1];
+      int left = 0, right = cntsIdx, compareNum = envelopes[idx][1];
 
       while (left < right) {
         int mid = left + (right - left) / 2;
-        if (left < cnts[mid]) left = mid + 1;
+        // always compare with mid value
+        if (cnts[mid] < compareNum) left = mid + 1;
         else right = mid;
       }
 
@@ -59,6 +61,6 @@ class RussianDollEnvelopes {
       }
     }
 
-    return cntsIdx + 1;
+    return cntsIdx;
   } 
 }
