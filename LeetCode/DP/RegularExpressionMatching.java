@@ -9,32 +9,32 @@ class RegularExpressionMatching {
     boolean[][] matches = new boolean[s.length() + 1][p.length() + 1];
     matches[0][0] = true;
 
-    // assume there will not be exceptions like * for p string 
-    for (int col = 0; col < p.length(); col++) {
-      if (p.charAt(col) == '*' && matches[0][col - 1]) {
-        matches[0][col + 1] = true;
+    // assume there will not be exceptions like only one char “*” for p string 
+    for (int col = 1; col < matches[0].length; col++) {
+      // this is for checking "c*" can be seem as empty, so compare with col - 2
+      // there is no need to comapre single char for "c*", as they are comparing with empty char 
+      if (p.charAt(col - 1) == '*' && matches[0][col - 2]) {
+        matches[0][col] = true;
       }
     }
 
-    for (int row = 0; row < matches.length - 1; row ++) {
-      for (int col = 0; col < matches[0].length - 1; col ++) {
-        if (s.charAt(row) == p.charAt(col) || p.charAt(col) == '.') {
-          matches[row + 1][col + 1] = matches[row][col];
+    for (int row = 1; row < matches.length; row ++) {
+      for (int col = 1; col < matches[0].length; col ++) {
+        if (s.charAt(row - 1) == p.charAt(col - 1) || p.charAt(col - 1) == '.') {
+          matches[row][col] = matches[row - 1][col - 1];
         }
 
-        if (p.charAt(col) == '*') {
-          if (p.charAt(col - 1) != s.charAt(row) && p.charAt(col - 1) != '.') {
-            matches[row + 1][col + 1] = matches[row + 1][col - 1]; // empty
+        if (p.charAt(col - 1) == '*') {
+          if (p.charAt(col - 2) != s.charAt(row - 1) && p.charAt(col - 2) != '.') {
+            matches[row][col] = matches[row][col - 2]; // empty
           } else {
-            matches[row + 1][col + 1] = matches[row][col + 1] // multi same chars
-              || matches[row + 1][col] // single char
-              || matches[row + 1][col - 1]; // empty
+            matches[row][col] = matches[row - 1][col] // multi same chars
+              || matches[row][col - 1] // single char
+              || matches[row][col - 2]; // empty
           }
         }
       }
     }
-
-    return matches[s.length()][p.length()];
 
     return matches[s.length()][p.length()];
   }
