@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * @jingjiejiang Oct 27, 2019
  */
-class Solution {
+class WordBreakII {
 
   private final Map<String, List<String>> wordBreakCache = new HashMap<>();
 
