@@ -6,6 +6,63 @@ import java.util.List;
  * @jingjiejiang Nov 9, 2019
  */
 class CriticalConnectionsInANetwork {
+
+  public List<List<Integer>> criticalConnections(int n, List<List<Integer>> connections) {
+      
+    int nodeId = 0;
+    int[] visited = new int[n], low = new int[n];
+    List<Integer>[] graphMatrix = new ArrayList[n];
+    List<List<Integer>> res = new ArrayList<>();
+
+    // build adjacent list
+    for (int idx = 0; idx < n; idx ++) {
+      graphMatrix[idx] = new ArrayList<>();
+    }
+
+    for (List<Integer> connection : connections) {
+      int from = connection.get(0), to = connection.get(1);
+      graphMatrix[from].add(to);
+      graphMatrix[to].add(from);
+    }
+
+    // init visited array
+    Arrays.fill(visited, -1);
+
+    // DFS
+    for (int idx = 0; idx < n; idx ++) {
+      if (visited[idx] == -1) {
+        dfs(0, 0, 0, visited, low, graphMatrix, res);
+      }
+    }
+
+    return res;
+  }
+
+  private void dfs(int curNode, int preNode, int nodeId, int[] visited, int[] low,
+    List<Integer>[] graphMatrix, List<List<Integer>> res) {
+
+      visited[curNode] = low[curNode] = ++ nodeId;
+
+      for (int idx = 0; idx < graphMatrix[curNode].size(); idx ++) {
+        int nextNode = graphMatrix[curNode].get(idx);
+
+        if (nextNode == preNode) continue;
+
+        if (visited[nextNode] == -1) {
+          dfs(nextNode, curNode, nodeId, visited, low, graphMatrix, res);
+          low[curNode] = Math.min(low[curNode], low[nextNode]);
+            
+          if (low[nextNode] > visited[curNode]) {
+            res.add(Arrays.asList(curNode, nextNode));
+          }
+        } else {
+          low[curNode] = Math.min(low[curNode], visited[nextNode]);
+        }
+      }
+  }
+}
+
+  /* reference */ 
   // public static List<List<Integer>> criticalConnections(int n, List<List<Integer>> connections) {
   //   int[] disc = new int[n], low = new int[n];
   //   // use adjacency list instead of matrix will save some memory, adjmatrix will
