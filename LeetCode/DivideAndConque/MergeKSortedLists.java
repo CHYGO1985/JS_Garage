@@ -27,35 +27,49 @@ class MergeKSortedLists {
     return merge(leftPart, rightPart);
   }
 
+  // private ListNode merge(ListNode left, ListNode right) {
+
+  //   ListNode shift = new ListNode(0);
+  //   ListNode dummyHead = shift;
+
+  //   while (left != null && right != null) {
+  //     if (left.val <= right.val) {
+  //       shift.next = left;
+  //       left = left.next;
+  //     } else {
+  //       shift.next = right;
+  //       right = right.next;
+  //     }
+
+  //     shift = shift.next;
+  //   }
+
+  //   while (left != null) {
+  //     shift.next = left;
+  //     left = left.next;
+  //     shift = shift.next;
+  //   }
+
+  //   while (right != null) {
+  //     shift.next = right;
+  //     right = right.next;
+  //     shift = shift.next;
+  //   }
+
+  //   return dummyHead.next;
+  // }
+
+  // recursive
   private ListNode merge(ListNode left, ListNode right) {
+    if (left == null) return right;
+    if (right == null) return left;
 
-    ListNode shift = new ListNode(0);
-    ListNode dummyHead = shift;
-
-    while (left != null && right != null) {
-      if (left.val <= right.val) {
-        shift.next = left;
-        left = left.next;
-      } else {
-        shift.next = right;
-        right = right.next;
-      }
-
-      shift = shift.next;
+    if (left.val <= right.val) {
+      left.next = merge(left.next, right);
+      return left;
+    } else {
+      right.next = merge(left, right.next);
+      return right
     }
-
-    while (left != null) {
-      shift.next = left;
-      left = left.next;
-      shift = shift.next;
-    }
-
-    while (right != null) {
-      shift.next = right;
-      right = right.next;
-      shift = shift.next;
-    }
-
-    return dummyHead.next;
   }
 }
