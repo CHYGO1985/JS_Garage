@@ -69,7 +69,7 @@ class MergeKSortedLists {
       return left;
     } else {
       right.next = merge(left, right.next);
-      return right
+      return right;
     }
   }
 }
