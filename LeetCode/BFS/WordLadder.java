@@ -16,7 +16,7 @@ class WordLadder {
 
     while (queue.isEmpty() == false) {
         
-        int size = queue.size();
+      int size = queue.size();
       for (int cnt = 0; cnt < size; cnt ++) {
         String curWord = queue.poll();
 
