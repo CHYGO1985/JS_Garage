@@ -2,20 +2,22 @@
  * @jingjiejiang Nov 14, 2019
  */
 public class WordLadderII {
-    Map<String, List> map;
-    List<List> results;
+    Map<String, List<String>> parentsMap;
+    List<List<String>> results;
 
-    public List<List> findLadders(String start, String end, Set dict) {
-        results = new ArrayList<List>();
-        if (dict.size() == 0)
+    public List<List<String>> findLadders(String start, String end, List<String> wordList) {
+        results = new ArrayList<>();
+        if (wordList.size() == 0)
             return results;
 
         int min = Integer.MAX_VALUE;
+        
+        Set<String> dict = new HashSet<>(wordList);
 
         Queue<String> queue = new ArrayDeque<String>();
         queue.add(start);
 
-        map = new HashMap<String, List<String>>();
+        parentsMap = new HashMap<>();
 
         Map<String, Integer> steps = new HashMap<String, Integer>();
         for (String word : dict)
@@ -46,15 +48,17 @@ public class WordLadderII {
                             queue.add(new_word);
                             steps.put(new_word, step);
                         } else
-                            ;// It is a KEY line. If one word already appeared in one ladder,
-                             // Do not insert the same word inside the queue twice. Otherwise it gets TLE.
+                            ;
+                        // It is a KEY line. If one word already appeared in one ladder,
+                        // Do not insert the same word inside the queue twice. Otherwise it gets TLE.
 
-                        if (map.containsKey(new_word)) // Build adjacent Graph
-                            map.get(new_word).add(word);
+                        // Build adjacent Graph
+                        if (parentsMap.containsKey(new_word)) 
+                        parentsMap.get(new_word).add(word);
                         else {
                             List<String> list = new LinkedList<String>();
                             list.add(word);
-                            map.put(new_word, list);
+                            parentsMap.put(new_word, list);
                             // It is possible to write three lines in one:
                             // map.put(new_word,new LinkedList<String>(Arrays.asList(new String[]{word})));
                             // Which one is better?
@@ -83,8 +87,8 @@ public class WordLadderII {
             return;
         }
         list.add(0, word);
-        if (map.get(word) != null)
-            for (String s : map.get(word))
+        if (parentsMap.get(word) != null)
+            for (String s : parentsMap.get(word))
                 backTrace(s, start, list);
         list.remove(0);
     }
