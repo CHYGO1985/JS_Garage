@@ -2,29 +2,30 @@
  * @jingjiejiang Nov 14, 2019
  */
 public class WordLadderII {
-    Map<String, List<String>> parentsMap;
-    List<List<String>> results;
-
-    public List<List<String>> findLadders(String start, String end, List<String> wordList) {
-        results = new ArrayList<>();
+    public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
+        
+        List<List<String>> resList = new ArrayList<>();
         if (wordList.size() == 0)
-            return results;
+            return resList;
 
         int min = Integer.MAX_VALUE;
         
+        // words dict
         Set<String> dict = new HashSet<>(wordList);
 
+        // searching queue
         Queue<String> queue = new ArrayDeque<String>();
-        queue.add(start);
+        queue.add(beginWord);
 
-        parentsMap = new HashMap<>();
+        // parent map
+        Map<String, List<String>> parentsMap = new HashMap<>();
 
         Map<String, Integer> steps = new HashMap<String, Integer>();
         for (String word : dict)
             steps.put(word, Integer.MAX_VALUE);
-        steps.put(start, 0);
+        steps.put(beginWord, 0);
 
-        dict.add(end);
+        dict.add(endWord);
         // BFS: Dijisktra search
         while (!queue.isEmpty()) {
 
@@ -44,11 +45,11 @@ public class WordLadderII {
 
                         if (step > steps.get(new_word))// Check if it is the shortest path to one word.
                             continue;
-                        else if (step < steps.get(new_word)) {
+                        
+                        if (step < steps.get(new_word)) {
                             queue.add(new_word);
                             steps.put(new_word, step);
-                        } else
-                            ;
+                        }
                         // It is a KEY line. If one word already appeared in one ladder,
                         // Do not insert the same word inside the queue twice. Otherwise it gets TLE.
 
@@ -64,7 +65,7 @@ public class WordLadderII {
                             // Which one is better?
                         }
 
-                        if (new_word.equals(end))
+                        if (new_word.equals(endWord))
                             min = step;
 
                     } // End if dict contains new_word
@@ -73,23 +74,25 @@ public class WordLadderII {
         } // End While
 
         // BackTracking
-        LinkedList<String> result = new LinkedList<String>();
-        backTrace(end, start, result);
+        List<String> tmpList = new LinkedList<String>();
+        backTrace(endWord, beginWord, tmpList, resList, parentsMap);
 
-        return results;
+        return resList;
     }
 
-    private void backTrace(String word, String start, List<String> list) {
+    private void backTrace(String word, String start, List<String> tmplist, 
+                           List<List<String>> resList, Map<String, List<String>> parentsMap) {
         if (word.equals(start)) {
-            list.add(0, start);
-            results.add(new ArrayList<String>(list));
-            list.remove(0);
+            List<String> addList = new ArrayList<>(tmplist);
+            addList.add(0, start);
+            resList.add(addList);
             return;
         }
-        list.add(0, word);
+        
+        tmplist.add(0, word);
         if (parentsMap.get(word) != null)
             for (String s : parentsMap.get(word))
-                backTrace(s, start, list);
-        list.remove(0);
+                backTrace(s, start, tmplist, resList, parentsMap);
+        tmplist.remove(0);
     }
 }
