@@ -15,8 +15,8 @@ class WordLadder {
     int step = 1;
 
     while (queue.isEmpty() == false) {
-      
-      // ** must use a var to store size here, it will be changed during for loop if use queue.size()
+        
+      // ** must save the size of current queue, otherwise it will keep changing
       int size = queue.size();
       for (int cnt = 0; cnt < size; cnt ++) {
         String curWord = queue.poll();
