@@ -15,8 +15,9 @@ class WordLadder {
     int step = 1;
 
     while (queue.isEmpty() == false) {
-        
-        int size = queue.size();
+      
+      // ** must use a var to store size here, it will be changed during for loop if use queue.size()
+      int size = queue.size();
       for (int cnt = 0; cnt < size; cnt ++) {
         String curWord = queue.poll();
 
@@ -25,6 +26,7 @@ class WordLadder {
             StringBuilder wordBuilder = new StringBuilder(curWord);
             wordBuilder.setCharAt(idx, letter);
             String newWord = wordBuilder.toString();
+            // ** must check if it exists in the set
             if (words.contains(newWord)) {
               if (newWord.equals(endWord)) {
                 return step + 1;
