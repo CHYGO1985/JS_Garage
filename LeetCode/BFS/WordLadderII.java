@@ -146,7 +146,7 @@ public class WordLadderII {
                         if (depth > wordDepthMap.get(newWord)) continue;
 
                         // if current depth < newWord old depth, update it
-                        if (depth < wordDepthMap.get(newWord)) {
+                        if (depth < word+DepthMap.get(newWord)) {
                             queue.add(newWord);
                             wordDepthMap.put(newWord, depth);
                         }
