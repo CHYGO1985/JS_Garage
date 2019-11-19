@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 /**
  * @jingjiejiang Nov 18, 2019
  */
@@ -59,6 +61,13 @@ class FindServer {
       {0,0,0,0,1}
     };
 
-    System.out.println(getServer(5, 5, grids));
+    // System.out.println(getServer(5, 5, grids));
+
+    // test array copy
+    int[] arr = {0, 1};
+    int[] arr1 = Arrays.copyOf(arr, arr.length);
+    arr1[1] = 2;
+
+    System.out.println(arr[1]);
   }
 }
