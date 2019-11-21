@@ -33,10 +33,13 @@ class LFUCache {
       return 0;
     }
 
+    // update key: counts map
     int count = timesMap.getOrDefault(key, 0);
     timesMap.put(key, count + 1);
+    // update key: counts list, remove key
     timesKeyMap.get(count).remove(key);
 
+    // update min
     if (count == min && timesKeyMap.get(count).size() == 0) {
       min++;
     }
