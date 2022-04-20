@@ -132,3 +132,4 @@ dist
 # customize
 ./node_modules
 ./hello_express/node_modules
+./my_module/node_modules
