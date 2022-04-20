@@ -1,0 +1,32 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "CodeLens (Launch) - LongestPalindrome",
+      "request": "launch",
+      "mainClass": "LongestPalindrome",
+      "projectName": "LeetCode_dd41a62d"
+    },
+    {
+      "type": "java",
+      "name": "CodeLens (Launch) - Solution",
+      "request": "launch",
+      "mainClass": "Solution",
+      "projectName": "LeetCode_dd41a62d"
+    },
+    {
+      "type": "java",
+      "name": "CodeLens (Launch) - FindServer",
+      "request": "launch",
+      "mainClass": "FindServer",
+      "projectName": "LeetCode_dd41a62d"
+    },
+    {
+      "type": "java",
+      "name": "CodeLens (Launch) - CriticalConnectionsInANetwork",
+      "request": "launch",
+      "mainClass": "CriticalConnectionsInANetwork",
+      "projectName": "LeetCode_dd41a62d"
+    }
+  ]
+}

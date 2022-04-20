@@ -24,7 +24,7 @@ class Solution {
       builder.append(num);
     }
 
-    return builder.toString();
+    return builder.toString(); 
   }
 }
 
