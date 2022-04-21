@@ -23,8 +23,6 @@ channel.on('join', (id, client) => {
   channel.clients[id] = client;
   channel.subscriptions[id] = (senderId, message) => {
 
-    // console.log(`id ${id}`);
-    // console.log(`senderId ${senderId}`);
     if (id != senderId) {
       channel.clients[id].write(message);
     }
@@ -34,7 +32,6 @@ channel.on('join', (id, client) => {
 
 channel.on('leave', (id) => {
 
-  // console.log(`********${id}`);
   channel.removeListener('broadcast', channel.subscriptions[id]);
   channel.emit('broadcast', id, `${id} has left the chatroom. \n`);
 });
