@@ -133,3 +133,7 @@ dist
 ./node_modules
 ./hello_express/node_modules
 ./my_module/node_modules
+
+# DS_Store
+.DS_Store
+./hello_express/.DS_Store
