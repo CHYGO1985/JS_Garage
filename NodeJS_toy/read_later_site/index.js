@@ -10,6 +10,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const Article = require('./db').Article;
 const read = require('node-readability');
+const { traceDeprecation } = require('process');
 // const util = require("util");
 
 const app = express();
@@ -21,6 +22,11 @@ app.use(bodyParser.json());
 // support form-encoded bodies
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(
+  '/css/bootstrap.css',
+  express.static('node_modules/bootstrap/dist/css/bootstrap.css')
+);
+
 /* Front page */
 app.get('/', (req, res) => {
   res.send('Hello World!');
@@ -30,7 +36,15 @@ app.get('/', (req, res) => {
 app.get('/articles', (req, res, next) => {
   Article.all((err, articles) => {
     if (err) return next(err);
-    res.send(articles);
+
+    res.format({
+      html: () => {
+        res.render('articles.ejs', { articles });
+      },
+      json: () => {
+        res.send(articles);
+      }
+    });
   })
 });
 
@@ -59,7 +73,15 @@ app.get("/articles/:id", (req, res, next) => {
   const id = req.params.id;
   Article.find(id, (err, article) => {
     if (err) return next(err);
-    res.send(article);
+
+    res.format({
+      html: () => {
+        res.render('article.ejs', { article });
+      },
+      json: () => {
+        res.send(article);
+      }
+    });
   });
 });
 
