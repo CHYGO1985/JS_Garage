@@ -10,6 +10,7 @@ const gulp = require('gulp');
 const sourcemaps = require('gulp-sourcemaps');
 const babel = require('gulp-babel');
 const concat = require('gulp-concat');
+const watch = require('gulp-watch');
 
 gulp.task('default', () => {
 
@@ -21,4 +22,8 @@ gulp.task('default', () => {
     .pipe(concat('all.js'))         // concats all source files into all.js
     .pipe(sourcemaps.write('.'))    // write src map files seperately
     .pipe(gulp.dest('dist'));       // redirect all files to the dist/ folder
+});
+
+gulp.task('watch', () => {
+  watch('app/**.jsx', () => gulp.start('default'));
 });
