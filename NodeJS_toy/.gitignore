@@ -135,7 +135,7 @@ dist
 ./my_module/node_modules
 gulp-example/package-lock.json
 webpack-example/package-lock.json
-
+shoutbox/package-lock.json
 
 # DS_Store
 .DS_Store
