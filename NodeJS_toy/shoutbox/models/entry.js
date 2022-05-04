@@ -29,25 +29,16 @@ class Entry {
   }
 
   static async getRange(from, to, cb) {
-    const entries = [];
-    console.log("***** get range");
+    let entries = [];
+
     try {
-      const items = await db.lrange('entries', from, to);
-      let entries = [];
+      let items = await db.LRANGE('entries', from, to);
       items.forEach((item) => {
         entries.push(JSON.parse(item));
       });
     } catch (err) {
       cb(err);
     }
-    // db.LRANGE('entries', from, to, (err, items) => {
-    //   if (err) return cb(err);
-    //   console.log(`****${JSON.stringify(items)}`);
-    //   console.log("***** anything happen");
-      
-    //   cb(null, entries);
-    // });
-    console.log(`******${JSON.stringify(items)}`);
     return entries;
   }
 

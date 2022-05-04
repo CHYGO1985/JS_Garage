@@ -36,6 +36,8 @@ exports.form = (req, res) => {
 
 // rendering a list of entries
 exports.list = (req, res, next) => {
+
+  // test data
   // const data = [
   //   {
   //     title: "1",
@@ -48,25 +50,17 @@ exports.list = (req, res, next) => {
   //   title: 'Entries',
   //   entries: data
   // });
-  console.log("**** list route");
-  const entries = [];
-  (async() => {
+  
+  let entries = [];
+  (async () => {
     entries = await Entry.getRange(0, -1, (err) => {
       if (err) return next(err);
-    })
+    });
+  })()
+  .then(() => {
+    res.render('entries', {
+      title: 'Entries',
+      entries: entries
+    });
   });
-
-  console.log(`*****entries: ${JSON.stringify(entries)}`);
-  res.render('entries', {
-    title: 'Entries',
-    entries: entries
-  });
-
-  // Entry.getRange(0, -1, (err, entries) => {
-  //   if (err) return next(err);
-  //   res.render('entries', {
-  //     title: 'Entries',
-  //     entries: entries
-  //   });
-  // });
 };
