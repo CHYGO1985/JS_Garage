@@ -23,6 +23,7 @@ exports.submit = (req, res, next) => {
     title: title,
     body: data.body
   });
+
   entry.save((err) => {
     if (err) return next(err);
     res.redirect('/');
@@ -33,13 +34,29 @@ exports.form = (req, res) => {
   res.render('post', { title: 'post' });
 };
 
+// exports.list = (req, res, next) => {
+//   console.log("**** list route");
+// };
+
 // rendering a list of entries
 exports.list = (req, res, next) => {
-  Entry.getRange(0, -1, (err, entries) => {
-    if (err) return next(err);
-    res.render('entries', {
-      title: 'Entries',
-      entries: entries
-    });
+  const data = [
+    {
+      title: "1",
+      body: "lalala",
+      username: "JJJ"
+    }
+  ];
+  console.log("**** list route");
+  res.render('entries', {
+    title: 'Entries',
+    entries: data
   });
+  // Entry.getRange(0, -1, (err, entries) => {
+  //   if (err) return next(err);
+  //   res.render('entries', {
+  //     title: 'Entries',
+  //     entries: entries
+  //   });
+  // });
 };

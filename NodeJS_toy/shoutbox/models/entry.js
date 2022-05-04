@@ -21,7 +21,6 @@ db.on('error', (err) => console.log('Redis Client Connection Error', err));
 // const db = createClient({
 //   legacyMode: true
 // });
-
 class Entry {
   constructor(obj) {
     for (let key in obj) { // iterate keys in the obj passed
@@ -30,14 +29,18 @@ class Entry {
   }
 
   static getRange(from, to, cb) {
-    db.lRange('entries', from, to, (err, items) => {
+    console.log("***** get range");
+    db.LRANGE('entries', from, to, (err, items) => {
       if (err) return cb(err);
+
+      console.log("***** anything happen");
       let entries = [];
       items.forEach((item) => {
         entries.push(JSON.parse(item));
       });
       cb(null, entries);
     });
+    console.log("***** nothing happen");
   }
 
   save(cb) {
