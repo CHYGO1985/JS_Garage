@@ -20,7 +20,7 @@ exports.submit = (req, res, next) => {
 
   const entry = new Entry({
     username: username,
-    title: title,
+    title: data.title,
     body: data.body
   });
 
@@ -34,24 +34,34 @@ exports.form = (req, res) => {
   res.render('post', { title: 'post' });
 };
 
-// exports.list = (req, res, next) => {
-//   console.log("**** list route");
-// };
-
 // rendering a list of entries
 exports.list = (req, res, next) => {
-  const data = [
-    {
-      title: "1",
-      body: "lalala",
-      username: "JJJ"
-    }
-  ];
+  // const data = [
+  //   {
+  //     title: "1",
+  //     body: "lalala",
+  //     username: "JJJ"
+  //   }
+  // ];
+  // console.log("**** list route");
+  // res.render('entries', {
+  //   title: 'Entries',
+  //   entries: data
+  // });
   console.log("**** list route");
+  const entries = [];
+  (async() => {
+    entries = await Entry.getRange(0, -1, (err) => {
+      if (err) return next(err);
+    })
+  });
+
+  console.log(`*****entries: ${JSON.stringify(entries)}`);
   res.render('entries', {
     title: 'Entries',
-    entries: data
+    entries: entries
   });
+
   // Entry.getRange(0, -1, (err, entries) => {
   //   if (err) return next(err);
   //   res.render('entries', {

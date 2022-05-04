@@ -28,19 +28,27 @@ class Entry {
     }
   }
 
-  static getRange(from, to, cb) {
+  static async getRange(from, to, cb) {
+    const entries = [];
     console.log("***** get range");
-    db.LRANGE('entries', from, to, (err, items) => {
-      if (err) return cb(err);
-
-      console.log("***** anything happen");
+    try {
+      const items = await db.lrange('entries', from, to);
       let entries = [];
       items.forEach((item) => {
         entries.push(JSON.parse(item));
       });
-      cb(null, entries);
-    });
-    console.log("***** nothing happen");
+    } catch (err) {
+      cb(err);
+    }
+    // db.LRANGE('entries', from, to, (err, items) => {
+    //   if (err) return cb(err);
+    //   console.log(`****${JSON.stringify(items)}`);
+    //   console.log("***** anything happen");
+      
+    //   cb(null, entries);
+    // });
+    console.log(`******${JSON.stringify(items)}`);
+    return entries;
   }
 
   save(cb) {
