@@ -24,8 +24,12 @@ exports.submit = (req, res, next) => {
     body: data.body
   });
 
-  entry.save((err) => {
-    if (err) return next(err);
+  (async() => {
+    await entry.save((err) => {
+      if (err) return next(err);
+    });
+  })()
+  .then(() => {
     res.redirect('/');
   });
 };

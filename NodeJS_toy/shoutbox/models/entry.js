@@ -42,16 +42,18 @@ class Entry {
     return entries;
   }
 
-  save(cb) {
+  async save(cb) {
     const entryJSON = JSON.stringify(this); // concert saved entry data to JSON string
-    db.LPUSH (    // save JSON to Redist lsit        
+    
+    try {
+      await db.LPUSH (    // save JSON to Redist lsit        
       'entries',
-      entryJSON,
-      (err) => {
-        if (err) return cb(err);
-        cb();
-      }
-    );
+      entryJSON
+      );
+    }
+    catch (err) {
+      cb(err);
+    };
   }
 }
 
