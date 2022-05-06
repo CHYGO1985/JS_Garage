@@ -68,15 +68,8 @@ class User {
   // assign this.pass a hashed password
   async hashPassword(id, cb) {
 
-    let salt = 10;
-    try {
-      (async () => {
-        salt = await bcrypt.genSalt(12); 
-        this.pass = await bcrypt.hash(this.pass, salt);
-      })();
-    } catch (err) {
-      cb(err);
-    }
+    this.salt = await bcrypt.genSalt(12).catch((err) => cb(err));
+    this.pass = await bcrypt.hash(this.pass, this.salt).catch((err) => cb(err));
   }
 
   static async getByName(name, cb) {
