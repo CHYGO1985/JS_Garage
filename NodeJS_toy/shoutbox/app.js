@@ -4,7 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const session = require('express-session');
-
+const methodOverride = require('method-override');
 // var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
@@ -24,9 +24,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-app.use(express.methodOverride());
-app.use(express.cookieParser());
+app.use(methodOverride());
+app.use(cookieParser());
 // add session
 app.use(session({
   secret: 'secret',
@@ -45,6 +44,7 @@ app.post('/post',
           validate.lengthAbove('entry[title]', 4),
           entries.submit);
 app.get('/register', register.form);
+app.post('/register', register.submit);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

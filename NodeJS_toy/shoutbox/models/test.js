@@ -31,16 +31,16 @@ const user = new User({ name: 'Example', pass: 'test' });
 // getUser();
 
 // test auth user
-function getUser() {
-  let returnedUser = '';
-  (async () => {
-    returnedUser = await User.getByName('Example', (err) => {
-      console.log(err);
-    })
-  })()
-  .then(() => {
-    console.log(`***** returned user: ${JSON.stringify(returnedUser)}`);
-  });
+// function getUser() {
+//   let returnedUser = '';
+//   (async () => {
+//     returnedUser = await User.getByName('Example', (err) => {
+//       console.log(err);
+//     })
+//   })()
+//   .then(() => {
+//     console.log(`***** returned user: ${JSON.stringify(returnedUser)}`);
+//   });
 
   let res = false;
   (async () => {
