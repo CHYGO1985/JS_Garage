@@ -33,6 +33,7 @@ class User {
       const pass = await this.hashPassword(this.id, (err) => {
         alertWindow(`Error thrown: ${err}`);
       });
+
       await this.update(pass, (err) => {
         alertWindow(`Error thrown: ${err}`);
       })
@@ -60,27 +61,56 @@ class User {
 
   // Uses Redis to store the current class’s properties
   async setUser(id, cb) {
-    try {
-      await db.HSET(`user:${id}`, this);
-    } catch (err) {
-      cb(err);
-    }
+    await db.HSET(`user:${id}`, this)
+    .catch((err) => cb(err));
   }
 
   // assign this.pass a hashed password
   async hashPassword(id, cb) {
+
     let salt = 10;
     try {
       (async () => {
         salt = await bcrypt.genSalt(12); 
-      })()
-      .then(async () => {
         this.pass = await bcrypt.hash(this.pass, salt);
-      });
+      })();
     } catch (err) {
       cb(err);
     }
   }
+
+  static async getByName(name, cb) {
+
+    const id = await this.getId(name, cb);
+    const receivedUser = await User.get(id, cb);
+    return receivedUser
+  }
+
+  static async getId(name, cb) {
+    return await db.get(`user:id:${name}`, cb);// Gets ID indexed by name
+  }
+
+  static async get(id, cb) {
+    console.log(`id: ${id}`);
+
+    // return await db.HGETALL(`user:${id}`);
+    // let user = (async () => {
+    //   user = await db.HGETALL(`user:${id}`);
+    // })()
+    // .then(() => {
+    //   return new User(user);
+    // }) 
+    // .catch((err) => cb(err));
+
+    // return user;
+    const user = await db.HGETALL(`user:${id}`)
+      .catch((err) => cb(err));
+    return user;
+  }
 }
 
 module.exports = User; // Exports the User class
+
+
+
+
