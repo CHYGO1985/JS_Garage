@@ -3,12 +3,15 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const session = require('express-session');
 
-var indexRouter = require('./routes/index');
+// var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 const entries = require('./routes/entries');
+const register = require('./routes/register');
 const validate = require('./middleware/validate');
+const message = require('./middleware/messages');
 
 var app = express();
 
@@ -22,6 +25,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(express.methodOverride());
+app.use(express.cookieParser());
+// add session
+app.use(session({
+  secret: 'secret',
+  resave: false, 
+  saveUninitialized: true
+}));
+app.use(message);
+
 // app.use('/', entries.list);
 app.use('/users', usersRouter);
 
@@ -31,7 +44,7 @@ app.post('/post',
           validate.required('entry[title]'),
           validate.lengthAbove('entry[title]', 4),
           entries.submit);
-
+app.get('/register', register.form);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
