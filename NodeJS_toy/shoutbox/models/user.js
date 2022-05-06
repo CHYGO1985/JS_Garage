@@ -3,7 +3,11 @@
  * The user model
  * 
  * @author jingjiejiang
- * @history MAy 5, 2022
+ * @history May 5, 2022
+ * 
+ * May 6, 2022
+ * 1.add auth user method
+ * 2.add get user via name methods
  * 
  */
 const redis = require('redis');
