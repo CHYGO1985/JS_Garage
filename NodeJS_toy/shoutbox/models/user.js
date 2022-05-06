@@ -49,7 +49,7 @@ class User {
     });
   }
 
-  // indexes users by name
+  // indexes users by name  user:id:Example
   async setId(id, cb) {
 
     try {
@@ -86,14 +86,12 @@ class User {
     return receivedUser
   }
 
+  // user:id:Example -> get id
   static async getId(name, cb) {
     return await db.get(`user:id:${name}`, cb);// Gets ID indexed by name
   }
 
   static async get(id, cb) {
-    console.log(`id: ${id}`);
-
-    // return await db.HGETALL(`user:${id}`);
     // let user = (async () => {
     //   user = await db.HGETALL(`user:${id}`);
     // })()
