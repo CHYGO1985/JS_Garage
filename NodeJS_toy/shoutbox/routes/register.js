@@ -34,7 +34,8 @@ async function getUserByName(username) {
 
 async function createOrSaveUser(existUser, userData, res, req) {
   if (existUser.id) {
-    alertWindow('Username already taken');
+    res.error('Username already taken!'); // for req.session.messages
+    // alertWindow('Username already taken');
     res.redirect('back');
   } else {
     existUser = new User({
