@@ -18,7 +18,7 @@ exports.submit = (req, res, next) => {
   const userData = req.body.user;
   (async () => {
     const user = await getUserByName(userData.name);
-    await createOrSaveUser(user, userData, res);
+    await createOrSaveUser(user, userData, res, req);
   })()
   .catch((err) => next(err));
 }
@@ -32,7 +32,7 @@ async function getUserByName(username) {
   return user
 }
 
-async function createOrSaveUser(existUser, userData, res) {
+async function createOrSaveUser(existUser, userData, res, req) {
   if (existUser.id) {
     alertWindow('Username already taken');
     res.redirect('back');
@@ -48,9 +48,6 @@ async function createOrSaveUser(existUser, userData, res) {
     })()
     .then(() => {
       req.session.uid = existUser.id; //store uid for auth
-      console.log(`*** register user id: ${existUser.id}`)
-      console.log(`****** register session.uid ${req.session.uid}`)
-      console.log(`****** register session ${JSON.stringify(req.session)}`)
       res.redirect('/');
     });
   }
