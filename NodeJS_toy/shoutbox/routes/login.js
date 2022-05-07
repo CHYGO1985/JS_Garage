@@ -20,17 +20,16 @@ exports.submit = (req, res, next) => {
     user = await User.authenUser(data.name, data.pass, (err) => alertWindow(`Could not find the user: ${err}`));
   })()
   .then(() => {
-    return user; 
+    if (user) {
+      req.session.uid = user.id;  // save uid for getting user infor
+      console.log(`****** login session.uid ${req.session.uid}`)
+      res.redirect('/');
+    } else {
+      alertWindow('Sorry! invalid credentials. ');
+      res.redirect('back');
+    }
   })
-  .catch((err) => next(err));
-
-  if (user) {
-    req.session.uid = user.id;  // save uid for getting user infor
-    res.redirect('/');
-  } else {
-    alertWindow('Sorry! invalid credentials. ');
-    res.redirect('back');
-  }
+  .catch((err) => next(err));  
 };
 
 exports.logout = (req, res) => {
