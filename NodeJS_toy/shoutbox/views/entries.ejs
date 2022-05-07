@@ -2,7 +2,7 @@
   <html>
     <head>
       <title><%= title %></title>
-      <link rel='stylesheet' href='../public/stylesheets/style.css' />
+      <link rel='stylesheet' href='/stylesheets/style.css' />
     </head>
     <body>
       <%- include ('menu.ejs') %>
@@ -10,7 +10,7 @@
         <h2 style="color: cornflowerblue;">There is no post data yet.</h2>
       <% } %>
       <% entries.forEach((entry) => { %>
-        <div class='entry'>
+        <div class="entry">
           <h3><%= entry.title %></h3>
           <p><%= entry.body %></p>
           <% var username = (entry.username) ? entry.username : 'Anonymous User' %>
