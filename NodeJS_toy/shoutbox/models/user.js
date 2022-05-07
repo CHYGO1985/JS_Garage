@@ -76,12 +76,13 @@ class User {
     this.pass = await bcrypt.hash(this.pass, this.salt).catch((err) => cb(err));
   }
 
+  // authenticate user, if match, then return the user
   static async authenUser(name, pass, cb) {
     const user = await this.getByName(name, pass).catch((err) => cb(err));
     if (!user || !user.id) cb();
     const hash = await bcrypt.hash(pass, user.salt).catch((err) => cb(err));  // hash the given pass
     
-    return hash === user.pass ? true : false;
+    return hash === user.pass ? user : null;
   }
 
   static async getByName(name, cb) {

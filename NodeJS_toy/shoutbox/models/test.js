@@ -49,7 +49,7 @@ function getUser() {
     });
   })()
   .then(() =>{
-    console.log(`Is the username and password match? ${res}`);
+    console.log(`Is the username and password match? ${JSON.stringify(res)}`);
   });
 }
 getUser();
