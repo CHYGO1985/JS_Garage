@@ -48,7 +48,7 @@ function getUser() {
 
   let res = null;
   (async () => {
-    res = await User.authenUser(testUser1.name, testUser1.pass, (err) => {
+    res = await User.authenUser(testUser.name, testUser.pass, (err) => {
       alertWindow(`${err}`);
     });
   })()              

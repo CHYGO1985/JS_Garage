@@ -80,18 +80,15 @@ class User {
   }
 
   // authenticate user, if match, then return the user
-  static async authenUser(name, pass, cb) {
- 
-    let user = null;
-    console.log(`param name: ${name}`)
-    user = await this.getByName(name, cb)
-    // .then(() => {
-    //   console.log(JSON.stringify(user))
-    //   if (!user) throw new Error('username does not exist');
-    // });
-    if (!user) throw new Error('username does not exist');
+  static async authenUser(name, pass, cb) { 
+    const user = await this.getByName(name, cb)
+    if (!user.name) throw new Error('The username does not exist or match. ');
     const hash = await bcrypt.hash(pass, user.salt).catch((err) => cb(err));  // hash the given pass
-    return hash === user.pass ? user : undefined;
+    if (hash !== user.pass) {
+      throw new Error('The password is not correct. ');
+    } else {
+      return user;
+    }
   }
 
   static async getByName(name, cb) {

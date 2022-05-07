@@ -21,10 +21,8 @@ exports.submit = (req, res, next) => {
     user = await User.authenUser(data.name, data.pass, (err) => res.error(`Could not find the user: ${err}`));
     if (user.name) {
       req.session.uid = user.id;  // save uid for getting user infor
-      console.log(`****** login session.uid ${req.session.uid}`)
       res.redirect('/');
     } else {
-      res.error('Sorry! invalid credentials. ');
       res.redirect('back');
     }
   })()
