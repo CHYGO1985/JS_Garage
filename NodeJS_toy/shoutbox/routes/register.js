@@ -16,17 +16,23 @@ exports.form = (req, res) => {
 
 exports.submit = (req, res, next) => {
   const userData = req.body.user;
-
-  let existUser = (async () => {
-    existUser = await User.getByName(userData.name, (err) => {
-      alertWindow(err);
-    });
+  (async () => {
+    const user = await getUserByName(userData.name);
+    await createOrSaveUser(user, userData, res);
   })()
-  .then(() => {
-    return existUser;
-  })
-  .catch((err) => alertWindow(`Error thrown when get user by name: ${err}`));
+  .catch((err) => next(err));
+}
+
+async function getUserByName(username) {
+  const user = await User.getByName(username, (err) => {
+      alertWindow(err);
+    })
+    .catch((err) => alertWindow(`Error thrown when get user by name: ${err}`));
   
+  return user
+}
+
+async function createOrSaveUser(existUser, userData, res) {
   if (existUser.id) {
     alertWindow('Username already taken');
     res.redirect('back');
@@ -42,6 +48,9 @@ exports.submit = (req, res, next) => {
     })()
     .then(() => {
       req.session.uid = existUser.id; //store uid for auth
+      console.log(`*** register user id: ${existUser.id}`)
+      console.log(`****** register session.uid ${req.session.uid}`)
+      console.log(`****** register session ${JSON.stringify(req.session)}`)
       res.redirect('/');
     });
   }
