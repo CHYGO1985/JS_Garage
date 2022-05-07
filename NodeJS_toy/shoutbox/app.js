@@ -6,13 +6,14 @@ var logger = require('morgan');
 const session = require('express-session');
 const methodOverride = require('method-override');
 // var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+// var usersRouter = require('./routes/users');
 
 const entries = require('./routes/entries');
 const register = require('./routes/register');
 const login = require('./routes/login');
 const validate = require('./middleware/validate');
-const message = require('./middleware/messages');
+const messages = require('./middleware/messages');
+const user = require('./middleware/user');
 
 var app = express();
 
@@ -33,10 +34,11 @@ app.use(session({
   resave: false, 
   saveUninitialized: true
 }));
-app.use(message);
+app.use(messages);
+app.use(user);
 
 // app.use('/', entries.list);
-app.use('/users', usersRouter);
+// app.use('/users', usersRouter);
 
 app.get('/', entries.list);
 app.get('/post', entries.form);

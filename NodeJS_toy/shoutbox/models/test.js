@@ -14,7 +14,6 @@ const user = new User({ name: 'Example', pass: 'test' });
 //     console.log(`User profile: ${JSON.stringify(user)}`);
 //   });
 // }
-
 // saveUser();
 
 // function getUser() {
@@ -30,8 +29,13 @@ const user = new User({ name: 'Example', pass: 'test' });
 // }
 // getUser();
 
-// test auth user
+// test auth user with match
 function getUser() {
+  
+  let testUser = new User({ name: 'Example', pass: 'test' }); //match
+  let testUser1 = new User({ name: 'Example11', pass: 'test' }); // name not match
+  let testUser2 = new User({ name: 'Example', pass: 'test11' }); // pass not match
+  
   let returnedUser = '';
   (async () => {
     returnedUser = await User.getByName('Example', (err) => {
@@ -42,14 +46,17 @@ function getUser() {
     console.log(`***** returned user: ${JSON.stringify(returnedUser)}`);
   });
 
-  let res = false;
+  let res = null;
   (async () => {
-    res = await User.authenUser(user.name, user.pass, (err) => {
+    res = await User.authenUser(testUser1.name, testUser1.pass, (err) => {
       alertWindow(`${err}`);
     });
-  })()
-  .then(() =>{
+  })()              
+  .then(() =>{;
     console.log(`Is the username and password match? ${JSON.stringify(res)}`);
+  })
+  .catch((err) => {
+    console.log(`${err}`)
   });
 }
 getUser();

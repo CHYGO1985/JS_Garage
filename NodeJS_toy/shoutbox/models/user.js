@@ -41,6 +41,9 @@ class User {
       await this.update(pass, (err) => {
         alertWindow(`Error thrown: ${err}`);
       })
+      .then(() => {
+        return this.id;
+      });
     }
   }
 
@@ -78,16 +81,21 @@ class User {
 
   // authenticate user, if match, then return the user
   static async authenUser(name, pass, cb) {
-    const user = await this.getByName(name, pass).catch((err) => cb(err));
-    if (!user || !user.id) cb();
+ 
+    let user = null;
+    console.log(`param name: ${name}`)
+    user = await this.getByName(name, cb)
+    // .then(() => {
+    //   console.log(JSON.stringify(user))
+    //   if (!user) throw new Error('username does not exist');
+    // });
+    if (!user) throw new Error('username does not exist');
     const hash = await bcrypt.hash(pass, user.salt).catch((err) => cb(err));  // hash the given pass
-    
-    return hash === user.pass ? user : null;
+    return hash === user.pass ? user : undefined;
   }
 
   static async getByName(name, cb) {
-
-    const id = await this.getId(name, cb);
+    const id = await this.getId(name, cb)
     const receivedUser = await User.get(id, cb);
     return receivedUser
   }

@@ -16,20 +16,22 @@ exports.form = (req, res) => {
 exports.submit = (req, res, next) => {
   const data = req.body.user;
 
-  let user = (async () => {
-    user = await User.authenUser(data.name, data.pass, (err) => alertWindow(`Could not find the user: ${err}`));
-  })()
-  .then(() => {
-    if (user) {
+  let user = null;
+  (async () => {
+    user = await User.authenUser(data.name, data.pass, (err) => res.error(`Could not find the user: ${err}`));
+    if (user.name) {
       req.session.uid = user.id;  // save uid for getting user infor
       console.log(`****** login session.uid ${req.session.uid}`)
       res.redirect('/');
     } else {
-      alertWindow('Sorry! invalid credentials. ');
+      res.error('Sorry! invalid credentials. ');
       res.redirect('back');
     }
-  })
-  .catch((err) => next(err));  
+  })()
+  .catch((err) => {
+    res.error(err.message);
+    res.redirect('back');
+  });  
 };
 
 exports.logout = (req, res) => {
