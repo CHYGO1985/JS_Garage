@@ -10,6 +10,7 @@ var usersRouter = require('./routes/users');
 
 const entries = require('./routes/entries');
 const register = require('./routes/register');
+const login = require('./routes/login');
 const validate = require('./middleware/validate');
 const message = require('./middleware/messages');
 
@@ -45,6 +46,9 @@ app.post('/post',
           entries.submit);
 app.get('/register', register.form);
 app.post('/register', register.submit);
+app.get('/login', login.form);
+app.post('/login', login.submit);
+app.get('/logout', login.logout);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
