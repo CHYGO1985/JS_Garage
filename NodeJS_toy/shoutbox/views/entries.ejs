@@ -14,7 +14,8 @@
           <h3><%= entry.title %></h3>
           <p><%= entry.body %></p>
           <% var username = (entry.username) ? entry.username : 'Anonymous User' %>
-          <p>Posted by <%= username %></p>
+          <p class="username">Posted by <%= username %></h5>
+          <hr class="solid">
         </div>
       <% }) %>
     </body>

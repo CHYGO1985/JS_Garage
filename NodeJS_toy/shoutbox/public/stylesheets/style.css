@@ -1,5 +1,18 @@
+.entry {
+  background-color: palegoldenrod;
+}
+
+p.username {
+  font-style: italic;
+}
+
+hr.solid{
+  border-top: 3px solid #bbb;
+}
+
 body {
   padding: 50px;
+  background-color: beige;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
