@@ -14,7 +14,6 @@ function message(req) {
     let session = req.session;
     session.messages = session.messages || [];
     session.messages.push({ type: type, string: msg });
-    console.log(`***** session messages: ${JSON.stringify(session.messages)}`)
   };
 };
 
