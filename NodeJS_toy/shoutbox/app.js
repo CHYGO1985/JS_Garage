@@ -11,6 +11,7 @@ const methodOverride = require('method-override');
 const entries = require('./routes/entries');
 const register = require('./routes/register');
 const login = require('./routes/login');
+const api = require('./routes/api');
 const validate = require('./middleware/validate');
 const messages = require('./middleware/messages');
 const user = require('./middleware/user');
@@ -35,6 +36,9 @@ app.use(session({
   saveUninitialized: true
 }));
 app.use(messages);
+
+app.use('/api', api.auth);
+app.get('/api/user/:id', api.user);
 app.use(user);
 
 // app.use('/', entries.list);
