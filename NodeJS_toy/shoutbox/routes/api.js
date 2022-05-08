@@ -9,6 +9,7 @@
 const auth = require('basic-auth');
 const express = require('express');
 const User = require('../models/user');
+const Entry = require('../models/entry')
 
 exports.auth = async (req, res, next) => {
   const credentials = auth(req);
@@ -30,4 +31,10 @@ exports.user = async (req, res, next) => {
   } else {
     res.json(user)
   }
+};
+
+exports.entries = async (req, res, next) => {
+  const page = req.page;
+  const entries = await Entry.getRange(page.from, page.to, (err) => next(err))
+  res.json(entries);
 };

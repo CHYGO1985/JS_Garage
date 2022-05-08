@@ -55,6 +55,17 @@ class Entry {
       cb(err);
     };
   }
+
+  static async count() {
+    let  listLen = 0;
+    try {
+      listLen = await db.LLEN('entries');
+    } catch (err) {
+      // log error in the future
+    }
+    
+    return listLen;
+  }
 }
 
 module.exports = Entry;

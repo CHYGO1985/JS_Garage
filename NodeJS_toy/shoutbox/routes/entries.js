@@ -59,7 +59,7 @@ exports.list = (req, res, next) => {
   //   title: 'Entries',
   //   entries: data
   // });
-  
+
   let entries = [];
   (async () => {
     entries = await Entry.getRange(0, -1, (err) => {
