@@ -10,7 +10,7 @@ module.exports = (cb, perpage) => {
   perpage = perpage || 10;
   return async (req, res, next) => {
     let page = Math.max(
-      parseInt(req.params.page || '1', 10), 1
+      parseInt(req.params.page || '1', 10), 1 // req.params.page from api/entries/:page? 
     ) - 1;
 
     try {
