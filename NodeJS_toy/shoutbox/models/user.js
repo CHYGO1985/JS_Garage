@@ -116,6 +116,14 @@ class User {
       .catch((err) => cb(err));
     return user;
   }
+  
+  // used by JSON.stringify
+  toJSON() {
+    return {
+      id: this.id,
+      name: this.name
+    };
+  }
 }
 
 module.exports = User; // Exports the User class

@@ -10,12 +10,14 @@ const alertWindow = require('alert');
 const User = require('../models/user');
 
 module.exports = async (req, res, next) => {
+  if (req.remoteUser) {
+    res.locals.user = req.remoteUser;
+  }
+
   const uid = req.session.uid;
   if (!uid) return next();
-
   user = await User.get(uid, (err) => res.error(`Failt to get user by id: ${err}`)); 
-    req.user = res.locals.user = user;
-    console.log(`****** locals user: ${JSON.stringify(res.locals.user)}`)
+  req.user = res.locals.user = user;
 
   next();
 }

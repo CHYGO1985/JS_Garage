@@ -39,6 +39,7 @@ app.use(messages);
 
 app.use('/api', api.auth);
 app.get('/api/user/:id', api.user);
+app.post('/api/entry', entries.submit);
 app.use(user);
 
 // app.use('/', entries.list);

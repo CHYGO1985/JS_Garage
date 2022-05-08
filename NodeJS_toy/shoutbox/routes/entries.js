@@ -16,7 +16,10 @@ const Entry = require("../models/entry");
 exports.submit = (req, res, next) => {
   const data = req.body.entry;  // from name = entry[...]
   const user = res.locals.user;
-  const username = user ? user.name : null;
+  let username = user ? user.name : null;
+
+  if (req.remoteUser.name) 
+    username = req.remoteUser.name;
 
   const entry = new Entry({
     username: username,
@@ -29,8 +32,12 @@ exports.submit = (req, res, next) => {
       if (err) return next(err);
     });
   })()
-  .then(() => {
-    res.redirect('/');
+  .then(() => {      
+    if (req.remoteUser) { // for adding post via REST API
+      res.json({ message: 'Entry added.' });
+    } else {
+      res.redirect('/');
+    }
   });
 };
 
