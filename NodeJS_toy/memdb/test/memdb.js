@@ -10,6 +10,9 @@ const memdb = require('..');
 const assert = require('assert');
 
 describe('memdb', () => {
+  beforeEach(() => {
+    memdb.clear();    
+  });
   describe('.saveSync(doc)', () => {
     it ('should have the document', () => {
       const pet = { name: 'chygo'};
