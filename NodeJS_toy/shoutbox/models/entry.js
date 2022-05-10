@@ -1,14 +1,14 @@
 /**
- * 
+ *
  * Model for entry form.
- * 
+ *
  * @author jingjiejiang
  * @history May 4, 2022
- * 
+ *
  */
 const redis = require('redis');
-const db = redis.createClient();
 
+const db = redis.createClient();
 (async () => {
   await db.connect();
 })();
@@ -23,16 +23,24 @@ db.on('error', (err) => console.log('Redis Client Connection Error', err));
 // });
 class Entry {
   constructor(obj) {
-    for (let key in obj) { // iterate keys in the obj passed
-      this[key] = obj[key];
+    const keys = Object.keys(obj);
+    // iterate keys in the obj passed
+    for (let idx = 0; idx < keys.length; idx += 1) {
+      this[keys[idx]] = obj[keys[idx]];
     }
+
+    // for (const key in obj) {
+    //   if (key) {
+    //     this[key] = obj[key];
+    //   }
+    // }
   }
 
   static async getRange(from, to, cb) {
-    let entries = [];
+    const entries = [];
 
     try {
-      let items = await db.LRANGE('entries', from, to);
+      const items = await db.LRANGE('entries', from, to);
       items.forEach((item) => {
         entries.push(JSON.parse(item));
       });
@@ -44,26 +52,25 @@ class Entry {
 
   async save(cb) {
     const entryJSON = JSON.stringify(this); // concert saved entry data to JSON string
-    
+
     try {
-      await db.LPUSH (    // save JSON to Redist lsit        
-      'entries',
-      entryJSON
+      await db.LPUSH( // save JSON to Redist lsit
+        'entries',
+        entryJSON,
       );
-    }
-    catch (err) {
+    } catch (err) {
       cb(err);
-    };
+    }
   }
 
   static async count() {
-    let  listLen = 0;
+    let listLen = 0;
     try {
       listLen = await db.LLEN('entries');
     } catch (err) {
       // log error in the future
     }
-    
+
     return listLen;
   }
 }
