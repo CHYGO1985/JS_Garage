@@ -5,7 +5,7 @@ exports.submit = (req, res, next) => {
   const data = req.body.entry; // from name = entry[...]
   const { user } = res.locals;
   let username = user ? user.name : null;
-  if (req.remoteUser.name) {
+  if (req.remoteUser !== undefined && req.remoteUser.name) {
     username = req.remoteUser.name;
   }
 
