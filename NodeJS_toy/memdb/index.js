@@ -42,5 +42,5 @@ exports.save = (doc, cb) => {
     setTimeout(() => {
       cb();
     }, 1000);
-  }
+  }0
 };
