@@ -8,6 +8,7 @@ const methodOverride = require('method-override');
 // var indexRouter = require('./routes/index');
 // var usersRouter = require('./routes/users');
 
+const winstonLogger = require('./config/winston');
 const entries = require('./routes/entries');
 const register = require('./routes/register');
 const login = require('./routes/login');
@@ -72,6 +73,9 @@ app.use((err, req, res) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // add this line to include winston logging
+  winstonLogger.error(`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`);
 
   // render the error page
   res.status(err.status || 500);
