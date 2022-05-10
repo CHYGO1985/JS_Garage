@@ -2,13 +2,13 @@ const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
-const logger = require('morgan');
 const session = require('express-session');
 const methodOverride = require('method-override');
 // var indexRouter = require('./routes/index');
 // var usersRouter = require('./routes/users');
 
 const winstonLogger = require('./config/winston');
+const morganLogger = require('./config/morgan');
 const entries = require('./routes/entries');
 const register = require('./routes/register');
 const login = require('./routes/login');
@@ -25,7 +25,7 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.use(logger('dev'));
+app.use(morganLogger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
