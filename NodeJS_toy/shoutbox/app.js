@@ -1,8 +1,8 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 const session = require('express-session');
 const methodOverride = require('method-override');
 // var indexRouter = require('./routes/index');
@@ -17,7 +17,8 @@ const messages = require('./middleware/messages');
 const user = require('./middleware/user');
 const Entry = require('./models/entry');
 const page = require('./middleware/page');
-var app = express();
+
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -33,8 +34,8 @@ app.use(cookieParser());
 // add session
 app.use(session({
   secret: 'secret',
-  resave: false, 
-  saveUninitialized: true
+  resave: false,
+  saveUninitialized: true,
 }));
 app.use(messages);
 
@@ -49,10 +50,12 @@ app.use(user);
 
 app.get('/', entries.list);
 app.get('/post', entries.form);
-app.post('/post',
-          validate.required('entry[title]'),
-          validate.lengthAbove('entry[title]', 4),
-          entries.submit);
+app.post(
+  '/post',
+  validate.required('entry[title]'),
+  validate.lengthAbove('entry[title]', 4),
+  entries.submit,
+);
 app.get('/register', register.form);
 app.post('/register', register.submit);
 app.get('/login', login.form);
@@ -60,12 +63,12 @@ app.post('/login', login.submit);
 app.get('/logout', login.logout);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use((err, req, res) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
