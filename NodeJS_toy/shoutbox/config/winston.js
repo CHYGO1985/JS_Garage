@@ -19,6 +19,9 @@ const logger = createLogger({
     }),
     format.errors({ stack: true }),
     format.splat(),
+    format.printf(
+      (info) => `${info.timestamp} ${info.level}: ${info.message}`,
+    ),
     format.json(),
   ),
   defaultMeta: { service: 'quickpost' },
@@ -31,7 +34,11 @@ const logger = createLogger({
 if (process.env.NODE_ENV !== 'production') {
   logger.add(new transports.Console({
     format: format.combine(
-      format.colorize(),
+      // print all the message colored
+      format.colorize({ all: true }),
+      format.printf(
+        (info) => `${info.timestamp} ${info.level}: ${info.message}`,
+      ),
       format.simple(),
     ),
   }));
