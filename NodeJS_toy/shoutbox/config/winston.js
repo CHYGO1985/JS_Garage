@@ -24,7 +24,7 @@ winston.addColors(colors);
 
 // define the custom settins for each transport (file, console)
 const logger = winston.createLogger({
-  level: 'info',
+  level: 'http',
   format: format.combine(
     format.timestamp({
       format: 'YYY-MM-DD HH:mm:ss',
@@ -57,7 +57,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 logger.stream = {
-  write: (message) => logger.info(message),
+  write: (message) => logger.http(message),
 };
 
 module.exports = logger;
