@@ -7,11 +7,23 @@
  *
  */
 const appRoot = require('app-root-path');
-const { createLogger, format, transports } = require('winston');
+const winston = require('winston');
+
+const { format, transports } = winston;
 const path = require('path');
 
+const colors = {
+  error: 'red',
+  warn: 'yellow',
+  info: 'green',
+  http: 'magenta',
+  debug: 'white',
+};
+
+winston.addColors(colors);
+
 // define the custom settins for each transport (file, console)
-const logger = createLogger({
+const logger = winston.createLogger({
   level: 'info',
   format: format.combine(
     format.timestamp({
@@ -47,8 +59,5 @@ if (process.env.NODE_ENV !== 'production') {
 logger.stream = {
   write: (message) => logger.info(message),
 };
-
-// create a stream object with a 'write' function that will be used by `morgan`
-logger.stream.write = (message) => logger.info(message);
 
 module.exports = logger;

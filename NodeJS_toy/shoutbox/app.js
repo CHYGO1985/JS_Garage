@@ -1,7 +1,7 @@
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
-const morgan = require('morgan');
+// const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const methodOverride = require('method-override');
@@ -18,7 +18,7 @@ const messages = require('./middleware/messages');
 const user = require('./middleware/user');
 const Entry = require('./models/entry');
 const page = require('./middleware/page');
-const logger = require('./config/winston');
+const morganMiddleware = require('./middleware/morgan');
 
 const app = express();
 
@@ -29,7 +29,8 @@ app.set('view engine', 'ejs');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(morgan('combined', { stream: logger.stream }));
+// app.use(morgan('combined', { stream: logger.stream }));
+app.use(morganMiddleware);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride());
 app.use(cookieParser());
