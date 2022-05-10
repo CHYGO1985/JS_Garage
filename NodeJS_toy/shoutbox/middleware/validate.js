@@ -1,10 +1,10 @@
 /**
- * 
+ *
  * Validation function for submitting post related data.
- * 
+ *
  * @author jingjiejiang
  * @history May 5, 2022
- * 
+ *
  */
 const alertWindow = require('alert');
 
@@ -25,12 +25,13 @@ function getField(req, field) {
 }
 
 exports.required = (field) => {
-  field = parseField(field);
+  const newField = parseField(field);
   return (req, res, next) => {
-    if (getField(req, field)) { // check whether field has a value, if yes, move on to next middleware
+    // check whether field has a value, if yes, move on to next middleware
+    if (getField(req, newField)) {
       next();
     } else {
-      alertWindow(`${field.join(' ')} is required`);
+      alertWindow(`${newField.join(' ')} is required`);
       res.redirect('back');
     }
   };
@@ -38,12 +39,12 @@ exports.required = (field) => {
 
 // the title must exist specified len
 exports.lengthAbove = (field, len) => {
-  field = parseField(field);
+  const newField = parseField(field);
   return (req, res, next) => {
-    if (getField(req, field).length > len) {
+    if (getField(req, newField).length > len) {
       next();
     } else {
-      alertWindow(`${field.join(' ')} must have more than ${len} characters`);
+      alertWindow(`${newField.join(' ')} must have more than ${len} characters`);
       res.redirect('back');
     }
   };

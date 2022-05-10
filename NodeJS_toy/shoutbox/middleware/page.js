@@ -1,31 +1,31 @@
 /**
- * 
+ *
  * The pagination middleware for posts.
- * 
+ *
  * @author jingjiejiang
  * @history May 8, 2022
- * 
+ *
  */
 module.exports = (cb, perpage) => {
-  perpage = perpage || 10;
+  const perPage = perpage || 10;
   return async (req, res, next) => {
-    let page = Math.max(
-      parseInt(req.params.page || '1', 10), 1 // req.params.page from api/entries/:page? 
-    ) - 1;
+    // req.params.page from api/entries/:page?
+    const page = Math.max(parseInt(req.params.page || '1', 10), 1) - 1;
 
     try {
       const total = await cb();
-      req.page = res.locals.page = {
+      req.page = {
         number: page,
-        perpage: perpage,
-        from: page * perpage,
-        to: page * perpage + perpage - 1,
-        total: total,
-        count: Math.ceil(total / perpage)
+        perpage: perPage,
+        from: page * perPage,
+        to: page * perPage + perPage - 1,
+        total,
+        count: Math.ceil(total / perPage),
       };
+      res.locals.page = req.page;
       next();
-    } catch(err) {
+    } catch (err) {
       next(err);
     }
-  }
+  };
 };
