@@ -7,14 +7,15 @@
  *
  */
 const redis = require('redis');
+const logger = require('../config/winston');
 
 const db = redis.createClient();
 (async () => {
   await db.connect();
 })();
 
-db.on('connect', () => console.log('Redis Client Connected'));
-db.on('error', (err) => console.log('Redis Client Connection Error', err));
+db.on('connect', () => logger.info('Redis Client Connected'));
+db.on('error', (err) => logger.error('Redis Client Connection Error: %s', err));
 
 // legacy mode
 // const redis = require('redis');
