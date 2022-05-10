@@ -1,42 +1,33 @@
-/**
- * 
- * Enties route.
- * 
- * @author jingjiejiang
- * @history 
- * 1. May 4, 2022
- * Add export form, submit, list
- * 
- */
+const Entry = require('../models/entry');
 
-const { title } = require("process");
-const Entry = require("../models/entry");
-
-// entry for submitting data 
+// entry for submitting data
 exports.submit = (req, res, next) => {
-  const data = req.body.entry;  // from name = entry[...]
-  const user = res.locals.user;
-  let username = user ? user.name
-    : (req.remoteUser.name ? req.remoteUser.name : null);
+  const data = req.body.entry; // from name = entry[...]
+  const { user } = res.locals;
+  let username = user ? user.name : null;
+  if (req.remoteUser.name) {
+    username = req.remoteUser.name;
+  }
 
   const entry = new Entry({
-    username: username,
+    username,
     title: data.title,
-    body: data.body
+    body: data.body,
   });
 
-  (async() => {
+  (async () => {
     await entry.save((err) => {
       if (err) return next(err);
+      return null;
     });
   })()
-  .then(() => {      
-    if (req.remoteUser) { // for adding post via REST API
-      res.json({ message: 'Entry added.' });
-    } else {
-      res.redirect('/');
-    }
-  });
+    .then(() => {
+      if (req.remoteUser) { // for adding post via REST API
+        res.json({ message: 'Entry added.' });
+      } else {
+        res.redirect('/');
+      }
+    });
 };
 
 exports.form = (req, res) => {
@@ -45,7 +36,6 @@ exports.form = (req, res) => {
 
 // rendering a list of entries
 exports.list = (req, res, next) => {
-
   // test data
   // const data = [
   //   {
@@ -64,12 +54,13 @@ exports.list = (req, res, next) => {
   (async () => {
     entries = await Entry.getRange(0, -1, (err) => {
       if (err) return next(err);
+      return null;
     });
   })()
-  .then(() => {
-    res.render('entries', {
-      title: 'Entries',
-      entries: entries
+    .then(() => {
+      res.render('entries', {
+        title: 'Entries',
+        entries,
+      });
     });
-  });
 };

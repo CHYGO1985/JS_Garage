@@ -51,7 +51,7 @@ class User {
   }
 
   async update(pass, cb) {
-    const { id } = this.id;
+    const { id } = this;
 
     await this.setId(id, cb)
       .then(async () => {
