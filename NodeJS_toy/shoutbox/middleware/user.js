@@ -13,11 +13,14 @@ module.exports = async (req, res, next) => {
     res.locals.user = req.remoteUser;
   }
 
-  const { uid } = req.session;
-  if (!uid) return next();
-  const user = await User.get(uid, (err) => res.error(`Failt to get user by id: ${err}`));
-  req.user = user;
-  res.locals.user = user;
+  // avoid when the site is launched first time the error handler middleware will be invoked
+  if (req.session.uid) {
+    const { uid } = req.session;
+    if (!uid) return next();
+    const user = await User.get(uid, (err) => res.error(`Failt to get user by id: ${err}`));
+    req.user = user;
+    res.locals.user = user;
+  }
 
   return next();
 };
