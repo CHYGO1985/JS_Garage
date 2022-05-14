@@ -40,6 +40,17 @@ class ProjectRepository {
       [id],
     );
   }
+
+  async getProjById(id) {
+    return this.dao.get(
+      'SELECT * FROM projects WHERE id = ?',
+      [id],
+    );
+  }
+
+  async getAllProj() {
+    return this.dao.all('SELECT * FROM projects');
+  }
 }
 
 module.exports = ProjectRepository;

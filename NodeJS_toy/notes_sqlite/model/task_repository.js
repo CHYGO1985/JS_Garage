@@ -48,6 +48,20 @@ class TaskRepository {
       [id],
     );
   }
+
+  async getTaskById(id) {
+    return this.dao.get(
+      'SELECT * FROM tasks WHERE id = ?',
+      [id],
+    );
+  }
+
+  async getAllTasks(projectId) {
+    return this.dao.all(
+      'SELECT * FROM tasks WHERE projectId = ?',
+      [projectId],
+    );
+  }
 }
 
 module.exports = TaskRepository;

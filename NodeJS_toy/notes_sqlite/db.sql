@@ -20,6 +20,8 @@ DELETE FROM projects WHERE id = 2;
 
 select * from projects;
 
+SELECT * FROM projects WHERE id = 1;
+
 -- tasks
 INSERT INTO tasks (name, description, isComplete, projectId) VALUES ('Test task', 'test', 1, 2);
 
@@ -28,3 +30,5 @@ UPDATE tasks SET name = 'Test task', description = 'test update', isComplete = 1
 DELETE FROM tasks WHERE id = 1;
 
 select * from tasks;
+
+SELECT * FROM tasks WHERE id = 2;

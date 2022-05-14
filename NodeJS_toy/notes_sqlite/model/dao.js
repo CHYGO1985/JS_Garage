@@ -31,7 +31,35 @@ class TodoListDao {
           reject(err);
         } else {
           resolve({ id: this.lastID });
-          winstonLogger.info(`sql ${sql} has been succesfully executed.`);
+          winstonLogger.info(`The sql ${sql} has been succesfully executed.`);
+        }
+      });
+    });
+  }
+
+  async get(sql, params = []) {
+    return new Promise((resolve, reject) => {
+      this.db.get(sql, params, (err, res) => {
+        if (err) {
+          winstonLogger.error(`Error running sql ${sql} on sqlite: ${err}`);
+          reject(err);
+        } else {
+          resolve(res);
+          winstonLogger.info(`The sql ${sql} has been succesfully executed.`);
+        }
+      });
+    });
+  }
+
+  async all(sql, params = []) {
+    return new Promise((resolve, reject) => {
+      this.db.all(sql, params, (err, res) => {
+        if (err) {
+          winstonLogger.error(`Error running sql ${sql} on sqlite: ${err}`);
+          reject(err);
+        } else {
+          resolve(res);
+          winstonLogger.info(`The sql ${sql} has been succesfully executed.`);
         }
       });
     });
