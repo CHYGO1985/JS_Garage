@@ -32,3 +32,5 @@ DELETE FROM tasks WHERE id = 1;
 select * from tasks;
 
 SELECT * FROM tasks WHERE id = 2;
+
+SELECT * FROM tasks WHERE projectId = 1;

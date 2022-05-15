@@ -13,10 +13,10 @@ class TaskRepository {
 
   async createTaskTable() {
     const sql = `
-      CREATE TABLE IF NOT EXISTS task (
+      CREATE TABLE IF NOT EXISTS tasks (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT,
-        decription TEXT,
+        description TEXT,
         isComplete INTEGER DEFAULT 0,
         projectId INTEGER,
         CONSTRAINT tasks_fk_projectId FOREIGN KEY (projectId)
