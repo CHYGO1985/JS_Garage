@@ -31,6 +31,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 // app.use(morgan('combined', { stream: logger.stream }));
 app.use(morganMiddleware);
+// this one is to use the static file like image in express
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride());
 app.use(cookieParser());

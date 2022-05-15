@@ -9,17 +9,23 @@
       <h1><%= title %></h1>
       <p>Fill in the form below to sign in!</p>
       <%- include ('messages.ejs') %>
-      <form action='/login' method='post'>
-        <p>
-          <input type='text' name='user[name]' placeholder='Username' />
-        </p>
-        <p>
-          <input type='password' name='user[pass]' placeholder='Password' />
-        </p>
-        <p>
-          <input type='submit' value='Login'/>
-        </p>
-      </form>
+      <div class="bg-img">
+        <form action='/login' method='post' class="container">
+          <div style='position: absolute; left: 100px; top: 100px'>
+            <p>
+              <label for="email"><b>Username</b></label>
+              <input type='text' name='user[name]' placeholder='Username' />
+            </p>
+            <p>
+              <label for="psw"><b>Password</b></label>
+              <input type='password' name='user[pass]' placeholder='Password' />
+            </p>
+            <p>
+              <input type='submit' value='Login' class="btn"/>
+            </p>
+          </div>
+        </form>
+      </div>
     </body>
   </html>
 </html>
