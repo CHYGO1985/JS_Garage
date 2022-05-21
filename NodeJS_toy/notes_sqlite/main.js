@@ -7,8 +7,8 @@
  *
  */
 const AppDao = require('./model/dao');
-const ProjRepo = require('./model/project_repository');
-const TaskRepo = require('./model/task_repository');
+const ProjRepo = require('./model/projectRepository');
+const TaskRepo = require('./model/taskRepository');
 
 async function main() {
   const dao = new AppDao('./model/database.sqlite3');

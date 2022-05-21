@@ -13,6 +13,7 @@ const { expect } = require('chai');
 const ProjectRepository = require('../../model/projectRepository');
 
 describe('projectRepository', () => {
+  const sandbox = sinon.createSandbox();
   const stubProjValues = [
     {
       id: faker.datatype.uuid(),
@@ -23,9 +24,12 @@ describe('projectRepository', () => {
       name: faker.name.findName(),
     },
   ];
+  afterEach(() => {
+    sandbox.restore();
+  });
   describe('.createProj(name)', () => {
     it('should add a new project to the db', async () => {
-      const stub = sinon.stub(ProjectRepository.prototype, 'createProj').returns(stubProjValues[0]);
+      const stub = sandbox.stub(ProjectRepository.prototype, 'createProj').returns(stubProjValues[0]);
       const projectRepository = new ProjectRepository();
       const proj = projectRepository.createProj(stubProjValues[0].name);
       // eslint-disable-next-line no-unused-expressions
