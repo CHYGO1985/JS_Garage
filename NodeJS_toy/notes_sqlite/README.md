@@ -6,5 +6,6 @@ Web Framework: ExpressJS
 Storage: SQLite3
 Unit Test: Mocha + Chai / assume?
 
-# How to unit test for SQLite3? Mock?
+# How to unit test for SQLite3? 
+Mocha + Chai + Sinon
 
