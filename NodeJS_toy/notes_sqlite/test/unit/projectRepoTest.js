@@ -11,7 +11,7 @@ const sinon = require('sinon');
 const { faker } = require('@faker-js/faker');
 const { expect } = require('chai');
 const Project = require('../../model/project');
-const ProjectRepository = require('../../model/projectRepository');
+const ProjectRepository = require('../../dao/projectRepository');
 
 describe('projectRepository', () => {
   const sandbox = sinon.createSandbox();
