@@ -7,7 +7,6 @@
  *
  */
 const sqlite = require('sqlite3');
-// const _ = require('lodash');
 const winstonLogger = require('../config/winston');
 
 class TodoListDao {
