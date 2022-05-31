@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <form action="/" methods="POST" enctype="multipart/form-data">
+      <h3>Upload Profile Photo</h3>
+      <input type="file" name="uploadFile" accept="image/*" />
+      <input type="submit" class="btn btn-primary" />
+    </form>
+
+    <div class="profileCard">
+      <image class="cardImage" src="/images/default.jpg" loading="lazy" alt="Def User Profile" />
+      <h1 class="cardTitle">JJJ</h1>
+      <div class="cardJob">Software Engineer</div>
+      <p class="cardAbout">Default text</p>
+      <button type="button" class="btn btnPrimary">View Profile</button>
+    </div>
+  </body>
+</html>
