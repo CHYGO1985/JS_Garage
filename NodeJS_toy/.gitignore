@@ -133,13 +133,17 @@ dist
 ./node_modules
 ./hello_express/node_modules
 ./my_module/node_modules
+./image_uploader/node_modules
+
 gulp-example/package-lock.json
 webpack-example/package-lock.json
 shoutbox/package-lock.json
 memdb/package-lock.json
 notes_sqlite/package-lock.json
+image_uploader/package-lock.json
 
 # DS_Store
 .DS_Store
 hello_express/.DS_Store
 gulp-example/.DS_Store
+image_uploader/.DS_Store
