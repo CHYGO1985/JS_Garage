@@ -6,9 +6,9 @@
  * @history May 15, 2022
  *
  */
-const AppDao = require('./model/dao');
-const ProjRepo = require('./model/projectRepository');
-const TaskRepo = require('./model/taskRepository');
+const AppDao = require('./dao/dao');
+const ProjRepo = require('./dao/projectRepository');
+const TaskRepo = require('./dao/taskRepository');
 
 async function main() {
   const dao = new AppDao('./model/database.sqlite3');
