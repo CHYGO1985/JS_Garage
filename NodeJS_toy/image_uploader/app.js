@@ -1,13 +1,22 @@
+/**
+ *
+ * The main js for read and write image data to mysql.
+ *
+ * @author jingjiejiang
+ * @history Jun 2, 2022
+ *
+ */
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const mysql = require('mysql');
 
 // const fileUpload = require('express-fileupload');
 // const mysql = require('mysql');
 
-const indexRouter = require('./routes/index');
+const indexRouter = require('./middleware/index');
 const usersRouter = require('./routes/users');
 
 const app = express();
@@ -23,8 +32,21 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // My SQL Connection pool
+const pool = mysql.createPool({
+  connectionLimit: 10,
+  host: 'localhost',
+  user: 'root',
+  password: '123456',
+  database: 'userprofile',
+});
 
-app.use('/', indexRouter);
+// eslint-disable-next-line no-unused-vars
+pool.getConnection((err, connection) => {
+  if (err) throw err; // not connected
+  console.log('Connected!');
+});
+
+app.use('/', indexRouter(pool));
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
