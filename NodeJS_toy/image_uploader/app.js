@@ -12,9 +12,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mysql = require('mysql');
-
-// const fileUpload = require('express-fileupload');
-// const mysql = require('mysql');
+const fileUpload = require('express-fileupload');
 
 const indexRouter = require('./middleware/index');
 const usersRouter = require('./routes/users');
@@ -29,7 +27,10 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(fileUpload());
 app.use(express.static(path.join(__dirname, 'public')));
+// for uploaded images
+app.use(express.static(path.join(__dirname, 'upload')));
 
 // My SQL Connection pool
 const pool = mysql.createPool({

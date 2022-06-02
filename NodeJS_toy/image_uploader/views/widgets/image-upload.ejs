@@ -5,9 +5,17 @@
 </form>
 
 <div class="profile-card">
-  <image class="card-image" src="/images/default.jpg" loading="lazy" alt="Def User Profile" />
-  <h1 class="card-title">JJJ</h1>
-  <div class="card-job">Software Engineer</div>
-  <p class="card-about">Default text</p>
+  <% if (row) { %>
+    <% if (row.profile_image) { %>
+      <% console.log(row.profile_image) %>
+      <image class="card-image" src="<%= row.profile_image %>" loading="lazy" alt="DB User Profile" />
+    <% } else { %>
+      <image class="card-image" src="/images/default.jpg" loading="lazy" alt="Def User Profile" />
+    <% } %>
+  <% } %>
+  
+  <h1 class="card-title"><%= row.name %></h1>
+  <div class="card-job"><%= row.job_title %></div>
+  <p class="card-about"><%= row.job_description %></p>
   <button type="button" class="btn btnPrimary">View Profile</button>
 </div>

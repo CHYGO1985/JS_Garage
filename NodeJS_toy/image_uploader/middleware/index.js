@@ -6,7 +6,7 @@
  * @param {*} pool
  * @returns
  */
-module.exports = (pool) => (req, res, next) => {
+module.exports = (pool) => (req, res) => {
   pool.getConnection((err, connection) => {
     if (err) throw err;
     console.log('Connected!');
@@ -20,7 +20,7 @@ module.exports = (pool) => (req, res, next) => {
           rows,
         });
       }
-      next();
+      // next();
     });
   });
 };
