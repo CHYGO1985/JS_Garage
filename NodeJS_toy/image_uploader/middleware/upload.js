@@ -14,7 +14,7 @@ module.exports = (pool) => (req, res) => {
   }
 
   const { uploadedFile } = req.files;
-  const uploadedPath = path.join(__dirname, 'upload', uploadedFile.name);
+  const uploadedPath = path.join(__dirname, '../', 'upload', uploadedFile.name);
 
   console.log(uploadedFile);
 
