@@ -53,39 +53,6 @@ app.get('/', indexRouter(pool));
 app.use('/users', usersRouter);
 app.post('/', fileUploadRouter(pool));
 
-// app.post('/', (req, res) => {
-//   if (!req.files || Object.keys(req.files).length === 0) {
-//     return res.status(400).send('No files were uploaded.');
-//   }
-
-//   const { uploadedFile } = req.files;
-//   console.log(uploadedFile);
-//   const uploadedPath = path.join(__dirname, 'upload', uploadedFile.name);
-
-//   // console.log(uploadedFile);
-
-//   // use mv() to place file on the server
-//   uploadedFile.mv(uploadedPath, (err) => {
-//     if (err) res.status(500).send(err);
-
-//     pool.getConnection((error, connection) => {
-//       if (error) throw error; // not connected
-//       console.log('MYSQL Connected');
-
-//       connection.query('UPDATE user SET profile_image = ? where id = "1"', [uploadedFile.name], (err1) => {
-//         connection.release();
-//         if (!err1) {
-//           res.redirect('/');
-//         } else {
-//           console.log(err1);
-//         }
-//       });
-//     });
-//   });
-
-//   return null;
-// });
-
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   next(createError(404));
