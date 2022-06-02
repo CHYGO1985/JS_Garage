@@ -20,7 +20,6 @@ module.exports = (pool) => (req, res) => {
           rows,
         });
       }
-      // next();
     });
   });
 };
