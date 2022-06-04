@@ -12,13 +12,30 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mysql = require('mysql');
-const fileUpload = require('express-fileupload');
+// const fileUpload = require('express-fileupload');
+const multer = require('multer');
 
 const indexRouter = require('./middleware/index');
 const fileUploadRouter = require('./middleware/upload');
 const usersRouter = require('./routes/users');
 
 const app = express();
+
+const storage = multer.diskStorage({
+  destination(req, file, cb) {
+    cb(null, `${__dirname}/upload`); // you tell where to upload the files,
+  },
+  filename(req, file, cb) {
+    cb(null, `${file.fieldname}-${Date.now()}.png`);
+  },
+});
+
+const upload = multer({
+  storage,
+  onFileUploadStart(file) {
+    console.log(`${file.originalname} is starting ...`);
+  },
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -29,7 +46,7 @@ app.use(express.json());
 // for post images files, change it to true
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(fileUpload());
+// app.use(fileUpload());
 app.use(express.static(path.join(__dirname, 'public')));
 // for uploaded images
 app.use(express.static(path.join(__dirname, 'upload')));
@@ -51,7 +68,7 @@ pool.getConnection((err, connection) => {
 
 app.get('/', indexRouter(pool));
 app.use('/users', usersRouter);
-app.post('/', fileUploadRouter(pool));
+app.post('/', upload.single('uploadedFile'), fileUploadRouter(pool));
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
