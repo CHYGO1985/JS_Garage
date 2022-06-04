@@ -147,3 +147,6 @@ image_uploader/package-lock.json
 hello_express/.DS_Store
 gulp-example/.DS_Store
 image_uploader/.DS_Store
+
+# project folder
+image_uploader/upload
