@@ -4,7 +4,7 @@ A site for recording to-do list.
 # Tech Stack
 Web Framework: ExpressJS
 Storage: SQLite3
-Unit Test: Mocha + Chai / assume?
+Unit Test: Mocha + Chai + Sinon
 
 # How to unit test for SQLite3? 
 Mocha + Chai + Sinon
