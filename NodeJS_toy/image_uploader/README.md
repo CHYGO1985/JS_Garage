@@ -1,3 +1,9 @@
+# The project
+The project implement uploading image to server side and update:
+* image shown on the page
+* image name in the db
+* add image to server side disk
+
 # Instruction regarding how to run the app
 ## Launch Mysql
 * Mac: run sudo /usr/local/mysql/support-files/mysql.server start (my case)
@@ -25,6 +31,7 @@ Connected!
 Upload a image, then the click "submit":
     * The image will be uploaded to ./upload
     * The profile photo on the page will be updated
+    * The _profile_image_ in db is updated.
 
 
 
