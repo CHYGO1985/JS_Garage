@@ -10,6 +10,9 @@ const sqlite = require('sqlite3');
 const winstonLogger = require('../config/winston');
 
 class TodoListDao {
+  /**
+   * Create db to store data.
+   */
   constructor(dbFilePath) {
     this.db = new sqlite.Database(dbFilePath, (err) => {
       if (err) {
@@ -50,6 +53,14 @@ class TodoListDao {
     });
   }
 
+  /**
+   *
+   * Get all data of a table.
+   *
+   * @param {*} sql
+   * @param {*} params
+   * @returns
+   */
   async all(sql, params = []) {
     return new Promise((resolve, reject) => {
       this.db.all(sql, params, (err, res) => {
