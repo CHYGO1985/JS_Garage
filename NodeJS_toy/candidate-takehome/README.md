@@ -67,6 +67,7 @@ Please elaborate an action plan.
 
 ##### Source code perspective
 * <b>Refactoring code<b>: the code should be made more modularity. For example, the routing methods in _index.js_ should be put into _/routes_, like what I did for _/api/games/search_ and _/api/games/populate_.
+* <b>documents/comments<b>: design document or code comments should be added for future references
 * <b>More test</b>: add more test, integration test, UI test and E2E test.
 * <b>Logging</b>: instead of using _console.log_, use formal logger framework, such as _winston.js_ and store log in DB or disk. Add more log to the project to log necessary info for future root cause analysis.
 * <b>Security</b>: add security related control, e.g. force to use _https_ instead of _http_
