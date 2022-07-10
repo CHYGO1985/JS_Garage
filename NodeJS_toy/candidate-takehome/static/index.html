@@ -33,6 +33,14 @@
         <add-update-game title="Add Game" @save-game="onAddOrUpdateGame" />
       </div>
     </section>
+    <section class="section section-container" style="padding-bottom: 10px;">
+      <div class="box">
+        <div class="control">
+          <h3 class='subtitle'>Populate Top Game</h3>
+          <button class="button is-success" @click="populateGame">Populate Game</button>
+        </div>
+      </div>
+    </section>
   </div>
   <script>
   const AddUpdateGame = {
@@ -203,7 +211,16 @@
             copy.splice(idx, 1)
             this.games = copy
           })
-      }
+      },
+      populateGame () {
+        console.log('populating')
+        return axios.post(`${this.apiURL}/populate`)
+          .then((response) => {
+            const copy = this.games.slice()
+            copy.push(...response.data)
+            this.games = copy
+          })
+      },
     },
     beforeMount () {
       axios.get(this.apiURL)

@@ -3,8 +3,11 @@ const bodyParser = require('body-parser');
 const db = require('./models');
 
 const app = express();
+const searchHandler = require('./routes/search-handler');
+const populateHandler = require('./routes/populate-handler');
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(`${__dirname}/static`));
 
 
@@ -53,6 +56,9 @@ app.put('/api/games/:id', async (req, res) => {
     return res.status(400).send(err);
   }
 });
+
+app.post('/api/games/search', searchHandler);
+app.post('/api/games/populate', populateHandler);
 
 app.listen(3000, () => {
   console.log('Server is up on port 3000');

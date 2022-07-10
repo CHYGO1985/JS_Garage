@@ -63,13 +63,36 @@ Many other applications at Voodoo will use consume this API.
 We are planning to put this project in production. According to you, what are the missing pieces to make this project production ready? 
 Please elaborate an action plan.
 
+<b>Answer</b>
+
+##### Source code perspective
+* <b>Refactoring code<b>: the code should be made more modularity. For example, the routing methods in _index.js_ should be put into _/routes_, like what I did for _/api/games/search_ and _/api/games/populate_.
+* <b>More test</b>: add more test, integration test, UI test and E2E test.
+* <b>Logging</b>: instead of using _console.log_, use formal logger framework, such as _winston.js_ and store log in DB or disk. Add more log to the project to log necessary info for future root cause analysis.
+* <b>Security</b>: add security related control, e.g. force to use _https_ instead of _http_
+
+##### Deployment perspective
+* <b>CI/CD</b>: set up CI/CD pipeline and monitoring site
+* <b>Scaling</b>: load balancer, CDN, API gateway, data cluster etc
+
 #### Question 2:
-Let's pretend our data team is now delivering new files every day into the S3 bucket, and our service needs to ingest those files
-every day through the populate API. Could you describe a suitable solution to automate this? Feel free to propose architectural changes.
+Let's pretend our data team is now delivering new files every day into the S3 bucket, and our service needs to ingest those files every day through the populate API. Could you describe a suitable solution to automate this? Feel free to propose architectural changes.
+
+<b>Answer</b>: For this scenario, there are two options here: pull-model or push model. I assume that the data time will deliver new files on any time of a day, so pull model is not suitable here in this case, otherwise the populate API will need to regulary check the update which waste resources. 
+
+Therefore push model is a better option here. We can set up a notification mechanism on S3 bucket, as soon as the service receive notification from S3 about data update, the API will access S3 and fetch the newly added data.
+
+Regarding updating the data in our service, we can only update those onces are revices. For example, we can do this via checking the data that the data are revised/added. And if we are talking about updating data in distributed system, we can update the primary or coordinate node first, then update the data on secondary nodes. If the task could not be done immediately due to unexpected reason, we can also add a message queue for the data nodes, so they can update the data later when they are have the resources.
+
 
 #### Question 3:
 Both the current database schema and the files dropped in the S3 bucket are not optimal.
 Can you find ways to improve them?
 
+<b>Answer</b>:
 
+##### If we are talking about Relational DB
+From the sqlite3 side, we can add index to improve searching speed and denormalize certain schema to avoid 'join' operation. 
 
+##### If we are talking about Non-SQl DB
+We can store data in non-sql db instead of sql db, since I noticed that most of data can be key-value pairs. Using non-sql db will improve the r/w speed and such db is easier to scale then sql db.
