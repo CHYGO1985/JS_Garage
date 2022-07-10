@@ -26,8 +26,7 @@ module.exports = async (req, res) => {
       }
     })
     
-    allTobeInsertedData = allTobeInsertedData.filter(item=>Object.keys(item).length!==0)
-    if (allData.length > 0) {
+    if (allTobeInsertedData.length > 0) {
       await db.Game.bulkCreate(allTobeInsertedData)
     }
 
