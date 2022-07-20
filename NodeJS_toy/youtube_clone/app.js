@@ -1,12 +1,12 @@
-const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
 const dotenv = require('dotenv');
-const morgan = require('morgan');
+// const morgan = require('morgan');
 const mongoose = require('mongoose');
+const morganMiddleware = require('./middleware/morgan');
 const winstonLogger = require('./config/winston');
 
 const indexRouter = require('./routes/index');
@@ -25,7 +25,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(morgan('combined', { stream: logger.stream }));
+app.use(morganMiddleware);
 
 dotenv.config();
 

@@ -3,7 +3,7 @@
  * The configuration file for WinstonJS.
  *
  * @author jingjiejiang
- * @history May 10, 2022
+ * @history Jul 20, 2022
  *
  */
 const appRoot = require('app-root-path');
