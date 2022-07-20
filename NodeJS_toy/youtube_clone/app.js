@@ -4,10 +4,12 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
+const dotenv = require('dotenv');
 const morgan = require('morgan');
+const winstonLogger = require('./config/winston');
+
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
-const winstonLogger = require('./config/winston');
 
 const app = express();
 
@@ -22,6 +24,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(morgan('combined', { stream: logger.stream }));
+
+dotenv.config();
+
+const dbConnect = () => {
+
+};
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
