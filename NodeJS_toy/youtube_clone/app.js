@@ -6,10 +6,12 @@ const logger = require('morgan');
 
 const dotenv = require('dotenv');
 const morgan = require('morgan');
+const mongoose = require('mongoose');
 const winstonLogger = require('./config/winston');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const notFoundRouter = require('./routes/not-found');
 
 const app = express();
 
@@ -27,17 +29,23 @@ app.use(morgan('combined', { stream: logger.stream }));
 
 dotenv.config();
 
-const dbConnect = () => {
+const dbConnect = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_CLOUD);
+  } catch (err) {
+    winstonLogger.error(`Failed to connect to mongodb due to ${err}`);
+  }
 
+  winstonLogger.info('Connect to mongodb');
 };
+
+dbConnect();
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
-app.use((req, res, next) => {
-  next(createError(404));
-});
+app.use(notFoundRouter);
 
 // error handler
 app.use((err, req, res) => {
