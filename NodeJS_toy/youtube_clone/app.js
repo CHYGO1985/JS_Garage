@@ -10,7 +10,6 @@ const morganMiddleware = require('./middleware/morgan');
 const winstonLogger = require('./config/winston');
 
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
 const notFoundRouter = require('./routes/not-found');
 
 const app = express();
@@ -42,7 +41,6 @@ const dbConnect = async () => {
 dbConnect();
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(notFoundRouter);
