@@ -13,8 +13,12 @@ import winstonLogger from '../config/winston.js';
 
 // module.exports = AuthController;
 
-export const signup = async () => {
-
+export const signup = async (req, res, next) => {
+  try {
+    const salt = bcrypt.genSaltSync(10);
+  } catch (err) {
+    next(err);
+  }
 };
 
 export const signin = async () => {
