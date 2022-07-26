@@ -10,7 +10,7 @@ const winstonLogger = require('./config/winston');
 
 const indexRouter = require('./routes/index');
 const notFoundRouter = require('./routes/not-found');
-const userRouter = require('./routes/user-routes');
+const userRouter = require('./routes/user-route');
 
 const app = express();
 
