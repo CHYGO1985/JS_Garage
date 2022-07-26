@@ -6,11 +6,11 @@
  * @history Jul 20, 2022
  *
  */
-const appRoot = require('app-root-path');
-const winston = require('winston');
+import appRoot from 'app-root-path';
+import winston from 'winston';
+import path from 'path';
 
 const { format, transports } = winston;
-const path = require('path');
 
 const colors = {
   error: 'red',
@@ -60,4 +60,4 @@ logger.stream = {
   write: (message) => logger.http(message),
 };
 
-module.exports = logger;
+export default logger;

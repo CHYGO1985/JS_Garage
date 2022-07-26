@@ -1,13 +1,22 @@
-const winstonLogger = require('../config/winston');
+import bcrypt from 'bcrypt';
+import winstonLogger from '../config/winston.js';
 
-class AuthController {
-  static signup() {
-    winstonLogger.info('winston logger is called');
-  }
+// class AuthController {
+//   async signup(req, res, next) {
+//     winstonLogger.info('winston logger is called');
+//   }
 
-  static two() {
-    console.log('two');
-  }
-}
+//   static two() {
+//     console.log('two');
+//   }
+// }
 
-module.exports = AuthController;
+// module.exports = AuthController;
+
+export const signup = async () => {
+
+};
+
+export const signin = async () => {
+
+};

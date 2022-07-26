@@ -6,8 +6,8 @@
  * @history Jul 20, 2022
  *
  */
-const morgan = require('morgan');
-const logger = require('../config/winston');
+import morgan from 'morgan';
+import logger from '../config/winston.js';
 
 // Skip all the Morgan http log if the
 // application is not running in development mode.
@@ -30,4 +30,4 @@ const morganMiddleware = morgan(
   { stream: logger.stream },
 );
 
-module.exports = morganMiddleware;
+export default morganMiddleware;

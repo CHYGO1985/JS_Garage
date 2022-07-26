@@ -1,29 +1,33 @@
-const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
+import express from 'express';
+import path from 'path';
+import cookieParser from 'cookie-parser';
+import logger from 'morgan';
+import dotenv from 'dotenv';
+import mongoose from 'mongoose';
+import { fileURLToPath } from 'url';
 
-const dotenv = require('dotenv');
-const mongoose = require('mongoose');
-const morganMiddleware = require('./middleware/morgan');
-const winstonLogger = require('./config/winston');
+import morganMiddleware from './middleware/morgan.js';
+import winstonLogger from './config/winston.js';
 
-const indexRouter = require('./routes/index');
-const notFoundRouter = require('./routes/not-found');
-const userRouter = require('./routes/user-route');
-const authRouter = require('./routes/auth-route');
+import indexRouter from './routes/index.js';
+import notFoundRouter from './routes/not-found.js';
+import userRouter from './routes/user-route.js';
+import authRouter from './routes/auth-route.js';
 
 const app = express();
 
+const filename = fileURLToPath(import.meta.url);
+const dirname = path.dirname(filename);
+
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(dirname, 'public')));
 
 app.use(morganMiddleware);
 
@@ -59,4 +63,4 @@ app.use((err, req, res) => {
   res.render('error');
 });
 
-module.exports = app;
+export default app;

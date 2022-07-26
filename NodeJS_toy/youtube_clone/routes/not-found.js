@@ -6,7 +6,7 @@
  * @history Jun 14, 2022
  *
  */
-module.exports = (req, res) => {
+export default (req, res) => {
   res.status(404).render('not-found', {
     title: '404 Not Found',
     message: 'Sorry, the page does not exist.',
