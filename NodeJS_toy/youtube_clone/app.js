@@ -11,6 +11,7 @@ const winstonLogger = require('./config/winston');
 const indexRouter = require('./routes/index');
 const notFoundRouter = require('./routes/not-found');
 const userRouter = require('./routes/user-route');
+const authRouter = require('./routes/auth-route');
 
 const app = express();
 
@@ -42,6 +43,7 @@ dbConnect();
 
 app.use('/', indexRouter);
 app.use('/api/users', userRouter);
+app.use('/api/auth', authRouter);
 
 // catch 404 and forward to error handler
 app.use(notFoundRouter);

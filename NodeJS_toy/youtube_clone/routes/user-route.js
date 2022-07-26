@@ -5,6 +5,7 @@ const router = express.Router();
 
 router.get('/test', (req, res) => {
   UserController.test();
+  res.json('it is successful');
 });
 
 module.exports = router;
