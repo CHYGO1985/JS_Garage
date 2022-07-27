@@ -36,11 +36,10 @@ dotenv.config();
 const dbConnect = async () => {
   try {
     await mongoose.connect(process.env.MONGODB_CLOUD);
+    winstonLogger.info('Connect to mongodb');
   } catch (err) {
     winstonLogger.error(`Failed to connect to mongodb due to ${err}`);
   }
-
-  winstonLogger.info('Connect to mongodb');
 };
 
 dbConnect();
