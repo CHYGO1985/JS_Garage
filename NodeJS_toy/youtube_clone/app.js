@@ -52,14 +52,20 @@ app.use('/api/auth', authRouter);
 app.use(notFoundRouter);
 
 // error handler
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
   // set locals, only providing error in development
-  res.locals.message = err.message || 'Something went wrong!';
+  const status = err.status || 500;
+  const message = err.message || 'Something went wrong!';
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+  winstonLogger.error(`Error ${status} happens due to ${message}`);
+
+  // return render 
+  return res.status(status).json({
+    success: false,
+    status,
+    message
+  })
 });
 
 export default app;
