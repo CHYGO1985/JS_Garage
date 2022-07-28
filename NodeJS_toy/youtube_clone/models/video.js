@@ -42,4 +42,4 @@ const VideoSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-export default mongoose.model('Vedio', VideoSchema);
+export default mongoose.model('Vedio', VideoSchema, 'youtubeClone');
