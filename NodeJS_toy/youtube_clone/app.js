@@ -33,9 +33,12 @@ app.use(morganMiddleware);
 
 dotenv.config();
 
+const mongodbConnect = process.env.NODE_ENV === "test"? 
+  process.env.MONGODB_CLOUD_TEST : process.env.MONGODB_CLOUD_PROD;
+
 const dbConnect = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_CLOUD);
+    await mongoose.connect(mongodbConnect);
     winstonLogger.info('Connect to mongodb');
   } catch (err) {
     winstonLogger.error(`Failed to connect to mongodb due to ${err}`);
