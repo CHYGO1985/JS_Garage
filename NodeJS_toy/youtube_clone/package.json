@@ -8,7 +8,7 @@
     "dev": "nodemon ./bin/www",
     "debug": "node --inspect ./bin/www",
     "test" : "NODE_ENV=test mocha --recursive --exit --timeout 10000",
-    "test:unit": "NODE_ENV=test mocha test/unit  --exit --timeout 20000",
+    "test:unit": "NODE_ENV=test mocha test/unit --recursive --exit --timeout 20000",
     "test:integration": "NODE_ENV=test mocha test/integartion --recursive --exit --timeout 10000"
   },
   "dependencies": {
