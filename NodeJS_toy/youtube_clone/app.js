@@ -10,7 +10,6 @@ import morganMiddleware from './middleware/morgan.js';
 import winstonLogger from './config/winston.js';
 
 import indexRouter from './routes/index.js';
-import notFoundRouter from './routes/not-found.js';
 import userRouter from './routes/user-route.js';
 import authRouter from './routes/auth-route.js';
 
@@ -52,7 +51,9 @@ app.use('/api/users', userRouter);
 app.use('/api/auth', authRouter);
 
 // catch 404 and forward to error handler
-app.use(notFoundRouter);
+app.use((req, res, next) => {
+  next(createError(404, 'Sorry, it does not exist'));
+});
 
 // error handler
 app.use((err, req, res, next) => {
