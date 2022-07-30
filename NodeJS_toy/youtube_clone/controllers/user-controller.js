@@ -1,9 +1,8 @@
-// const createError = require('../utils/error');
 // const User = require('../models/user');
 
 import winstonLogger from '../config/winston.js';
 import User from '../models/user.js';
-import { createError } from '../utils/error.js';
+import createError from '../utils/error.js';
 
 export const test = () => {
   winstonLogger.info('winston logger is called');
@@ -19,9 +18,9 @@ export const updateUser = async (req, res, next) => {
         },
         { new: true }
       );
-      res.status(200).json(updateUser);
+      res.status(200).json(updatedUser);
     } catch (err) {
-
+      next(err);
     }
   } else {
     return next(createError(403, 'You can only update your account!'));
