@@ -65,6 +65,21 @@ describe('POST signup', () => {
  */
 describe('POST signin', () => {
   it('post valid username and password and response with 200 and username and user email', async () => {
+    expect(true).to.be.equal(false);
+  });
 
+  // 404 
+  it('post invalid username and response with 404 and a msg showes that user is not found', async () => {
+    expect(true).to.be.equal(false);
+  });
+
+  it('post invalid password and response with 404 and a msg showes that username or password is not correct', async () => {
+    expect(true).to.be.equal(false);
   });
 });
+
+// const user = await User.findOne({ name: req.body.name });
+// if (!user) return next(createError(404, 'User not found!'));
+
+// const isPwdCorrect = await bcrypt.compare(req.body.password, user.password);
+// if (!isPwdCorrect) return next(createError(400, 'Username or password is not correct!'));
