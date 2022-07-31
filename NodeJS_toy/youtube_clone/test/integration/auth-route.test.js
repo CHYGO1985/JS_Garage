@@ -54,8 +54,6 @@ describe('POST signup', () => {
       .send(dupUserName);
     expect(status).to.be.equal(500);
     expect(text).to.contains('E11000 duplicate key error collection');
-
-
   });
 });
 
