@@ -55,8 +55,7 @@ describe('POST signup', () => {
     expect(status).to.be.equal(500);
     expect(text).to.contains('E11000 duplicate key error collection');
 
-    // clean user db
-    await User.deleteMany();
+
   });
 });
 
@@ -64,22 +63,46 @@ describe('POST signup', () => {
  * Test /api/auth/signin endpoint
  */
 describe('POST signin', () => {
+  const signinUser = {
+    name: 'test11',
+    password: '1234'
+  };
   it('post valid username and password and response with 200 and username and user email', async () => {
-    expect(true).to.be.equal(false);
+    const { _body, status } = await request(app)
+      .post('/api/auth/signin')
+      .set('Accept', 'application/json')
+      .send(signinUser);
+    expect(status).to.be.equal(200);
+    expect(_body.name).to.be.equal('test11');
+    expect(_body.email).to.be.equal('test11@gmail.com');
   });
 
-  // 404 
+  const signinUser1 = {
+    name: 'test22',
+    password: '1234'
+  };
   it('post invalid username and response with 404 and a msg showes that user is not found', async () => {
-    expect(true).to.be.equal(false);
+    const { _body, status } = await request(app)
+      .post('/api/auth/signin')
+      .set('Accept', 'application/json')
+      .send(signinUser1);
+    expect(status).to.be.equal(404);
+    expect(_body.message).to.be.equal('User not found!');
   });
 
+  const signinUser2 = {
+    name: 'test11',
+    password: '1234567'
+  };
   it('post invalid password and response with 404 and a msg showes that username or password is not correct', async () => {
-    expect(true).to.be.equal(false);
+    const { _body, status } = await request(app)
+      .post('/api/auth/signin')
+      .set('Accept', 'application/json')
+      .send(signinUser2);
+    expect(status).to.be.equal(400);
+    expect(_body.message).to.be.equal('Username or password is not correct!');
+
+    // clean user db
+    await User.deleteMany();
   });
 });
-
-// const user = await User.findOne({ name: req.body.name });
-// if (!user) return next(createError(404, 'User not found!'));
-
-// const isPwdCorrect = await bcrypt.compare(req.body.password, user.password);
-// if (!isPwdCorrect) return next(createError(400, 'Username or password is not correct!'));
