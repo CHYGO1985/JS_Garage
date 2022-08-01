@@ -47,17 +47,6 @@ after(async () => {
   await User.deleteMany();
 });
 
-//   const { _body} = await request(app)
-//       .post('/api/auth/signin')
-//       .set('Accept', 'application/json')
-//       .send(signinUser);
-
-//   const res = await request(app)
-//   .post('/api/auth/signin')
-//   .set('Accept', 'application/json')
-//   .send(signinUser);
-// });
-
 describe('POST /api/users/:id', () => {
   const userInfoToUpdate = {
     name: "updated"
