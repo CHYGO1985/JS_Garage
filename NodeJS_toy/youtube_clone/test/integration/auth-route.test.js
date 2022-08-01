@@ -10,6 +10,13 @@ before(function (done) {
 });
 
 /**
+ * Clean user schema in db test
+ */
+after(async () => {
+  await User.deleteMany();
+});
+
+/**
  * Test /api/auth/signup endpoint
  */
 describe('POST signup', () => {
@@ -99,8 +106,5 @@ describe('POST signin', () => {
       .send(signinUser2);
     expect(status).to.be.equal(400);
     expect(_body.message).to.be.equal('Username or password is not correct!');
-
-    // clean user db
-    await User.deleteMany();
   });
 });

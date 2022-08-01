@@ -9,7 +9,7 @@ import {
   like,
   dislike
 } from '../controllers/user-controller.js';
-import { verifyToken } from '../middleware/verifyToken.js';
+import { verifyToken } from '../middleware/verify-token.js';
 
 const router = express.Router();
 
