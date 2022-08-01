@@ -38,7 +38,7 @@ const mongodbConnect = process.env.NODE_ENV === "test"?
 const dbConnect = async () => {
   try {
     await mongoose.connect(mongodbConnect);
-    winstonLogger.info('Connect to mongodb');
+    winstonLogger.info(`Connect to mongodb of ${process.env.NODE_ENV}`);
   } catch (err) {
     winstonLogger.error(`Failed to connect to mongodb due to ${err}`);
   }
