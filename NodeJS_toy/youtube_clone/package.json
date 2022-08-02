@@ -7,13 +7,14 @@
     "start": "node ./bin/www",
     "dev": "NODE_ENV=dev nodemon ./bin/www",
     "debug": "NODE_ENV=dev node --inspect ./bin/www",
-    "test" : "NODE_ENV=test mocha --recursive --exit --timeout 20000",
+    "test": "NODE_ENV=test mocha --recursive --exit --timeout 20000",
     "test:unit": "NODE_ENV=test mocha test/unit --recursive --exit --timeout 20000",
     "test:integration": "NODE_ENV=test mocha test/integration --recursive --exit --timeout 20000",
     "test:single_test": "NODE_ENV=test mocha test/single_test --recursive --exit --timeout 20000"
   },
   "dependencies": {
     "app-root-path": "^3.0.0",
+    "axios": "^0.27.2",
     "bcrypt": "^5.0.1",
     "chai": "^4.3.6",
     "cookie-parser": "~1.4.4",
@@ -26,6 +27,7 @@
     "mocha": "^10.0.0",
     "mongoose": "^6.4.5",
     "morgan": "~1.9.1",
+    "nock": "^13.2.9",
     "nodemon": "^2.0.19",
     "supertest": "^6.2.4",
     "winston": "^3.8.1"

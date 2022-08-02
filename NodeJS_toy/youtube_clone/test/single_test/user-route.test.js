@@ -121,12 +121,6 @@ describe('DELETE /api/users/:id', () => {
   });
 });
 
+describe('GET /api/users/find/:id', () => {
 
-// delete invalid user id
-// {
-//   "success": false,
-//   "status": 403,
-//   "message": "You can only update your account!"
-// }
-
-// "User has been deleted."
+});
