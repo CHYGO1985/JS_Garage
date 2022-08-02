@@ -8,6 +8,7 @@ import { fileURLToPath } from 'url';
 
 import morganMiddleware from './middleware/morgan.js';
 import winstonLogger from './config/winston.js';
+import createError from './utils/error.js';
 
 import indexRouter from './routes/index.js';
 import userRouter from './routes/user-route.js';

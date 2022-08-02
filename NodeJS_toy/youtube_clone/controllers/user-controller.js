@@ -5,6 +5,7 @@ import User from '../models/user.js';
 import createError from '../utils/error.js';
 
 export const test = () => {
+  res.status(200);
   winstonLogger.info('winston logger is called');
 };
 

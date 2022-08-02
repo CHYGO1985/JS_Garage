@@ -21,8 +21,8 @@ after(async () => {
  */
 describe('POST signup', () => {
   const tmpUser = {
-    name: 'test11',
-    email: 'test11@gmail.com',
+    name: 'testaa',
+    email: 'testaa@gmail.com',
     password: '1234'
   };
 
@@ -36,7 +36,7 @@ describe('POST signup', () => {
   });
 
   const dupUserName = {
-    name: 'test11',
+    name: 'testaa',
     email: 'test22@gmail.com',
     password: '1234'
   };
@@ -51,7 +51,7 @@ describe('POST signup', () => {
 
   const dupUserEmail = {
     name: 'test22',
-    email: 'test11@gmail.com',
+    email: 'testaa@gmail.com',
     password: '1234'
   };
   it('post duplicate user email and respone with 500 and a msg showes that duplicate key error', async () => {
@@ -69,7 +69,7 @@ describe('POST signup', () => {
  */
 describe('POST signin', () => {
   const signinUser = {
-    name: 'test11',
+    name: 'testaa',
     password: '1234'
   };
   it('post valid username and password and response with 200 and username and user email', async () => {
@@ -78,12 +78,12 @@ describe('POST signin', () => {
       .set('Accept', 'application/json')
       .send(signinUser);
     expect(status).to.be.equal(200);
-    expect(_body.name).to.be.equal('test11');
-    expect(_body.email).to.be.equal('test11@gmail.com');
+    expect(_body.name).to.be.equal('testaa');
+    expect(_body.email).to.be.equal('testaa@gmail.com');
   });
 
   const signinUser1 = {
-    name: 'test22',
+    name: 'testbb',
     password: '1234'
   };
   it('post invalid username and response with 404 and a msg showes that user is not found', async () => {
@@ -96,7 +96,7 @@ describe('POST signin', () => {
   });
 
   const signinUser2 = {
-    name: 'test11',
+    name: 'testaa',
     password: '1234567'
   };
   it('post invalid password and response with 404 and a msg showes that username or password is not correct', async () => {
