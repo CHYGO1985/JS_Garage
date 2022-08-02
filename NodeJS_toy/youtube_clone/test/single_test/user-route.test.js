@@ -43,16 +43,8 @@ before(async () => {
     .set('Accept', 'application/json')
     .send(signinUser);
 
-  const getToken = (tokenString) => {
-    const key = 'access_token';
-    const access_token = tokenString.split(';')[0];
-    const keyPos = access_token.indexOf(key);
-
-    return access_token.substring(keyPos + key.length + 1);
-  };
-
   userId = _body._id;
-  token = getToken(header['set-cookie'][0]);
+  token = header['set-cookie'][0].split(';')[0];
   console.log(userId);
 });
 
@@ -69,7 +61,7 @@ describe('POST /api/users/:id', () => {
     const { _body, status } = await request(app)
       .put(`/api/users/${userId}`)
       .set('Accept', 'application/json')
-      .set('Cookie', [`access_token=${token}`])
+      .set('Cookie', [`${token}`])
       .send(userInfoToUpdate);
 
     expect(status).to.be.equal(200);
@@ -83,7 +75,7 @@ describe('POST /api/users/:id', () => {
     const { _body, status } = await request(app)
       .put(`/api/users/${invalidUserId}`)
       .set('Accept', 'application/json')
-      .set('Cookie', [`access_token=${token}`])
+      .set('Cookie', [`${token}`])
       .send(userInfoToUpdate);
 
     expect(status).to.be.equal(403);
@@ -98,10 +90,44 @@ describe('POST /api/users/:id', () => {
     const { _body, status } = await request(app)
       .put(`/api/users/${userId}`)
       .set('Accept', 'application/json')
-      .set('Cookie', [`access_token=${token}`])
+      .set('Cookie', [`${token}`])
       .send(repeatedUserName);
 
     expect(status).to.be.equal(500);
     expect(_body.message).to.contains(' E11000 duplicate key error collection');
   })
 });
+
+describe('DELETE /api/users/:id', () => {
+  it('pass invalid user id and response 403 and correspondent message', async () => {
+    const invalidUserId = userId + '11';
+    const { _body, status } = await request(app)
+      .delete(`/api/users/${invalidUserId}`)
+      .set('Accept', 'application/json')
+      .set('Cookie', [`${token}`])
+
+    console.log(_body);
+    expect(status).to.be.equal(403);
+    expect(_body.message).to.be.equal('You can only delete your account!')
+  });
+
+  it('pass valid user id and response 200 and correspondent message', async () => {
+    const { _body, status } = await request(app)
+      .delete(`/api/users/${userId}`)
+      .set('Accept', 'application/json')
+      .set('Cookie', [`${token}`])
+
+    expect(status).to.be.equal(200);
+    expect(_body).to.be.equal('User has been deleted.');
+  });
+});
+
+
+// delete invalid user id
+// {
+//   "success": false,
+//   "status": 403,
+//   "message": "You can only update your account!"
+// }
+
+// "User has been deleted."
