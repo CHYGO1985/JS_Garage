@@ -106,7 +106,6 @@ describe('DELETE /api/users/:id', () => {
       .set('Accept', 'application/json')
       .set('Cookie', [`${token}`])
 
-    console.log(_body);
     expect(status).to.be.equal(403);
     expect(_body.message).to.be.equal('You can only delete your account!')
   });
