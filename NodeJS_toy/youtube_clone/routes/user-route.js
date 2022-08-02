@@ -4,10 +4,10 @@ import {
   updateUser,
   deleteUser,
   getUser,
-  subscribe,
-  unsubscribe,
-  like,
-  dislike
+  subscribeUser,
+  unsubscribeUser,
+  likeUser,
+  dislikeUser
 } from '../controllers/user-controller.js';
 import { verifyToken } from '../middleware/verify-token.js';
 
@@ -25,13 +25,15 @@ router.delete('/:id', verifyToken, deleteUser);
 router.get('/find/:id', getUser);
 
 // subscribe a user
-router.put('/sub/:id', verifyToken, subscribe);
+router.put('/sub/:id', verifyToken, subscribeUser);
 
 // unsunscribe a user
-// ??? why use put not delete?
+router.put('/unsub/:id', verifyToken, unsubscribeUser);
 
 // like a video
+router.put('/like/:id', verifyToken, likeUser);
 
 // dislike a video
+router.put('/dislike/:videoId', verifyToken, dislikeUser);
 
 export default router;
