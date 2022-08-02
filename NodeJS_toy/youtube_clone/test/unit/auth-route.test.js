@@ -36,7 +36,7 @@ describe('POST signup', () => {
     email: 'test22@gmail.com',
     password: '1234'
   };
-  it.only('post duplicate user name and respone with 500 and a msg showes that duplicate key error', async () => {
+  it('post duplicate user name and respone with 500 and a msg showes that duplicate key error', async () => {
     const signupUser = async () => {
       let res = null;
       try {
@@ -68,9 +68,29 @@ describe('POST signup', () => {
     password: '1234'
   };
   it('post duplicate user email and respone with 500 and a msg showes that duplicate key error', async () => {
+    const signupUser = async () => {
+      let res = null;
+      try {
+        res = await axios.post('http://test.com/api/auth/signup', dupUserEmail, {
+          headers: {
+            // Overwrite Axios's automatically set Content-Type
+            'Content-Type': 'application/json',
+          }
+        });
+      } catch (err) {
+        const { response } = err;
+        expect(response.status).to.be.equal(500);
+        expect(response.data).to.be.equal('E11000 duplicate key error collection');
+      };
 
-    expect(status).to.be.equal(500);
-    expect(text).to.contains('E11000 duplicate key error collection');
+      return res;
+    };
+
+    nock('http://test.com')
+      .post('/api/auth/signup')
+      .reply(500, 'E11000 duplicate key error collection');
+
+    await signupUser();
   });
 });
 
@@ -84,9 +104,26 @@ describe('POST signin', () => {
   };
   it('post valid username and password and response with 200 and username and user email', async () => {
 
+    const signinUser = async () => {
+      return await axios.post('http://test.com/api/auth/signin', signinUser, {
+        headers: {
+          // Overwrite Axios's automatically set Content-Type
+          'Content-Type': 'application/json',
+        }
+      })
+    };
+
+    nock('http://test.com')
+      .post('/api/auth/signin')
+      .reply(200, {
+        name: 'testaa',
+        email: 'testaa@gmail.com'
+      })
+
+    const { data, status } = await signinUser();
     expect(status).to.be.equal(200);
-    expect(_body.name).to.be.equal('testaa');
-    expect(_body.email).to.be.equal('testaa@gmail.com');
+    expect(data.name).to.be.equal('testaa');
+    expect(data.email).to.be.equal('testaa@gmail.com');
   });
 
   const signinUser1 = {
@@ -94,9 +131,28 @@ describe('POST signin', () => {
     password: '1234'
   };
   it('post invalid username and response with 404 and a msg showes that user is not found', async () => {
+    const signinUser = async () => {
+      let res = null;
+      try {
+        res = await axios.post('http://test.com/api/auth/signin', signinUser1, {
+          headers: {
+            // Overwrite Axios's automatically set Content-Type
+            'Content-Type': 'application/json',
+          }
+        });
+      } catch (err) {
+        const { response } = err;
+        expect(response.status).to.be.equal(404);
+        expect(response.data).to.be.equal('User not found!');
+      }
+      return res;
+    };
 
-    expect(status).to.be.equal(404);
-    expect(_body.message).to.be.equal('User not found!');
+    nock('http://test.com')
+      .post('/api/auth/signin')
+      .reply(404, 'User not found!');
+
+    await signinUser();
   });
 
   const signinUser2 = {
@@ -104,8 +160,27 @@ describe('POST signin', () => {
     password: '1234567'
   };
   it('post invalid password and response with 404 and a msg showes that username or password is not correct', async () => {
+    const signinUser = async () => {
+      let res = null;
+      try {
+        res = await axios.post('http://test.com/api/auth/signin', signinUser2, {
+          headers: {
+            // Overwrite Axios's automatically set Content-Type
+            'Content-Type': 'application/json',
+          }
+        });
+      } catch (err) {
+        const { response } = err;
+        expect(response.status).to.be.equal(404);
+        expect(response.data).to.be.equal('Username or password is not correct!');
+      }
+      return res;
+    };
 
-    expect(status).to.be.equal(400);
-    expect(_body.message).to.be.equal('Username or password is not correct!');
+    nock('http://test.com')
+      .post('/api/auth/signin')
+      .reply(404, 'Username or password is not correct!');
+
+    await signinUser();
   });
 });
