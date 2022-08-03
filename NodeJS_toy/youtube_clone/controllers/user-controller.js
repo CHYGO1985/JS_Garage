@@ -51,33 +51,46 @@ export const getUser = async (req, res, next) => {
 };
 
 export const subscribeUser = async (req, res, next) => {
-  try { 
-
-  } catch (err) { 
-    next(err); 
+  try {
+    // the current usre subscribe api/users/:id (params.id) user
+    await User.findByIdAndUpdate(req.user.id, {
+      $push: { subscribedUsers: req.params.id },
+    });
+    await User.findByIdAndUpdate(req.params.id, {
+      $inc: { subscribers: 1 },
+    })
+    res.status(200).json('Subscription successful.');
+  } catch (err) {
+    next(err);
   }
 };
 
 export const unsubscribeUser = async (req, res, next) => {
-  try { 
-
-  } catch (err) { 
-    next(err); 
+  try {
+    await User.findByIdAndUpdate(req.user.id, {
+      $pull: { subscribedUsers: req.params.id },
+    });
+    await User.findByIdAndUpdate(req.params.id, {
+      $inc: { subscribers: -1 },
+    });
+    res.status(200).json('Unsubscription successfull.');
+  } catch (err) {
+    next(err);
   }
 };
 
 export const likeUser = async (req, res, next) => {
-  try { 
+  try {
 
-  } catch (err) { 
-    next(err); 
+  } catch (err) {
+    next(err);
   }
 };
 
 export const dislikeUser = async (req, res, next) => {
-  try { 
+  try {
 
-  } catch (err) { 
-    next(err); 
+  } catch (err) {
+    next(err);
   }
 };
