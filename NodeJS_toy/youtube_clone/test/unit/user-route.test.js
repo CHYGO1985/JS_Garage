@@ -1,6 +1,7 @@
 import nock from 'nock';
 import axios from 'axios';
 import { expect } from 'chai';
+import request from 'supertest';
 
 describe('POST /api/users/:id', () => {
   const userInfoToUpdate = {
@@ -58,7 +59,32 @@ describe('POST /api/users/:id', () => {
     name: "test22"
   };
   it('pass the valid user id and repeated username and reponse 500 and correspondent message', async () => {
-   
+    // request('http://test.com')
+    //   .put('/api/users/222')
+    //   .set('Accept', 'application/json')
+    //   .set('Cookie', ['access_token=test'])
+    //   .send(repeatedUserName);
+
+    const updateUser = async () => {
+      let res = null;
+
+      try {
+        res = await request('http://test.com')
+          .put('/api/users/222')
+          .set('Accept', 'application/json')
+          .set('Cookie', ['access_token=test'])
+          .send(repeatedUserName);
+      } catch (err) {
+        const { response } = err;
+        expect(response.status).to.be.equal(500);
+        expect(response.data).to.be.equal('E11000 duplicate key error collection');
+      }
+      return res;
+    };
+
+    nock('http://test.com/')
+      .put('/api/users/222')
+      .reply(500, 'E11000 duplicate key error collection');
   })
 });
 
@@ -68,7 +94,21 @@ describe('DELETE /api/users/:id', () => {
   });
 
   it('pass valid user id and response 200 and correspondent message', async () => {
+    const deleteUser = async () => {
+      return await request('http://test.com')
+        .delete('/api/users/111')
+        .set('Accept', 'application/json')
+        .set('Cookie', ['access_token=test'])
+        .send('');
+    };
 
+    nock('http://test.com/')
+      .delete('/api/users/111')
+      .reply(200, 'User has been deleted.');
+
+    const { text, status } = await deleteUser();
+    expect(status).to.be.equal(200);
+    expect(text).to.be.equal('User has been deleted.');
   });
 });
 
