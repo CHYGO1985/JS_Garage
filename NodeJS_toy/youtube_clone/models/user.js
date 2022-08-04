@@ -34,4 +34,4 @@ const UserSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-export default mongoose.model('User', UserSchema, 'youtubeClone');
+export default mongoose.model('User', UserSchema, 'Users');
