@@ -6,6 +6,7 @@ import {
   getVideo,
   addViewCount,
   randomVideos,
+  trend,
   getSubscribedVideo,
   getByTag,
   searchVideo
@@ -17,5 +18,6 @@ const router = express.Router();
 router.post('/', verifyToken, addVideo);
 router.put('/:id', verifyToken, updateVideo);
 router.get("/sub", verifyToken, getSubscribedVideo);
+router.get('/trend', verifyToken, trend);
 
 export default router;
