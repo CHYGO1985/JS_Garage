@@ -15,6 +15,7 @@ import { verifyToken } from '../middleware/verify-token.js';
 const router = express.Router();
 
 router.post('/', verifyToken, addVideo);
+router.put('/:id', verifyToken, updateVideo);
 router.get("/sub", verifyToken, getSubscribedVideo);
 
 export default router;
