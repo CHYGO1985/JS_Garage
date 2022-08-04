@@ -1,10 +1,9 @@
-import { channel } from 'diagnostics_channel';
 import User from '../models/user.js';
 import Video from '../models/video.js';
-import { createError } from '../utils/error.js';
+import createError from '../utils/error.js';
 
 export const addVideo = async (req, res, next) => {
-  const newVideo = new Video({ userId: req.user.id }, ...req.body);
+  const newVideo = new Video({ userId: req.user.id, ...req.body });
   try {
     const savedVideo = await newVideo.save();
     res.status(200).json(savedVideo);
@@ -121,7 +120,7 @@ export const searchVideo = async (req, res, next) => {
   const query = req.query.q;
   try {
     const videos = await Video.find({
-      title: {$regex: query, $options: 'i'}
+      title: { $regex: query, $options: 'i' }
     }).limit(40);
     res.status(200).json(videos);
   } catch (err) {

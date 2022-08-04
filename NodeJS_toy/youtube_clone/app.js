@@ -13,6 +13,7 @@ import createError from './utils/error.js';
 import indexRouter from './routes/index.js';
 import userRouter from './routes/user-route.js';
 import authRouter from './routes/auth-route.js';
+import videoRouter from './routes/video-auth.js';
 
 const app = express();
 
@@ -50,6 +51,7 @@ dbConnect();
 app.use('/', indexRouter);
 app.use('/api/users', userRouter);
 app.use('/api/auth', authRouter);
+app.use('/api/videos', videoRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
