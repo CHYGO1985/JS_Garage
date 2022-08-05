@@ -1,7 +1,7 @@
-// const User = require('../models/user');
-
 import winstonLogger from '../config/winston.js';
 import User from '../models/user.js';
+import video from '../models/video.js';
+import Video from '../models/video.js'
 import createError from '../utils/error.js';
 
 export const updateUser = async (req, res, next) => {
@@ -75,16 +75,28 @@ export const unsubscribeUser = async (req, res, next) => {
 };
 
 export const likeUser = async (req, res, next) => {
+  const likeUserId = req.user.id;
+  const videoId = req.params.videoId;
   try {
-
+    await Video.findByIdAndUpdate(videoId, {
+      $addToSet: { likes: likeUserId },
+      $pull: { dislikes: likeUserId }
+    });
+    res.status(200).json('The video has been liked.');
   } catch (err) {
     next(err);
   }
 };
 
 export const dislikeUser = async (req, res, next) => {
+  const dislikeUserId = req.user.id;
+  const videoId = req.params.videoId;
   try {
-
+    await Video.findByIdAndUpdate(videoId, {
+      $addToSet: { dislikes: dislikeUserId },
+      $pull: { likes: dislikeUserId }
+    });
+    res.status(200).json('The video has been liked.');
   } catch (err) {
     next(err);
   }
