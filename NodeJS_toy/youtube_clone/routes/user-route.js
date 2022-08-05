@@ -1,6 +1,5 @@
 import express from 'express';
 import {
-  test,
   updateUser,
   deleteUser,
   getUser,
@@ -12,8 +11,6 @@ import {
 import { verifyToken } from '../middleware/verify-token.js';
 
 const router = express.Router();
-
-router.get('/test', test);
 
 // update a user
 router.put('/:id', verifyToken, updateUser);

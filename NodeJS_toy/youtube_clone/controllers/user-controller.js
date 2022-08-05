@@ -4,11 +4,6 @@ import winstonLogger from '../config/winston.js';
 import User from '../models/user.js';
 import createError from '../utils/error.js';
 
-export const test = () => {
-  res.status(200);
-  winstonLogger.info('winston logger is called');
-};
-
 export const updateUser = async (req, res, next) => {
   if (req.params.id === req.user.id) {
     try {

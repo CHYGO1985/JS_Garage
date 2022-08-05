@@ -2,6 +2,14 @@ import User from '../models/user.js';
 import Video from '../models/video.js';
 import createError from '../utils/error.js';
 
+/**
+ * 
+ * Does not add mechanism to prevent repeated video added.
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 export const addVideo = async (req, res, next) => {
   const newVideo = new Video({ userId: req.user.id, ...req.body });
   try {
