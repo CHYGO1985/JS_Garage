@@ -14,6 +14,7 @@ import indexRouter from './routes/index.js';
 import userRouter from './routes/user-route.js';
 import authRouter from './routes/auth-route.js';
 import videoRouter from './routes/video-auth.js';
+import commentRouter from './routes/comment-route.js';
 
 const app = express();
 
@@ -52,6 +53,7 @@ app.use('/', indexRouter);
 app.use('/api/users', userRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/videos', videoRouter);
+app.user('/api/comments', commentRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
