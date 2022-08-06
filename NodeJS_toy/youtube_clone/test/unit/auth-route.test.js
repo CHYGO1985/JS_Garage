@@ -1,6 +1,7 @@
 import nock from 'nock';
 import axios from 'axios';
 import { expect } from 'chai';
+import request from 'supertest';
 
 /**
  * Test /api/auth/signup endpoint
@@ -13,13 +14,20 @@ describe('POST signup', () => {
   };
 
   it('post a new user and respond with 200 and a msg showes that user has been created', async () => {
+    // const signupUser = async () => {
+    //   return await axios.post('http://test.com/api/auth/signup', tmpUser, {
+    //     headers: {
+    //       // Overwrite Axios's automatically set Content-Type
+    //       'Content-Type': 'application/json',
+    //     }
+    //   });
+    // };
+
     const signupUser = async () => {
-      return await axios.post('http://test.com/api/auth/signup', tmpUser, {
-        headers: {
-          // Overwrite Axios's automatically set Content-Type
-          'Content-Type': 'application/json',
-        }
-      });
+      return await request('http://test.com')
+        .post('/api/auth/signup')
+        .set('Accept', 'application/json')
+        .send(tmpUser);
     };
 
     nock('http://test.com')
@@ -31,9 +39,10 @@ describe('POST signup', () => {
       })
       .reply(200, 'User has been created!');
 
-    const { data, status } = await signupUser();
+    const { text, status } = await signupUser();
+
     expect(status).to.be.equal(200);
-    expect(data).to.be.equal('User has been created!')
+    expect(text).to.be.equal('User has been created!')
   });
 
   const dupUserName = {
@@ -41,7 +50,7 @@ describe('POST signup', () => {
     email: 'test22@gmail.com',
     password: '1234'
   };
-  it.only('post duplicate user name and respone with 500 and a msg showes that duplicate key error', async () => {
+  it('post duplicate user name and respone with 500 and a msg showes that duplicate key error', async () => {
     const signupUser = async () => {
       let res = null;
       try {

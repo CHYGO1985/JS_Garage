@@ -31,6 +31,7 @@ describe('POST signup', () => {
       .post('/api/auth/signup')
       .set('Accept', 'application/json')
       .send(tmpUser);
+    
     expect(status).to.be.equal(200);
     expect(text).to.be.equal('User has been created!')
   });
