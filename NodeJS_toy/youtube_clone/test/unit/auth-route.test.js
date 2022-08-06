@@ -23,7 +23,12 @@ describe('POST signup', () => {
     };
 
     nock('http://test.com')
-      .post('/api/auth/signup')
+      .post('/api/auth/signup', body => {
+        expect(body.name).to.be.equal('testaa');
+        expect(body.email).to.be.equal('testaa@gmail.com');
+        expect(body.password).to.be.equal('1234');
+        return true;
+      })
       .reply(200, 'User has been created!');
 
     const { data, status } = await signupUser();
@@ -36,7 +41,7 @@ describe('POST signup', () => {
     email: 'test22@gmail.com',
     password: '1234'
   };
-  it('post duplicate user name and respone with 500 and a msg showes that duplicate key error', async () => {
+  it.only('post duplicate user name and respone with 500 and a msg showes that duplicate key error', async () => {
     const signupUser = async () => {
       let res = null;
       try {
@@ -56,7 +61,12 @@ describe('POST signup', () => {
     };
 
     nock('http://test.com')
-      .post('/api/auth/signup')
+      .post('/api/auth/signup', body => {
+        expect(body.name).to.be.equal('testaa');
+        expect(body.email).to.be.equal('test22@gmail.com');
+        expect(body.password).to.be.equal('1234');
+        return true;
+      })
       .reply(500, 'E11000 duplicate key error collection');
 
     await signupUser();
