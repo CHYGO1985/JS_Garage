@@ -19,7 +19,10 @@ describe('POST /api/users/:id', () => {
     };
 
     nock('http://test.com')
-      .put('/api/users/111')
+      .put('/api/users/111', body => {
+        expect(body.name).to.be.equal('updated');
+        return true;
+      })
       .reply(200, {
         name: 'updated',
         email: 'test11@gmail.com'
@@ -51,7 +54,10 @@ describe('POST /api/users/:id', () => {
     };
 
     nock('http://test.com/')
-      .put('/api/users/222')
+      .put('/api/users/222', body => {
+        expect(body.name).to.be.equal('updated');
+        return true;
+      })
       .reply(403, 'You can only update your account!');
   })
 
@@ -83,7 +89,9 @@ describe('POST /api/users/:id', () => {
     };
 
     nock('http://test.com/')
-      .put('/api/users/222')
+      .put('/api/users/222', body => {
+        expect(body.name).to.be.equal('test22');
+      })
       .reply(500, 'E11000 duplicate key error collection');
   })
 });
