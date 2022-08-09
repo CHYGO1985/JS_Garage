@@ -15,13 +15,17 @@ import LiveTvIcon from '@mui/icons-material/LiveTv';
 import SettingsIcon from '@mui/icons-material/Settings';
 import FlagIcon from '@mui/icons-material/Flag';
 import HelpIcon from '@mui/icons-material/Help';
-
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import SettingsBrightnessOutlinedIcon from '@mui/icons-material/SettingsBrightnessOutlined';
 
 const Container = styled.div`
   flex: 1;
-  background-color: #202020;
+  background-color: ${({ theme }) => theme.bg};
   height: 100vh;
-  color: white;
+  color: ${({ theme }) => theme.textColor};
+  position: sticky;
+  top: 0;
+  overflow-y: scroll;
 `;
 
 const Wrapper = styled.div`
@@ -46,9 +50,41 @@ const Item = styled.div`
   gap: 20px;
   cursor: pointer;
   padding: 7.5px 0px;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.delimeterColor};
+  }
 `;
 
-const Menu = () => {
+const Hr = styled.hr`
+  margin: 15px 0px;
+  border: 0.5px solid;
+  color: ${({ theme }) => theme.textColor};
+`;
+
+const Title = styled.h2`
+  font-size: 14px;
+  font-weight: 500;
+  color: #aaaaa;
+  margin-bottom: 20px;
+`;
+
+const Login = styled.div``;
+const Button = styled.button`
+  padding: 5px 15px;
+  background-color: transparent;
+  color: #3ea6ff;
+  border: 1px solid #3ea6ff;
+  align-items: center;
+  display: flex;
+  border-radius: 5px;
+  margin-top: 10px;
+  cursor: pointer;
+  font-weight: 500;
+  gap: 5px;
+`;
+
+const Menu = ({ darkMode, setDarkMode }) => {
   return (
     <Container>
       <Wrapper>
@@ -68,6 +104,7 @@ const Menu = () => {
           <SubscriptionsIcon />
           Subscriptions
         </Item>
+        <Hr />
         <Item>
           <VideoLibraryIcon />
           Library
@@ -76,6 +113,15 @@ const Menu = () => {
           <HistoryIcon />
           History
         </Item>
+        <Hr />
+        <Login>
+          Sign in to like videos, comment, and subscribe.
+          <Button>
+            <AccountCircleIcon />
+            SIGN IN
+          </Button>
+        </Login>
+        <Title>BEST OF JINGJIETUBE</Title>
         <Item>
           <MusicNoteIcon />
           Music
@@ -100,6 +146,7 @@ const Menu = () => {
           <LiveTvIcon />
           Live
         </Item>
+        <Hr />
         <Item>
           <SettingsIcon />
           Settings
@@ -111,6 +158,10 @@ const Menu = () => {
         <Item>
           <HelpIcon />
           Help
+        </Item>
+        <Item onClick={() => setDarkMode(!darkMode)}>
+          <SettingsBrightnessOutlinedIcon />
+          {darkMode ? "Light" : "Dark"} Mode
         </Item>
       </Wrapper>
     </Container>
