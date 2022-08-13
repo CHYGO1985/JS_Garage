@@ -44,6 +44,7 @@ const App = () => {
                   <Route path='signin' element={<SignIn />} />
                   <Route path='video'>
                     <Route path=':id' element={<Video />} />
+                    <Route path='test' element={<Video />} />
                   </Route>
                 </Route>
               </Routes>
