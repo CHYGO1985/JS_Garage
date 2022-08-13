@@ -12,7 +12,6 @@ import { darkTheme, lightTheme } from './utils/Themes';
 import Home from './routes/Home.js';
 import SignIn from './routes/SignIn.js';
 import Video from './routes/Video.js';
-import Sinon from 'sinon';
 
 const Container = styled.div`
   display: flex;
