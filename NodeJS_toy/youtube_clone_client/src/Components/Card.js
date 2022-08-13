@@ -35,7 +35,7 @@ const Texts = styled.div``;
 const Title = styled.h1`
   font-size: 16px;
   font-weight: 500;
-  color: ${({ theme }) => theme.text};
+  color: ${({ theme }) => theme.textColor};
 `;
 
 const ChannelName = styled.h2`
