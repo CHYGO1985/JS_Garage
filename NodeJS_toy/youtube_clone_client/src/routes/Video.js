@@ -10,6 +10,7 @@ const Container = styled.div`
   display: flex;
   gap: 24px;
   color: ${({ theme }) => theme.textColor};
+  overflow-x: scroll;
 `;
 
 const Content = styled.div`
@@ -85,7 +86,16 @@ const Description = styled.p`
   font-size: 14px;
 `;
 
-const Subscribe = styled.button``;
+const Subscribe = styled.button`
+  background-color: #cc1a00;
+  font-weight: 500;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  height: max-content;
+  padding: 10px 20px;
+  cursur: pointer
+`;
 
 const Recommendation = styled.div`
   flex: 2;
