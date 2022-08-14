@@ -7,6 +7,7 @@ import ReplyOutlinedIcon from '@mui/icons-material/ReplyOutlined';
 import AddTaskOutlinedIcon from '@mui/icons-material/AddTaskOutlined';
 
 import Comments from '../components/Comments.js';
+import Card from '../components/Card.js';
 
 const Container = styled.div`
   display: flex;
@@ -157,7 +158,17 @@ const Video = () => {
         <Comments />
       </Content>
       <Recommendation>
-        recommendation
+        <Card type='small'/>
+        <Card type='small'/>
+        <Card type='small'/>
+        <Card type='small'/>
+        <Card type='small'/>
+        <Card type='small'/>
+        <Card type='small'/>
+        <Card type='small'/>
+        <Card type='small'/>
+        <Card type='small'/>
+        <Card type='small'/>
       </Recommendation>
     </Container>
   );
