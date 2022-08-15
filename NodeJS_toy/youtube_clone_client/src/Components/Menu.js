@@ -95,10 +95,12 @@ const Menu = ({ darkMode, setDarkMode }) => {
             JingjieTube
           </Logo>
         </Link>
-        <Item>
-          <HomeIcon />
-          Home
-        </Item>
+        <Link to='/' style={{ textDecoration: 'none', color: 'inherit' }}>
+          <Item>
+            <HomeIcon />
+            Home
+          </Item>
+        </Link>   
         <Item>
           <ExploreIcon />
           Explore
@@ -119,10 +121,12 @@ const Menu = ({ darkMode, setDarkMode }) => {
         <Hr />
         <Login>
           Sign in to like videos, comment, and subscribe.
-          <Button>
-            <AccountCircleIcon />
-            SIGN IN
-          </Button>
+          <Link to='signin' style={{ textDecoration: 'none' }}>
+            <Button>
+              <AccountCircleIcon />
+              SIGN IN
+            </Button>
+          </Link>
         </Login>
         <Title>BEST OF JINGJIETUBE</Title>
         <Item>
