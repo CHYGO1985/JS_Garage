@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
@@ -7,7 +7,11 @@ import ReplyOutlinedIcon from '@mui/icons-material/ReplyOutlined';
 import AddTaskOutlinedIcon from '@mui/icons-material/AddTaskOutlined';
 
 import Comments from '../components/Comments.js';
-import Card from '../components/Card.js';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
+import { fetchFailure, fetchSuccess } from '../redux/videoSlice.js';
+import { format } from 'timeago.js';
 
 const Container = styled.div`
   display: flex;
@@ -31,7 +35,7 @@ const Title = styled.h1`
 
 const Details = styled.div`
   display: flex;
-  align-tems: center;
+  align-items: center;
   justify-content: space-between;
 `;
 
@@ -97,7 +101,7 @@ const Subscribe = styled.button`
   border-radius: 5px;
   height: max-content;
   padding: 10px 20px;
-  cursur: pointer
+  cursor: pointer
 `;
 
 const Recommendation = styled.div`
@@ -105,6 +109,29 @@ const Recommendation = styled.div`
 `;
 
 const Video = () => {
+  const { currentUser } = useSelector((state) => state.user);
+  const { currentVideo } = useSelector((state) => state.video);
+  const dispatch = useDispatch();
+
+  const path = useLocation().pathname.split('/')[2];
+  const [channel, setChannel] = useState({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const videoRes = await axios.get(`/videos/find/${path}`);
+        const channelRes = await axios.get(
+          `/users/find/${videoRes.data.userId}`
+        );
+        setChannel(channelRes.data);
+        dispatch(fetchSuccess(videoRes.data));
+      } catch (err) { 
+        dispatch(fetchFailure());
+      }
+    };
+    fetchData();
+  }, [path, dispatch]);
+
   return (
     <Container>
       <Content>
@@ -112,16 +139,16 @@ const Video = () => {
           <iframe
             width="100%"
             height="720"
-            src="https://www.youtube.com/embed/4VR-6AS0-l4"
-            title="YouTube video player"
-            frameborder="0"
+            src={currentVideo.videoUrl}
+            title={currentVideo.title}
+            frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
+            allowFullScreen
           ></iframe>
         </VideoWrapper>
         <Title>Test Video</Title>
         <Details>
-          <Info>7,948,154 views • Aug 22, 2022</Info>
+          <Info>{currentVideo.views} views • {format(currentVideo.createdAt)}</Info>
           <Buttons>
             <Button>
               <ThumbUpOutlinedIcon /> 123
@@ -140,15 +167,12 @@ const Video = () => {
         <Hr />
         <Channel>
           <ChannelInfo>
-            <Image src="https://yt3.ggpht.com/yti/APfAmoE-Q0ZLJ4vk3vqmV4Kwp0sbrjxLyB8Q4ZgNsiRH=s88-c-k-c0x00ffffff-no-rj-mo" />
+            <Image src={channel.img} />
             <ChannelDetail>
-              <ChannelName>Jingjie Dev</ChannelName>
-              <ChannelCounter>200K subscribers</ChannelCounter>
+              <ChannelName>{channel.name}</ChannelName>
+              <ChannelCounter>{channel.subcribers}</ChannelCounter>
               <Description>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                Doloribus laborum delectus unde quaerat dolore culpa sit aliquam
-                at. Vitae facere ipsum totam ratione exercitationem. Suscipit
-                animi accusantium dolores ipsam ut.
+                {channel.desc}
               </Description>
             </ChannelDetail>
           </ChannelInfo>
@@ -157,19 +181,6 @@ const Video = () => {
         <Hr />
         <Comments />
       </Content>
-      <Recommendation>
-        <Card type='small'/>
-        <Card type='small'/>
-        <Card type='small'/>
-        <Card type='small'/>
-        <Card type='small'/>
-        <Card type='small'/>
-        <Card type='small'/>
-        <Card type='small'/>
-        <Card type='small'/>
-        <Card type='small'/>
-        <Card type='small'/>
-      </Recommendation>
     </Container>
   );
 };

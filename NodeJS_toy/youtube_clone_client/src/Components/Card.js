@@ -49,7 +49,7 @@ const ChannelName = styled.h2`
 `;
 
 const Info = styled.div`
-  ont-size: 14px;
+  font-size: 14px;
   color: ${({ theme }) => theme.textSoft};
 `;
 
@@ -65,7 +65,7 @@ const Card = ({ type, video }) => {
   }, [video.userId]);
 
   return (
-    <Link to="/video/test" style={{ textDecoration: "none" }}>
+    <Link to={`/video/${video._id}`} style={{ textDecoration: "none" }}>
       <Container type={type}>
         <Image
           type={type}

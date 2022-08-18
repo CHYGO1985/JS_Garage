@@ -89,8 +89,6 @@ const Button = styled.button`
 const Menu = ({ darkMode, setDarkMode }) => {
   const { currentUser } = useSelector((state) => state.user);
 
-  console.log(currentUser);
-
   return (
     <Container>
       <Wrapper>

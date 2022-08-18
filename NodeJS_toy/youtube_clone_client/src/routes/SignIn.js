@@ -98,7 +98,6 @@ const SignIn = () => {
         email: googleLoginInfo.user.email,
         img: googleLoginInfo.user.photoURL,
       });
-      console.log(res);
       dispatch(loginSuccess(res.data));
       navigate('/');              
     } catch (err) {
