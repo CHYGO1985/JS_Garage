@@ -22,8 +22,8 @@ const Wrapper = styled.div`
   padding: 20px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  gap: 20px;
+  position: relative;
 `;
 
 const Close = styled.div`
@@ -34,6 +34,7 @@ const Close = styled.div`
 `;
 
 const Title = styled.h1`
+  width: 100%;
   text-align: center;
 `;
 
@@ -43,6 +44,7 @@ const Input = styled.input`
   padding: 10px;
   background-color: transparent;
   z-index: 999;
+  color: ${({ theme }) => theme.textColor};
 `;
 
 const Desc = styled.textarea`
@@ -50,6 +52,7 @@ const Desc = styled.textarea`
   border-radius: 5px;
   padding: 10px;
   background-color: transparent;
+  color: ${({ theme }) => theme.textColor};
 `;
 
 const Button = styled.button`
