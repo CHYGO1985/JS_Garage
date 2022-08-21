@@ -6,6 +6,8 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import VideoCallOutlinedIcon from '@mui/icons-material/VideoCallOutlined';
 
+import Upload from './Upload.js';
+
 const Container = styled.div`
   background-color: ${({ theme }) => theme.bg};
   position: sticky;
@@ -79,7 +81,8 @@ const Navbar = () => {
   const { currentUser } = useSelector((state) => state.user);
 
   return (
-    <Container>
+    <>
+      <Container>
       <Wrapper>
         <Search>
           <Input placeholder="Search" />
@@ -87,7 +90,9 @@ const Navbar = () => {
         </Search>
         {currentUser ? (
           <User>
-            <VideoCallOutlinedIcon onClick={() => setOpen(true)} />
+            <VideoCallOutlinedIcon onClick={() => 
+              setOpen(true)
+            } />
             <Avatar src={currentUser.img} />
             {currentUser.name}
           </User>
@@ -101,6 +106,8 @@ const Navbar = () => {
         )}
       </Wrapper>
     </Container>
+    {open && <Upload setOpen={setOpen} />}
+    </>
   );
 };
 
