@@ -12,6 +12,7 @@ import { darkTheme, lightTheme } from './utils/Themes';
 import Home from './routes/Home.js';
 import SignIn from './routes/SignIn.js';
 import Video from './routes/Video.js';
+import Search from './routes/Search.js';
 
 const Container = styled.div`
   display: flex;
@@ -42,10 +43,10 @@ const App = () => {
                   <Route index element={<Home type='random' />} />
                   <Route path='trends' element={<Home type='trend' />} />
                   <Route path='subscriptions' element={<Home type='sub' />} />
+                  <Route path='search' element={<Search />} />
                   <Route path='signin' element={<SignIn />} />
                   <Route path='video'>
                     <Route path=':id' element={<Video />} />
-                    <Route path='test' element={<Video />} />
                   </Route>
                 </Route>
               </Routes>
