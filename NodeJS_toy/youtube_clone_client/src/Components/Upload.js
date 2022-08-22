@@ -9,6 +9,7 @@ import {
 } from "firebase/storage";
 
 import app from '../firebase.js';
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   width: 100%;
@@ -84,6 +85,8 @@ const Upload = ({ setOpen }) => {
   const [inputs, setInputs] = useState({});
   const [tags, setTags] = useState([]);
 
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     setInputs((prevState) => ({
       ...prevState, [e.target.name]: e.target.value
@@ -111,10 +114,8 @@ const Upload = ({ setOpen }) => {
           setVideoPerc(Math.round(progress));
         switch (snapshot.state) {
           case 'paused':
-            console.log('Upload is paused');
             break;
           case 'running':
-            console.log('Upload is running');
             break;
           default:
             break;
@@ -140,7 +141,9 @@ const Upload = ({ setOpen }) => {
       () => {
         // Upload completed successfully, now we can get the download URL
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          console.log('File available at', downloadURL);
+          setInputs((prevState) => ({
+            ...prevState, [urlType]: downloadURL
+          }));
         });
       });
   };
@@ -152,6 +155,13 @@ const Upload = ({ setOpen }) => {
   useEffect(() => {
     img && uploadFile(img, 'imgUrl');
   }, [img]);
+
+  const handleUpload = async (e) => {
+    e.preventDefault();
+    const res = await axios.post('/videos', {...inputs, tags});
+    setOpen(false);
+    res.status === 200 && navigate(`/video/${res.data._id}`);
+  }
 
   return (
     <Container>
@@ -183,7 +193,7 @@ const Upload = ({ setOpen }) => {
         <Input
           type="text"
           placeholder="Separate the tags with commas."
-          onChange={handleChange}
+          onChange={handleTags}
         />
         <Label>Image:</Label>
         {imgPerc > 0 ? (
@@ -195,7 +205,7 @@ const Upload = ({ setOpen }) => {
             onChange={(e) => setImg(e.target.files[0])}
           />
         )}
-        <Button>Upload</Button>
+        <Button onClick={handleUpload}>Upload</Button>
       </Wrapper>
     </Container>
   );
