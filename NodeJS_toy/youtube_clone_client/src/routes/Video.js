@@ -16,6 +16,8 @@ import { fetchStart, fetchFailure, fetchSuccess, like, dislike } from '../redux/
 import { format } from 'timeago.js';
 import { subscription } from '../redux/userSlice.js';
 
+import Recommendation from '../components/Recommendation.js';
+
 const Container = styled.div`
   display: flex;
   gap: 24px;
@@ -105,10 +107,6 @@ const Subscribe = styled.button`
   height: max-content;
   padding: 10px 20px;
   cursor: pointer
-`;
-
-const Recommendation = styled.div`
-  flex: 2;
 `;
 
 const Video = () => {
@@ -217,6 +215,7 @@ const Video = () => {
         <Hr />
         <Comments />
       </Content>
+      <Recommendation tags={currentVideo.tags} />
     </Container>
   );
 };
