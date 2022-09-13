@@ -18,36 +18,41 @@ async function test() {
 
   entries.map(async (entry) => {
     // there are multi request in item
-    // console.log(request.item);
+    // console.log(entry.item);
     entry.item.filter((ele) => {
       // filter the empty request
       return ele.request.url !== undefined;
+      //  && ele.request.body !== undefined;
     }).map(async (ele) => {
-      console.log(ele.request.url?.raw);
-      // const result = await autocannon({
-      //   url: ele.request.url.raw,
-      //   method: ele.request.method,
-      //    // read other options here: https://github.com/mcollina/autocannon#autocannonopts-cb
-      // });
-      // // or print table
+      // console.log(JSON.stringify(ele.request.body));
+      console.log(ele.request.method + " " + ele.request.url.raw);
+      const result = await autocannon({
+        url: ele.request.url.raw,
+        method: ele.request.method,
+        connections: 100,
+        workers: 50,
+        duration: 5,
+        body: ele.request.body === undefined? null : JSON.stringify(ele.request.body),
+         // read other options here: https://github.com/mcollina/autocannon#autocannonopts-cb
+      }, finishedBench);
+      // or print table
+      // result = (!result) ? {} : result;
       // autocannon.printResult(result);
+
+      // track process
+      autocannon.track(result, {renderProgressBar: false});
+
+      // this is used to kill the instance on CTRL-C
+      process.once('SIGINT', () => {
+        result.stop()
+      })
+
+      function finishedBench (err, res) {
+        console.log('finished bench', err, res)
+      } 
     });
   });
-  // for (const item of requests) {
-  //   // test request using autocannon, pass the method, body, etc. on the autocannon options
-  //   // you might need to manipulate your data in item so you can pass it to autocannon
-    
-  //   console.log(`Testing ${item}`);
-
-  //   const result = await autocannon({
-  //     url: item.request.url.raw,
-  //     method: item.request.method,
-  //      // read other options here: https://github.com/mcollina/autocannon#autocannonopts-cb
-  //   })
-  //   // console.log(result);
-  //   // or print table
-  //   autocannon.printResult(result);
-  // }
 };
 
 test();
+
