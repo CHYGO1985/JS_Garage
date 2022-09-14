@@ -22,7 +22,6 @@ async function test() {
     entry.item.filter((ele) => {
       // filter the empty request
       return ele.request.url !== undefined;
-      //  && ele.request.body !== undefined;
     }).map(async (ele) => {
       // console.log(JSON.stringify(ele.request.body));
       console.log(ele.request.method + " " + ele.request.url.raw);
