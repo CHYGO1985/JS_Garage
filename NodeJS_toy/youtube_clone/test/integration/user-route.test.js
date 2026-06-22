@@ -4,123 +4,139 @@ import { expect } from 'chai';
 import app from '../../app.js';
 import User from '../../models/user.js';
 
-let userId = null;
-let token = null;
+let userSequence = 0;
 
-/**
- * signup then signin to get id and cookie for the following tests.
- */
-before(async () => {
-  const signupUser = {
-    name: 'test11',
-    email: 'test11@gmail.com',
-    password: '1234'
+const buildUser = (label) => {
+  userSequence += 1;
+
+  return {
+    name: `${label}-${userSequence}`,
+    email: `${label}-${userSequence}@gmail.com`,
+    password: '1234',
   };
+};
 
-  const signupUser2 = {
-    name: 'test22',
-    email: 'test22@gmail.com',
-    password: '1234'
-  };
-
-  // signup user
-  const { status } = await request(app)
+const signupUser = async (user) =>
+  request(app)
     .post('/api/auth/signup')
     .set('Accept', 'application/json')
-    .send(signupUser);
-  if (status !== 200) throw new Error('Could not signup user for user router tests!');
+    .send(user);
 
-  const res = await request(app)
-    .post('/api/auth/signup')
-    .set('Accept', 'application/json')
-    .send(signupUser2);
-  if (res.status !== 200) throw new Error('Could not signup user for user router tests!');
-
-  const { email, ...signinUser } = signupUser;
-  // signin user to get user id and tooken for the user router testing
-  const { header, _body } = await request(app)
+const signinUser = async (user) =>
+  request(app)
     .post('/api/auth/signin')
     .set('Accept', 'application/json')
-    .send(signinUser);
+    .send({
+      name: user.name,
+      password: user.password,
+    });
 
-  userId = _body._id;
-  token = header['set-cookie'][0].split(';')[0];
-  console.log(userId);
-});
+const createAuthenticatedUser = async (label) => {
+  const user = buildUser(label);
+  const signupResponse = await signupUser(user);
+  expect(signupResponse.status).to.equal(200);
 
-after(async () => {
-  await User.deleteMany();
-});
+  const signinResponse = await signinUser(user);
+  expect(signinResponse.status).to.equal(200);
 
-describe('PUT /api/users/:id', () => {
-  const userInfoToUpdate = {
-    name: "updated"
+  return {
+    credentials: user,
+    userId: signinResponse.body._id,
+    cookie: signinResponse.headers['set-cookie'][0].split(';')[0],
   };
-  it('pass with valid user id and username to update and response 200 with updated username and email', async () => {
+};
 
-    const { _body, status } = await request(app)
-      .put(`/api/users/${userId}`)
-      .set('Accept', 'application/json')
-      .set('Cookie', [`${token}`])
-      .send(userInfoToUpdate);
+describe('user routes integration tests', () => {
+  let owner = null;
+  let otherUser = null;
 
-    expect(status).to.be.equal(200);
-    expect(_body.name).to.be.equal('updated');
-    expect(_body.email).to.be.equal('test11@gmail.com');
+  beforeEach(async function beforeEachTest() {
+    this.timeout(20000);
+    await User.deleteMany();
+
+    owner = await createAuthenticatedUser('owner');
+    otherUser = await createAuthenticatedUser('other');
   });
 
-  it('pass the invalid user id and reponse 403 and correspondent message', async () => {
+  describe('PUT /api/users/:id', () => {
+    it('updates the authenticated user', async () => {
+      const response = await request(app)
+        .put(`/api/users/${owner.userId}`)
+        .set('Accept', 'application/json')
+        .set('Cookie', [owner.cookie])
+        .send({ name: 'updated-name' });
 
-    const invalidUserId = userId + '11';
-    const { _body, status } = await request(app)
-      .put(`/api/users/${invalidUserId}`)
-      .set('Accept', 'application/json')
-      .set('Cookie', [`${token}`])
-      .send(userInfoToUpdate);
+      expect(response.status).to.equal(200);
+      expect(response.body.name).to.equal('updated-name');
+      expect(response.body.email).to.equal(owner.credentials.email);
+    });
 
-    expect(status).to.be.equal(403);
-    expect(_body.message).to.be.equal('You can only update your account!');
-  })
+    it('rejects updates for another user', async () => {
+      const response = await request(app)
+        .put(`/api/users/${otherUser.userId}`)
+        .set('Accept', 'application/json')
+        .set('Cookie', [owner.cookie])
+        .send({ name: 'hijack-name' });
 
-  const repeatedUserName = {
-    name: "test22"
-  };
-  it('pass the valid user id and repeated username and reponse 500 and correspondent message', async () => {
+      expect(response.status).to.equal(403);
+      expect(response.body.message).to.equal('You can only update your account!');
+    });
 
-    const { _body, status } = await request(app)
-      .put(`/api/users/${userId}`)
-      .set('Accept', 'application/json')
-      .set('Cookie', [`${token}`])
-      .send(repeatedUserName);
+    it('rejects duplicate usernames', async () => {
+      const response = await request(app)
+        .put(`/api/users/${owner.userId}`)
+        .set('Accept', 'application/json')
+        .set('Cookie', [owner.cookie])
+        .send({ name: otherUser.credentials.name });
 
-    expect(status).to.be.equal(500);
-    expect(_body.message).to.contains(' E11000 duplicate key error collection');
-  })
-});
+      expect(response.status).to.equal(500);
+      expect(response.body.message).to.include('duplicate key error');
+    });
 
-describe('DELETE /api/users/:id', () => {
-  it('pass invalid user id and response 403 and correspondent message', async () => {
-    const invalidUserId = userId + '11';
-    const { _body, status } = await request(app)
-      .delete(`/api/users/${invalidUserId}`)
-      .set('Accept', 'application/json')
-      .set('Cookie', [`${token}`])
+    it('requires authentication', async () => {
+      const response = await request(app)
+        .put(`/api/users/${owner.userId}`)
+        .set('Accept', 'application/json')
+        .send({ name: 'updated-name' });
 
-    expect(status).to.be.equal(403);
-    expect(_body.message).to.be.equal('You can only delete your account!')
+      expect(response.status).to.equal(401);
+      expect(response.body.message).to.equal('Not authenticated!');
+    });
   });
 
-  it('pass valid user id and response 200 and correspondent message', async () => {
-    const { _body, status } = await request(app)
-      .delete(`/api/users/${userId}`)
-      .set('Accept', 'application/json')
-      .set('Cookie', [`${token}`])
+  describe('DELETE /api/users/:id', () => {
+    it('rejects deletes for another user', async () => {
+      const response = await request(app)
+        .delete(`/api/users/${otherUser.userId}`)
+        .set('Accept', 'application/json')
+        .set('Cookie', [owner.cookie]);
 
-    expect(status).to.be.equal(200);
-    expect(_body).to.be.equal('User has been deleted.');
+      expect(response.status).to.equal(403);
+      expect(response.body.message).to.equal('You can only delete your account!');
+    });
+
+    it('deletes the authenticated user', async () => {
+      const response = await request(app)
+        .delete(`/api/users/${owner.userId}`)
+        .set('Accept', 'application/json')
+        .set('Cookie', [owner.cookie]);
+
+      expect(response.status).to.equal(200);
+      expect(response.body).to.equal('User has been deleted.');
+      expect(await User.findById(owner.userId)).to.equal(null);
+    });
   });
-});
 
-describe('GET /api/users/find/:id', () => {
+  describe('GET /api/users/find/:id', () => {
+    it('returns the requested user', async () => {
+      const response = await request(app)
+        .get(`/api/users/find/${owner.userId}`)
+        .set('Accept', 'application/json');
 
+      expect(response.status).to.equal(200);
+      expect(response.body._id).to.equal(owner.userId);
+      expect(response.body.name).to.equal(owner.credentials.name);
+      expect(response.body.email).to.equal(owner.credentials.email);
+    });
+  });
 });

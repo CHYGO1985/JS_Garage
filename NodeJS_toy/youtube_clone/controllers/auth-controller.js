@@ -7,8 +7,8 @@ import User from '../models/user.js';
 
 export const signup = async (req, res, next) => {
   try {
-    const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(req.body.password, salt);
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(req.body.password, salt);
     const newUser = new User({ ...req.body, password: hash });
 
     await newUser.save();

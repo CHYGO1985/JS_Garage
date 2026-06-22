@@ -1,125 +1,233 @@
-import nock from 'nock';
-import axios from 'axios';
 import { expect } from 'chai';
-import request from 'supertest';
 
-describe('POST /api/users/:id', () => {
-  const userInfoToUpdate = {
-    name: "updated"
+import User from '../../models/user.js';
+import {
+  deleteUser,
+  getUser,
+  updateUser,
+} from '../../controllers/user-controller.js';
+
+const originalUserMethods = {
+  findById: User.findById,
+  findByIdAndDelete: User.findByIdAndDelete,
+  findByIdAndUpdate: User.findByIdAndUpdate,
+};
+
+const createRes = () => {
+  const res = {};
+
+  res.status = (statusCode) => {
+    res.statusCode = statusCode;
+    return res;
   };
-  it('pass with valid user id and username to update and response 200 with updated username and email', async () => {
-    const updateUser = async () => {
-      return await axios.put('http://test.com/api/users/111', userInfoToUpdate, {
-        headers: {
-          // Overwrite Axios's automatically set Content-Type
-          'Content-Type': 'application/json',
-          Cookie: 'access_token=test'
-        }
-      });
-    };
 
-    nock('http://test.com')
-      .put('/api/users/111', body => {
-        expect(body.name).to.be.equal('updated');
-        return true;
-      })
-      .reply(200, {
+  res.json = (body) => {
+    res.body = body;
+    return res;
+  };
+
+  return res;
+};
+
+const createNext = () => {
+  const errors = [];
+  const next = (err) => {
+    errors.push(err);
+  };
+
+  next.errors = errors;
+  return next;
+};
+
+const restoreUserModel = () => {
+  User.findById = originalUserMethods.findById;
+  User.findByIdAndDelete = originalUserMethods.findByIdAndDelete;
+  User.findByIdAndUpdate = originalUserMethods.findByIdAndUpdate;
+};
+
+afterEach(() => {
+  restoreUserModel();
+});
+
+describe('user-controller unit tests', () => {
+  describe('updateUser', () => {
+    it('updates the authenticated user and returns the updated document', async () => {
+      const req = {
+        params: { id: 'user-1' },
+        user: { id: 'user-1' },
+        body: { name: 'updated' },
+      };
+      const res = createRes();
+      const next = createNext();
+      const updatedUser = {
+        _id: 'user-1',
         name: 'updated',
-        email: 'test11@gmail.com'
-      });
+        email: 'test11@gmail.com',
+      };
+      let receivedArgs = null;
 
-    const { data, status } = await updateUser();
-    expect(status).to.be.equal(200);
-    expect(data.name).to.be.equal('updated');
-    expect(data.email).to.be.equal('test11@gmail.com');
+      User.findByIdAndUpdate = async (...args) => {
+        receivedArgs = args;
+        return updatedUser;
+      };
+
+      await updateUser(req, res, next);
+
+      expect(receivedArgs).to.deep.equal([
+        'user-1',
+        { $set: { name: 'updated' } },
+        { new: true },
+      ]);
+      expect(res.statusCode).to.equal(200);
+      expect(res.body).to.deep.equal(updatedUser);
+      expect(next.errors).to.be.empty;
+    });
+
+    it('rejects updates for another user before touching the model', async () => {
+      const req = {
+        params: { id: 'user-2' },
+        user: { id: 'user-1' },
+        body: { name: 'updated' },
+      };
+      const res = createRes();
+      const next = createNext();
+      let wasCalled = false;
+
+      User.findByIdAndUpdate = async () => {
+        wasCalled = true;
+      };
+
+      await updateUser(req, res, next);
+
+      expect(wasCalled).to.equal(false);
+      expect(next.errors).to.have.lengthOf(1);
+      expect(next.errors[0].status).to.equal(403);
+      expect(next.errors[0].message).to.equal('You can only update your account!');
+      expect(res.statusCode).to.equal(undefined);
+    });
+
+    it('forwards model errors to Express', async () => {
+      const req = {
+        params: { id: 'user-1' },
+        user: { id: 'user-1' },
+        body: { name: 'updated' },
+      };
+      const res = createRes();
+      const next = createNext();
+      const dbError = new Error('db failure');
+
+      User.findByIdAndUpdate = async () => {
+        throw dbError;
+      };
+
+      await updateUser(req, res, next);
+
+      expect(next.errors).to.deep.equal([dbError]);
+      expect(res.statusCode).to.equal(undefined);
+    });
   });
 
-  it('pass the invalid user id and reponse 403 and correspondent message', async () => {
-    const updateUser = async () => {
-      let res = null;
+  describe('deleteUser', () => {
+    it('deletes the authenticated user and returns the success message', async () => {
+      const req = {
+        params: { id: 'user-1' },
+        user: { id: 'user-1' },
+      };
+      const res = createRes();
+      const next = createNext();
+      let deletedUserId = null;
 
-      try {
-        res = await axios.put('http://test.com/api/users/222', userInfoToUpdate, {
-          headers: {
-            'Content-Type': 'application/json',
-            Cookie: 'access_token=test'
-          }
-        });
-      } catch (err) {
-        const { response } = err;
-        expect(response.status).to.be.equal(403);
-        expect(response.data).to.be.equal('You can only update your account!');
-      }
-      return res;
-    };
+      User.findByIdAndDelete = async (userId) => {
+        deletedUserId = userId;
+      };
 
-    nock('http://test.com/')
-      .put('/api/users/222', body => {
-        expect(body.name).to.be.equal('updated');
-        return true;
-      })
-      .reply(403, 'You can only update your account!');
-  })
+      await deleteUser(req, res, next);
 
-  const repeatedUserName = {
-    name: "test22"
-  };
-  it('pass the valid user id and repeated username and reponse 500 and correspondent message', async () => {
-    // request('http://test.com')
-    //   .put('/api/users/222')
-    //   .set('Accept', 'application/json')
-    //   .set('Cookie', ['access_token=test'])
-    //   .send(repeatedUserName);
+      expect(deletedUserId).to.equal('user-1');
+      expect(res.statusCode).to.equal(200);
+      expect(res.body).to.equal('User has been deleted.');
+      expect(next.errors).to.be.empty;
+    });
 
-    const updateUser = async () => {
-      let res = null;
+    it('rejects deletes for another user before touching the model', async () => {
+      const req = {
+        params: { id: 'user-2' },
+        user: { id: 'user-1' },
+      };
+      const res = createRes();
+      const next = createNext();
+      let wasCalled = false;
 
-      try {
-        res = await request('http://test.com')
-          .put('/api/users/222')
-          .set('Accept', 'application/json')
-          .set('Cookie', ['access_token=test'])
-          .send(repeatedUserName);
-      } catch (err) {
-        const { response } = err;
-        expect(response.status).to.be.equal(500);
-        expect(response.data).to.be.equal('E11000 duplicate key error collection');
-      }
-      return res;
-    };
+      User.findByIdAndDelete = async () => {
+        wasCalled = true;
+      };
 
-    nock('http://test.com/')
-      .put('/api/users/222', body => {
-        expect(body.name).to.be.equal('test22');
-      })
-      .reply(500, 'E11000 duplicate key error collection');
-  })
-});
+      await deleteUser(req, res, next);
 
-describe('DELETE /api/users/:id', () => {
-  it('pass invalid user id and response 403 and correspondent message', async () => {
+      expect(wasCalled).to.equal(false);
+      expect(next.errors).to.have.lengthOf(1);
+      expect(next.errors[0].status).to.equal(403);
+      expect(next.errors[0].message).to.equal('You can only delete your account!');
+      expect(res.statusCode).to.equal(undefined);
+    });
 
+    it('forwards delete errors to Express', async () => {
+      const req = {
+        params: { id: 'user-1' },
+        user: { id: 'user-1' },
+      };
+      const res = createRes();
+      const next = createNext();
+      const dbError = new Error('delete failed');
+
+      User.findByIdAndDelete = async () => {
+        throw dbError;
+      };
+
+      await deleteUser(req, res, next);
+
+      expect(next.errors).to.deep.equal([dbError]);
+      expect(res.statusCode).to.equal(undefined);
+    });
   });
 
-  it('pass valid user id and response 200 and correspondent message', async () => {
-    const deleteUser = async () => {
-      return await request('http://test.com')
-        .delete('/api/users/111')
-        .set('Accept', 'application/json')
-        .set('Cookie', ['access_token=test'])
-        .send('');
-    };
+  describe('getUser', () => {
+    it('returns the requested user document', async () => {
+      const req = { params: { id: 'user-1' } };
+      const res = createRes();
+      const next = createNext();
+      const user = {
+        _id: 'user-1',
+        name: 'test11',
+        email: 'test11@gmail.com',
+      };
 
-    nock('http://test.com/')
-      .delete('/api/users/111')
-      .reply(200, 'User has been deleted.');
+      User.findById = async (userId) => {
+        expect(userId).to.equal('user-1');
+        return user;
+      };
 
-    const { text, status } = await deleteUser();
-    expect(status).to.be.equal(200);
-    expect(text).to.be.equal('User has been deleted.');
+      await getUser(req, res, next);
+
+      expect(res.statusCode).to.equal(200);
+      expect(res.body).to.deep.equal(user);
+      expect(next.errors).to.be.empty;
+    });
+
+    it('forwards read errors to Express', async () => {
+      const req = { params: { id: 'user-1' } };
+      const res = createRes();
+      const next = createNext();
+      const dbError = new Error('read failed');
+
+      User.findById = async () => {
+        throw dbError;
+      };
+
+      await getUser(req, res, next);
+
+      expect(next.errors).to.deep.equal([dbError]);
+      expect(res.statusCode).to.equal(undefined);
+    });
   });
-});
-
-describe('GET /api/users/find/:id', () => {
-
 });
