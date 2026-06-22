@@ -1,5 +1,5 @@
 import Comment from '../models/comment.js';
-import Video from '../models/video.js'; 
+import Video from '../models/video.js';
 import createError from '../utils/error.js';
 
 // POST /
@@ -17,24 +17,35 @@ export const addComment = async (req, res, next) => {
 export const deleteComment = async (req, res, next) => {
   try {
     const comment = await Comment.findById(req.params.id);
-    const video = await Video.findById(req.params.id);
-    if (req.user.id === comment.userId || req.user.id === video.userId) {
-      await Comment.findByIdAndDelete(req.params.id);
-      res.status(200).json('The comment has been deleted.')
-    } else {
-      return next(createError(403, 'You can delete ony your comment!'));
+    if (!comment) {
+      return next(createError(404, 'Comment not found!'));
     }
+
+    const video = await Video.findById(comment.videoId);
+    const isCommentOwner = req.user.id === comment.userId;
+    const isVideoOwner = video && req.user.id === video.userId;
+
+    if (!isCommentOwner && !isVideoOwner) {
+      return next(
+        createError(403, 'You can delete only your own comment or comments on your video!')
+      );
+    }
+
+    await Comment.findByIdAndDelete(req.params.id);
+    return res.status(200).json('The comment has been deleted.');
   } catch (err) {
-    next(err);
+    return next(err);
   }
 };
 
-// GET /:id
-export const getComment = async (req, res, next) => {
+// GET /video/:videoId
+export const getCommentsByVideoId = async (req, res, next) => {
   try {
-    const comment = await Comment.findById(req.params.id);
-    res.status(200).json(comment);
+    const comments = await Comment.find({ videoId: req.params.videoId }).sort({
+      createdAt: -1,
+    });
+    return res.status(200).json(comments);
   } catch (err) {
-    next(err);
+    return next(err);
   }
 };
