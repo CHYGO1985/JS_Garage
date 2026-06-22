@@ -8,11 +8,11 @@ import morganMiddleware from './middleware/morgan.js';
 import winstonLogger from './config/winston.js';
 import createError from './utils/error.js';
 
-import indexRouter from './routes/index.js';
-import userRouter from './routes/user-route.js';
-import authRouter from './routes/auth-route.js';
-import videoRouter from './routes/video-auth.js';
-import commentRouter from './routes/comment-route.js';
+import homeRoutes from './features/home/home.routes.js';
+import userRoutes from './features/users/user.routes.js';
+import authRoutes from './features/auth/auth.routes.js';
+import videoRoutes from './features/videos/video.routes.js';
+import commentRoutes from './features/comments/comment.routes.js';
 
 const app = express();
 
@@ -31,11 +31,11 @@ app.use(express.static(path.join(dirname, 'public')));
 
 app.use(morganMiddleware);
 
-app.use('/', indexRouter);
-app.use('/api/users', userRouter);
-app.use('/api/auth', authRouter);
-app.use('/api/videos', videoRouter);
-app.use('/api/comments', commentRouter);
+app.use('/', homeRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/videos', videoRoutes);
+app.use('/api/comments', commentRoutes);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

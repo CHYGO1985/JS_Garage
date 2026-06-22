@@ -5,7 +5,7 @@ import {
   deleteUser,
   getUser,
   updateUser,
-} from '../../controllers/user-controller.js';
+} from '../../features/users/user.controller.js';
 
 const originalUserMethods = {
   findById: User.findById,
