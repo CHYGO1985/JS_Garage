@@ -31,29 +31,34 @@ const logger = winston.createLogger({
     }),
     format.errors({ stack: true }),
     format.splat(),
-    format.printf(
-      (info) => `${info.timestamp} ${info.level}: ${info.message}`,
-    ),
-    format.json(),
+    format.printf((info) => `${info.timestamp} ${info.level}: ${info.message}`),
+    format.json()
   ),
   defaultMeta: { service: 'quickpost' },
   transports: [
-    new transports.File({ filename: path.join(appRoot.toString(), '/logs/error.log'), level: 'error' }),
-    new transports.File({ filename: path.join(appRoot.toString(), '/logs/combined.log') }),
+    new transports.File({
+      filename: path.join(appRoot.toString(), '/logs/error.log'),
+      level: 'error',
+    }),
+    new transports.File({
+      filename: path.join(appRoot.toString(), '/logs/combined.log'),
+    }),
   ],
 });
 
 if (process.env.NODE_ENV !== 'production') {
-  logger.add(new transports.Console({
-    format: format.combine(
-      // print all the message colored
-      format.colorize({ all: true }),
-      format.printf(
-        (info) => `${info.timestamp} ${info.level}: ${info.message}`,
+  logger.add(
+    new transports.Console({
+      format: format.combine(
+        // print all the message colored
+        format.colorize({ all: true }),
+        format.printf(
+          (info) => `${info.timestamp} ${info.level}: ${info.message}`
+        ),
+        format.simple()
       ),
-      format.simple(),
-    ),
-  }));
+    })
+  );
 }
 
 logger.stream = {

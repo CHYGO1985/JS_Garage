@@ -30,7 +30,8 @@ const UserSchema = new mongoose.Schema(
       default: false,
     },
   },
-  { timestamps: true },
+  // timestamp of the creation data of the user
+  { timestamps: true }
 );
 
 export default mongoose.model('User', UserSchema, 'Users');

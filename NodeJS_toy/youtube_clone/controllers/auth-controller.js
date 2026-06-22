@@ -25,16 +25,18 @@ export const signin = async (req, res, next) => {
     if (!user) return next(createError(404, 'User not found!'));
 
     const isPwdCorrect = await bcrypt.compare(req.body.password, user.password);
-    if (!isPwdCorrect) return next(createError(400, 'Username or password is not correct!'));
+    if (!isPwdCorrect)
+      return next(createError(400, 'Username or password is not correct!'));
 
     const token = jwt.sign({ id: user._id }, process.env.JWT);
     // do not send pwd to user
     const { password, ...userInfo } = user._doc;
 
-    res.cookie('access_token', token, {
-      expires: new Date(Date.now() + 900000),
-      httpOnly: true
-    })
+    res
+      .cookie('access_token', token, {
+        expires: new Date(Date.now() + 900000),
+        httpOnly: true,
+      })
       .status(200)
       .json(userInfo);
   } catch (err) {
@@ -60,7 +62,7 @@ export const googleAuth = async (req, res, next) => {
       });
       const savedUser = await newUser.save();
       const token = jwt.sign({ id: savedUser._id }, process.env.JWT);
-      res 
+      res
         .cookie('access_token', token, {
           httpOnly: true,
         })

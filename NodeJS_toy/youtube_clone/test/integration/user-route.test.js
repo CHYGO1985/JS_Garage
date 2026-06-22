@@ -52,7 +52,7 @@ after(async () => {
   await User.deleteMany();
 });
 
-describe('POST /api/users/:id', () => {
+describe('PUT /api/users/:id', () => {
   const userInfoToUpdate = {
     name: "updated"
   };

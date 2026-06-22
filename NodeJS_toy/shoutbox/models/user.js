@@ -1,6 +1,20 @@
 /**
  *
  * The user model
+ * 1) "user:id": {
+ *  "name": "aaa",
+ *  "pass": "bbb"
+ * }
+ *
+ * another hashset to find id
+ * 2) {
+ * "user:id:name": id
+ * }
+ *
+ * 3) hashset for getting auto incre id
+ * {
+ *  "user:ids": 123
+ * }
  *
  * @author jingjiejiang
  * @history May 5, 2022
@@ -39,6 +53,7 @@ class User {
     if (this.id) {
       await this.update('', cb);
     } else {
+      // 'user:ids' set as the key to incre id and find id, not a field in User class
       this.id = await db.INCR('user:ids');
       const pass = await this.hashPassword(this.id, (err) => {
         alertWindow(`Error thrown: ${err}`);
@@ -46,21 +61,19 @@ class User {
 
       await this.update(pass, (err) => {
         alertWindow(`Error thrown: ${err}`);
-      })
-        .then(() => this.id);
+      }).then(() => this.id);
     }
   }
 
   async update(pass, cb) {
     const { id } = this;
 
-    await this.setId(id, cb)
-      .then(async () => {
-        await this.setUser(id, cb);
-      });
+    await this.setId(id, cb).then(async () => {
+      await this.setUser(id, cb);
+    });
   }
 
-  // indexes users by name  user:id:Example
+  // indexes users by name  user:id:Example <--> id
   async setId(id, cb) {
     try {
       await db.set(`user:id:${this.name}`, id);
@@ -71,8 +84,7 @@ class User {
 
   // Uses Redis to store the current class’s properties
   async setUser(id, cb) {
-    await db.HSET(`user:${id}`, this)
-      .catch((err) => cb(err));
+    await db.HSET(`user:${id}`, this).catch((err) => cb(err));
   }
 
   // assign this.pass a hashed password
@@ -101,7 +113,7 @@ class User {
 
   // user:id:Example -> get id
   static async getId(name, cb) {
-    return db.get(`user:id:${name}`, cb);// Gets ID indexed by name
+    return db.get(`user:id:${name}`, cb); // Gets ID indexed by name
   }
 
   static async get(id, cb) {
@@ -114,8 +126,7 @@ class User {
     // .catch((err) => cb(err));
 
     // return user;
-    const user = await db.HGETALL(`user:${id}`)
-      .catch((err) => cb(err));
+    const user = await db.HGETALL(`user:${id}`).catch((err) => cb(err));
     return user;
   }
 

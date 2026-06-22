@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import axios from "axios";
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import axios from 'axios';
 import {
   getStorage,
   ref,
   uploadBytesResumable,
-  getDownloadURL
-} from "firebase/storage";
+  getDownloadURL,
+} from 'firebase/storage';
 
 import app from '../firebase.js';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   width: 100%;
@@ -89,7 +89,8 @@ const Upload = ({ setOpen }) => {
 
   const handleChange = (e) => {
     setInputs((prevState) => ({
-      ...prevState, [e.target.name]: e.target.value
+      ...prevState,
+      [e.target.name]: e.target.value,
     }));
   };
 
@@ -108,10 +109,11 @@ const Upload = ({ setOpen }) => {
       'state_changed',
       (snapshot) => {
         // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        urlType === 'imgUrl' ? 
-          setImgPerc(Math.round(progress)) : 
-          setVideoPerc(Math.round(progress));
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        urlType === 'imgUrl'
+          ? setImgPerc(Math.round(progress))
+          : setVideoPerc(Math.round(progress));
         switch (snapshot.state) {
           case 'paused':
             break;
@@ -142,10 +144,12 @@ const Upload = ({ setOpen }) => {
         // Upload completed successfully, now we can get the download URL
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           setInputs((prevState) => ({
-            ...prevState, [urlType]: downloadURL
+            ...prevState,
+            [urlType]: downloadURL,
           }));
         });
-      });
+      }
+    );
   };
 
   useEffect(() => {
@@ -158,10 +162,10 @@ const Upload = ({ setOpen }) => {
 
   const handleUpload = async (e) => {
     e.preventDefault();
-    const res = await axios.post('/videos', {...inputs, tags});
+    const res = await axios.post('/videos', { ...inputs, tags });
     setOpen(false);
     res.status === 200 && navigate(`/video/${res.data._id}`);
-  }
+  };
 
   return (
     <Container>
@@ -199,7 +203,7 @@ const Upload = ({ setOpen }) => {
         {imgPerc > 0 ? (
           `Uploading: ${imgPerc}%`
         ) : (
-          <Input 
+          <Input
             type="file"
             accept="image/*"
             onChange={(e) => setImg(e.target.files[0])}

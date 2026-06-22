@@ -23,7 +23,7 @@ describe('POST signup', () => {
   const tmpUser = {
     name: 'testaa',
     email: 'testaa@gmail.com',
-    password: '1234'
+    password: '1234',
   };
 
   it('post a new user and respond with 200 and a msg showes that user has been created', async () => {
@@ -31,21 +31,22 @@ describe('POST signup', () => {
       .post('/api/auth/signup')
       .set('Accept', 'application/json')
       .send(tmpUser);
-    
+
     expect(status).to.be.equal(200);
-    expect(text).to.be.equal('User has been created!')
+    expect(text).to.be.equal('User has been created!');
   });
 
   const dupUserName = {
     name: 'testaa',
     email: 'test22@gmail.com',
-    password: '1234'
+    password: '1234',
   };
   it('post duplicate user name and respone with 500 and a msg showes that duplicate key error', async () => {
     const { text, status } = await request(app)
       .post('/api/auth/signup')
       .set('Accept', 'application/json')
       .send(dupUserName);
+
     expect(status).to.be.equal(500);
     expect(text).to.contains('E11000 duplicate key error collection');
   });
@@ -53,7 +54,7 @@ describe('POST signup', () => {
   const dupUserEmail = {
     name: 'test22',
     email: 'testaa@gmail.com',
-    password: '1234'
+    password: '1234',
   };
   it('post duplicate user email and respone with 500 and a msg showes that duplicate key error', async () => {
     const { text, status } = await request(app)
@@ -71,7 +72,7 @@ describe('POST signup', () => {
 describe('POST signin', () => {
   const signinUser = {
     name: 'testaa',
-    password: '1234'
+    password: '1234',
   };
   it('post valid username and password and response with 200 and username and user email', async () => {
     const { _body, status } = await request(app)
@@ -85,7 +86,7 @@ describe('POST signin', () => {
 
   const signinUser1 = {
     name: 'testbb',
-    password: '1234'
+    password: '1234',
   };
   it('post invalid username and response with 404 and a msg showes that user is not found', async () => {
     const { _body, status } = await request(app)
@@ -98,9 +99,9 @@ describe('POST signin', () => {
 
   const signinUser2 = {
     name: 'testaa',
-    password: '1234567'
+    password: '1234567',
   };
-  it('post invalid password and response with 404 and a msg showes that username or password is not correct', async () => {
+  it('post invalid password and response with 400 and a msg showes that username or password is not correct', async () => {
     const { _body, status } = await request(app)
       .post('/api/auth/signin')
       .set('Accept', 'application/json')

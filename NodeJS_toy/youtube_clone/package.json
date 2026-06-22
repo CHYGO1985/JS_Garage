@@ -7,15 +7,15 @@
     "start": "node ./bin/www",
     "dev": "NODE_ENV=dev nodemon ./bin/www",
     "debug": "NODE_ENV=dev node --inspect ./bin/www",
-    "test": "NODE_ENV=test mocha --recursive --exit --timeout 20000",
+    "test": "NODE_ENV=test mocha --file test/setup.js --recursive --exit --timeout 20000",
     "test:unit": "NODE_ENV=test mocha test/unit --recursive --exit --timeout 20000",
-    "test:integration": "NODE_ENV=test mocha test/integration --recursive --exit --timeout 20000",
+    "test:integration": "NODE_ENV=test mocha --file test/setup.js test/integration --recursive --exit --timeout 20000",
     "test:single_test": "NODE_ENV=test mocha test/single_test --recursive --exit --timeout 20000"
   },
   "dependencies": {
     "app-root-path": "^3.0.0",
     "axios": "^0.27.2",
-    "bcrypt": "^5.0.1",
+    "bcrypt": "^5.0.0",
     "chai": "^4.3.6",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",

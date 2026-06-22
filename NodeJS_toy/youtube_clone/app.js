@@ -2,8 +2,6 @@ import express from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
-import dotenv from 'dotenv';
-import mongoose from 'mongoose';
 import { fileURLToPath } from 'url';
 
 import morganMiddleware from './middleware/morgan.js';
@@ -33,22 +31,6 @@ app.use(express.static(path.join(dirname, 'public')));
 
 app.use(morganMiddleware);
 
-dotenv.config();
-
-const mongodbConnect = process.env.NODE_ENV === "test"? 
-  process.env.MONGODB_CLOUD_TEST : process.env.MONGODB_CLOUD_PROD;
-
-const dbConnect = async () => {
-  try {
-    await mongoose.connect(mongodbConnect);
-    winstonLogger.info(`Connect to mongodb of ${process.env.NODE_ENV}`);
-  } catch (err) {
-    winstonLogger.error(`Failed to connect to mongodb due to ${err}`);
-  }
-};
-
-dbConnect();
-
 app.use('/', indexRouter);
 app.use('/api/users', userRouter);
 app.use('/api/auth', authRouter);
@@ -74,7 +56,7 @@ app.use((err, req, res, next) => {
     success: false,
     status,
     message
-  })
+  });
 });
 
 export default app;

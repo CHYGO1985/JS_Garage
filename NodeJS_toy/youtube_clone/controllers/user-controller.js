@@ -1,7 +1,7 @@
 import winstonLogger from '../config/winston.js';
 import User from '../models/user.js';
 import video from '../models/video.js';
-import Video from '../models/video.js'
+import Video from '../models/video.js';
 import createError from '../utils/error.js';
 
 export const updateUser = async (req, res, next) => {
@@ -27,7 +27,7 @@ export const deleteUser = async (req, res, next) => {
   if (req.params.id === req.user.id) {
     try {
       await User.findByIdAndDelete(req.params.id);
-      res.status(200).json("User has been deleted.");
+      res.status(200).json('User has been deleted.');
     } catch (err) {
       next(err);
     }
@@ -53,7 +53,7 @@ export const subscribeUser = async (req, res, next) => {
     });
     await User.findByIdAndUpdate(req.params.id, {
       $inc: { subscribers: 1 },
-    })
+    });
     res.status(200).json('Subscription successful.');
   } catch (err) {
     next(err);
@@ -80,7 +80,7 @@ export const likeUser = async (req, res, next) => {
   try {
     await Video.findByIdAndUpdate(videoId, {
       $addToSet: { likes: likeUserId },
-      $pull: { dislikes: likeUserId }
+      $pull: { dislikes: likeUserId },
     });
     res.status(200).json('The video has been liked.');
   } catch (err) {
@@ -94,7 +94,7 @@ export const dislikeUser = async (req, res, next) => {
   try {
     await Video.findByIdAndUpdate(videoId, {
       $addToSet: { dislikes: dislikeUserId },
-      $pull: { likes: dislikeUserId }
+      $pull: { likes: dislikeUserId },
     });
     res.status(200).json('The video has been liked.');
   } catch (err) {

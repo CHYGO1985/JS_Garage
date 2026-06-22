@@ -6,7 +6,12 @@
 
 import Debug from 'debug';
 import { createServer } from 'http';
+import dotenv from 'dotenv';
+
 import app from '../app.js';
+import { connectDb } from '../config/db.js';
+
+dotenv.config();
 
 const debug = Debug('youtube-clone:server');
 
@@ -88,6 +93,16 @@ function onListening() {
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+async function startServer() {
+  try {
+    await connectDb();
+    server.listen(port);
+    server.on('error', onError);
+    server.on('listening', onListening);
+  } catch (err) {
+    console.error(`Failed to start server: ${err.message}`);
+    process.exit(1);
+  }
+}
+
+startServer();
